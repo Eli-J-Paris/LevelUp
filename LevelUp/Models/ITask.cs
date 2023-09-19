@@ -10,5 +10,6 @@
         int XpReward { get; set; }
         int AttributeReward { get; set; }
         bool IsCompleted { get; set; }
+        User User { get; set; }
     }
 }
