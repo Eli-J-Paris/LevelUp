@@ -24,20 +24,39 @@ namespace LevelUp.Controllers
 
         public IActionResult Signup()
         {
+           
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(User user)
         {
-            user.Password = user.Encrypt(user.Password);
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            User validateUser;
+            try
+            {
+                validateUser = _context.Users.Where(u => u.Username == user.Username).First();
+            }
+            catch (InvalidOperationException)
+            {
+                validateUser = null;
+            }
+            if (validateUser == null)
+            {
+                user.Password = user.Encrypt(user.Password);
+                _context.Users.Add(user);
+                _context.SaveChanges();
 
-            Response.Cookies.Append("activeUser", user.Id.ToString());
-            Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
+                Response.Cookies.Append("activeUser", user.Id.ToString());
+                Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
 
-            return Redirect("/profile");
+                return Redirect("/profile");
+            }
+            else
+            {
+                TempData["FailedLogin"] = true;
+                
+                return Redirect("/users/signup");
+            }
         }
 
         [HttpGet("users/login")]

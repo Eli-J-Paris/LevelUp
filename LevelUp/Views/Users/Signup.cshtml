@@ -1,4 +1,9 @@
-﻿<h1>Sign up</h1>
+﻿@{
+    bool? failedLogin = TempData["FailedLogin"] as bool?;
+    Layout = null;
+}
+
+<h1>Sign up</h1>
 <form method = "post" action ="/users/create">
     <div class="form-group">
         <label for="Name">Name:</label>
@@ -13,5 +18,10 @@
         <input type="text" id="Password" name="Password" required />
     </div>
     <button type ="submit">Sign up</button>
+    @if (failedLogin == true)
+    {
+        <p class="text-danger">Account with that Username already exsists</p>
+    }
 </form>
 <p>already have an account? <a href="/users/login">login</a></p>
+
