@@ -67,5 +67,44 @@ namespace LevelUp.FeatureTests
 
             Assert.Contains("Jane Doe", html);
         }
+
+        [Fact]
+        public async Task Test_UsersHaveLogInButton()
+        {
+            var context = GetDbContext();
+            context.Users.Add(new User { Username = "Jim123", Name = "Jim", Password = "password123" });
+            context.SaveChanges();
+
+            var client = _factory.CreateClient();
+            var response = await client.GetAsync("/users/login");
+            var html = await response.Content.ReadAsStringAsync();
+
+            Assert.Contains("Login", html);
+        }
+
+        [Fact]
+        public async Task Test_UsersCanLogIn()
+        {
+            var context = GetDbContext();
+            User user1 = new User { Username = "Jim123", Name = "Jim", Password = "password123" };
+            user1.Password = user1.Encrypt(user1.Password);
+            context.Users.Add(user1);
+            context.SaveChanges();
+
+
+            var formData = new Dictionary<string, string>
+            {
+                {"Username", "Jim123" },
+                {"Password", "password123" }
+            };
+
+            var client = _factory.CreateClient();
+            var response = await client.PostAsync("/users/login", new FormUrlEncodedContent(formData));
+
+            response.EnsureSuccessStatusCode();
+            var html = await response.Content.ReadAsStringAsync();
+
+            Assert.Contains("{\"success\":true,\"redirectUrl\":\"/profile\"}", html);
+        }
     }
 }

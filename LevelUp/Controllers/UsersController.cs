@@ -57,6 +57,8 @@ namespace LevelUp.Controllers
             // If the user exists and the password is correct
             if (user != null && VerifyPassword(user, userToLogin))
             {
+                Response.Cookies.Append("activeUser", user.Id.ToString());
+                Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
                 return Json(new { success = true, redirectUrl = Url.Action("Profile", "Users") });
             }
 
