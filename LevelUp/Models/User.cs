@@ -19,7 +19,7 @@ namespace LevelUp.Models
         public int Productivity { get; set; } = 0;
         public int HabitBuilding { get; set; } = 0;
 
-        public string Encrpyt(string password)
+        public string Encrypt(string password)
         {
             HashAlgorithm sha = SHA256.Create();
             byte[] passwordBytes = Encoding.ASCII.GetBytes(password);
@@ -30,11 +30,6 @@ namespace LevelUp.Models
                 passwordBuilder.Append(b.ToString("x2"));
             }
             return passwordBuilder.ToString();
-        }
-
-        public string EncryptPassword()
-        {
-            return Encrpyt(Password);
         }
     }
 }
