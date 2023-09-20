@@ -106,5 +106,29 @@ namespace LevelUp.FeatureTests
 
             Assert.Contains("{\"success\":true,\"redirectUrl\":\"/profile\"}", html);
         }
+        [Fact]
+        public async Task Test_LogIn_WrongPasswordLogInFails()
+        {
+            var context = GetDbContext();
+            User user1 = new User { Username = "Jim123", Name = "Jim", Password = "password123" };
+            user1.Password = user1.Encrypt(user1.Password);
+            context.Users.Add(user1);
+            context.SaveChanges();
+
+
+            var formData = new Dictionary<string, string>
+            {
+                {"Username", "Jim123" },
+                {"Password", "password321" }
+            };
+
+            var client = _factory.CreateClient();
+            var response = await client.PostAsync("/users/login", new FormUrlEncodedContent(formData));
+
+            response.EnsureSuccessStatusCode();
+            var html = await response.Content.ReadAsStringAsync();
+
+            Assert.Contains("{\"success\":false,\"message\":\"LogIn Failed\"}", html);
+        }
     }
 }
