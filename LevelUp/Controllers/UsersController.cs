@@ -41,6 +41,8 @@ namespace LevelUp.Controllers
         [HttpGet("users/login")]
         public IActionResult LogIn(string username)
         {
+            Response.Cookies.Append("activeUser", "");
+            Response.Cookies.Append("userAuth", "");
             ViewBag.Username = username;
 
             return View();

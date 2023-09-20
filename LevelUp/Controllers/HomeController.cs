@@ -15,8 +15,6 @@ namespace LevelUp.Controllers
 
         public IActionResult Index()
         {
-            Response.Cookies.Append("activeUser", "");
-            Response.Cookies.Append("userAuth", "");
             return View();
         }
 
