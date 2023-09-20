@@ -25,14 +25,15 @@ namespace LevelUp.Controllers
 
 
         [Route("/tasks/new")]
-        public IActionResult NewTask()
+        public IActionResult NewTask(string tasktype)
         {
+            ViewBag.TaskType = tasktype;
             return View();
         }
 
         [HttpPost]
         [Route("/tasks/create")]
-        public IActionResult CreateTask()
+        public IActionResult CreateTask(Task task)
         {
             //All the code for creating and adding a task
             return Redirect("/tasks");

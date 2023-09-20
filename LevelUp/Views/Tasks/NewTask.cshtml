@@ -1,4 +1,9 @@
-﻿<h1>Create Custom Task</h1>
+﻿@{
+    string typeTask = ViewBag.TypeTask as string;
+}
+
+
+<h1>Create Custom Task</h1>
 
 <form method ="post" action ="/tasks/create">
    <div>
@@ -18,15 +23,15 @@
 
     <div>
         <label for="daily">Daily</label>
-        <input type="radio" id="daily" name="CHANGELATER" value="1" checked />
+        <input type="radio" id="daily" name="TaskType" value="Daily" checked />
     </div>
     <div>
         <label for="weekly">Weekly</label>
-        <input type="radio" id="weekly" name="CHANGELATER" value="2" />
+        <input type="radio" id="weekly" name="TaskType" value="Weekly" />
     </div>
     <div>
         <label for="todo">ToDo</label>
-        <input type="radio" id="todo" name="CHANGELATER" value="3" />
+        <input type="radio" id="todo" name="TaskType" value="ToDo" />
     </div>
     
 
@@ -42,7 +47,7 @@
     <div>
         <label for="category">Choose a Category:</label>
 
-        <select name="Category" id="pet-category">
+        <select name="Category" id="category">
             <option value="">--Please choose an option--</option>
             <option value="Hygiene">Hygiene</option>
             <option value="Wellness">Wellness</option>
