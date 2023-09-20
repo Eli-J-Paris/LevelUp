@@ -9,6 +9,7 @@
   },
   "profiles": {
     "LevelUp": {
+      "launchUrl": "users/login",
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
