@@ -114,7 +114,7 @@ namespace LevelUp.Controllers
         public IActionResult Profile()
         {
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/");
+            if (user == null) return Redirect("/users/login");
             return View(user);
         }
 
