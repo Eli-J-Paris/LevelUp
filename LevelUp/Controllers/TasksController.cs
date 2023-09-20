@@ -2,6 +2,7 @@
 using LevelUp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace LevelUp.Controllers
 {
@@ -18,8 +19,8 @@ namespace LevelUp.Controllers
         {
             // checks cookies to make sure a user is logged in and gets user
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/");
-            return View();
+            if (user == null) return Redirect("/users/login");
+            return View(user);
             //check id from cookie
         }
 
@@ -39,7 +40,7 @@ namespace LevelUp.Controllers
             task.AttributeReward = 1;
 
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/");
+            if (user == null) return Redirect("/users/login");
 
             user.DailyTasks.Add(task);
             _context.Users.Update(user);
@@ -56,7 +57,7 @@ namespace LevelUp.Controllers
             task.AttributeReward = 1;
 
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/");
+            if (user == null) return Redirect("/users/login");
 
             user.WeeklyTasks.Add(task);
             _context.Users.Update(user);
@@ -73,7 +74,7 @@ namespace LevelUp.Controllers
             task.AttributeReward = 1;
 
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/");
+            if (user == null) return Redirect("/users/login");
 
             user.ToDoTasks.Add(task);
             _context.Users.Update(user);
@@ -87,7 +88,7 @@ namespace LevelUp.Controllers
             var userId = Convert.ToInt32(request.Cookies["activeUser"]);
             var userAuth = request.Cookies["userAuth"];
 
-            User? user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).FirstOrDefault(u => u.Id == userId);
 
             if (user != null)
             {
