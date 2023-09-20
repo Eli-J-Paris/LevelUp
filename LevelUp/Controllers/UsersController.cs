@@ -1,6 +1,7 @@
 ﻿using LevelUp.DataAccess;
 using LevelUp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 
 namespace LevelUp.Controllers
 {
@@ -41,5 +42,7 @@ namespace LevelUp.Controllers
         {
             return View();
         }
+
+        
     }
 }
