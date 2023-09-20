@@ -12,7 +12,7 @@
         public int AttributeReward { get; set; }
         public bool IsCompleted { get; set; }
         public User User { get; set; }
-        public DateTime TimeCreated { get; set; }// = DateTime.UtcNow;
+        public DateTime TimeCreated { get; set; } = DateTime.UtcNow;
         public DateTime? TimeCompleted { get; set; } = null;
 
 
