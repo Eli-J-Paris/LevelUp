@@ -1,8 +1,10 @@
 ﻿using LevelUp.DataAccess;
 using LevelUp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 using System.Security.Cryptography;
 using System.Text;
+
 
 namespace LevelUp.Controllers
 {
@@ -96,5 +98,7 @@ namespace LevelUp.Controllers
             if (user == null) return Redirect("/");
             return View(user);
         }
+
+        
     }
 }
