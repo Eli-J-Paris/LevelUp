@@ -3,6 +3,7 @@ using System;
 using LevelUp.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LevelUp.Migrations
 {
     [DbContext(typeof(LevelUpContext))]
-    partial class LevelUpContextModelSnapshot : ModelSnapshot
+    [Migration("20230920202539_weeklyAndToDoTasks")]
+    partial class weeklyAndToDoTasks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,12 +153,12 @@ namespace LevelUp.Migrations
                         .HasColumnName("xp_reward");
 
                     b.HasKey("Id")
-                        .HasName("pk_to_do_tasks");
+                        .HasName("pk_to_do_task");
 
                     b.HasIndex("UserId")
-                        .HasDatabaseName("ix_to_do_tasks_user_id");
+                        .HasDatabaseName("ix_to_do_task_user_id");
 
-                    b.ToTable("to_do_tasks", (string)null);
+                    b.ToTable("to_do_task", (string)null);
                 });
 
             modelBuilder.Entity("LevelUp.Models.User", b =>
@@ -278,12 +281,12 @@ namespace LevelUp.Migrations
                         .HasColumnName("xp_reward");
 
                     b.HasKey("Id")
-                        .HasName("pk_weekly_tasks");
+                        .HasName("pk_weekly_task");
 
                     b.HasIndex("UserId")
-                        .HasDatabaseName("ix_weekly_tasks_user_id");
+                        .HasDatabaseName("ix_weekly_task_user_id");
 
-                    b.ToTable("weekly_tasks", (string)null);
+                    b.ToTable("weekly_task", (string)null);
                 });
 
             modelBuilder.Entity("LevelUp.Models.DailyTask", b =>
@@ -305,7 +308,7 @@ namespace LevelUp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_to_do_tasks_users_user_id");
+                        .HasConstraintName("fk_to_do_task_users_user_id");
 
                     b.Navigation("User");
                 });
@@ -317,7 +320,7 @@ namespace LevelUp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_weekly_tasks_users_user_id");
+                        .HasConstraintName("fk_weekly_task_users_user_id");
 
                     b.Navigation("User");
                 });
