@@ -1,0 +1,61 @@
+﻿@model LevelUp.Models.User
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+<form id="loginForm">
+    <div class="form-group">
+        <label for="Username">Username:</label>
+        <input type="text" class="form-control" id="Username" name="Username" value="@ViewBag.Username" required />
+    </div>
+    <div class="form-group">
+        <label for="Password">Password:</label>
+        <input type="password" class="form-control" id="Password" name="Password" required />
+    </div>
+    <p id="loginStatus" class="text-danger" style="display: none;"></p>
+    <button type="submit">Login</button>
+</form>
+
+
+<script>
+     // Fetching the `loginForm` and `loginStatus` elements from the DOM
+    const loginForm = document.getElementById('loginForm');
+    const loginStatus = document.getElementById('loginStatus');
+
+     // Adding an event listener to the `loginForm` for the `submit` button, if clicked this script will run
+    loginForm.addEventListener('submit', async (eventObject) => {
+        eventObject.preventDefault();
+
+         // Making an asynchronous POST request to the '/users/login' endpoint.
+        try {
+            const response = await fetch('/users/login', {
+                method: 'POST',
+                body: new FormData(loginForm)
+            });
+
+             // Parsing the JSON response from DB
+            const data = await response.json();
+
+             // If the data success property is true meaning the user inputed the correct username and password
+            if (data.success) {
+                 // Rederecting to the user show page if successful
+                window.location.href = data.redirectUrl;
+            } else {
+                 // The string I set in textContent is what will be displayed when made visible
+                loginStatus.textContent = "UserName or Password not found";
+
+                 // By setting `loginStatus` to `block`,I can make the loginStatus
+                 // element visible and it will take up the full width of its container
+                loginStatus.style.display = "block";
+            }
+          // If something goes wrong, catch it and then log it into the void
+          // I don't know much about error handling and how that would even work with
+          // javascript inside of a .Net MVC app figuring out the above out was hard enough to be honest
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>
