@@ -32,10 +32,53 @@ namespace LevelUp.Controllers
         }
 
         [HttpPost]
-        [Route("/tasks/create")]
-        public IActionResult CreateTask(Task task)
+        [Route("/tasks/newdaily")]
+        public IActionResult CreateDailyTask(DailyTask task)
         {
-            //All the code for creating and adding a task
+            task.XpReward = task.Difficulty;
+            task.AttributeReward = 1;
+
+            var user = GetActiveUser(Request);
+            if (user == null) return Redirect("/");
+
+            user.DailyTasks.Add(task);
+            _context.Users.Update(user);
+
+            _context.SaveChanges();
+            return Redirect("/tasks");
+        }
+
+        [HttpPost]
+        [Route("/tasks/newweekly")]
+        public IActionResult CreateWeeklyTask(WeeklyTask task)
+        {
+            task.XpReward = 3 * task.Difficulty;
+            task.AttributeReward = 1;
+
+            var user = GetActiveUser(Request);
+            if (user == null) return Redirect("/");
+
+            user.WeeklyTasks.Add(task);
+            _context.Users.Update(user);
+
+            _context.SaveChanges();
+            return Redirect("/tasks");
+        }
+
+        [HttpPost]
+        [Route("/tasks/newtodo")]
+        public IActionResult CreateToDoTask(ToDoTask task)
+        {
+            task.XpReward = task.Difficulty;
+            task.AttributeReward = 1;
+
+            var user = GetActiveUser(Request);
+            if (user == null) return Redirect("/");
+
+            user.ToDoTasks.Add(task);
+            _context.Users.Update(user);
+
+            _context.SaveChanges();
             return Redirect("/tasks");
         }
 

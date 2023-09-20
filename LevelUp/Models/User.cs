@@ -11,6 +11,9 @@ namespace LevelUp.Models
         public string Username { get; set; }
         public string  Password { get; set; }
         public List<DailyTask> DailyTasks { get; set; } = new List<DailyTask>();
+        public List<WeeklyTask> WeeklyTasks { get; set; } = new List<WeeklyTask>();
+        public List<ToDoTask> ToDoTasks { get; set; } = new List<ToDoTask>();
+
         public int Level { get; set; } = 1;
         public int Xp { get; set; } = 0;
         public int Hygiene { get; set; } = 0;

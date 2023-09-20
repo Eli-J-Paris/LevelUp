@@ -10,14 +10,14 @@
         public int Difficulty { get; set; }
         public int XpReward { get; set; }
         public int AttributeReward { get; set; }
-        public bool IsCompleted { get; set; }
+        public bool IsCompleted { get; set; } = false;
         public User User { get; set; }
+        public DateTime TimeCreated { get; set; } = DateTime.UtcNow;
+        public DateTime? TimeCompleted { get; set; } = null;
 
 
         //DailyTask only
-        public DateTime TimeCreated { get; set; }
-        public DateTime TimeCompleted { get; set; }
-        public int Streak { get; set; }
+        public int Streak { get; set; } = 0;
 
     }
 }

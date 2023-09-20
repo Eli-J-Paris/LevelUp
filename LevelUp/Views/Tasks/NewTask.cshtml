@@ -5,7 +5,7 @@
 
 <h1>Create Custom Task</h1>
 
-<form method ="post" action ="/tasks/create">
+<form id = "NewTaskForm" method ="post" action ="/tasks/newdaily">
    <div>
         <label for="easy">Easy</label>
         <input type="radio" id="easy" name="Difficulty" value="1" checked/>
@@ -23,15 +23,15 @@
 
     <div>
         <label for="daily">Daily</label>
-        <input type="radio" id="daily" name="TaskType" value="Daily" checked />
+        <input type="radio" onchange="selectDaily(this)" id="daily" name="TaskType" value="Daily" checked />
     </div>
     <div>
         <label for="weekly">Weekly</label>
-        <input type="radio" id="weekly" name="TaskType" value="Weekly" />
+        <input type="radio" onchange="selectWeekly(this)" id="weekly" name="TaskType" value="Weekly" />
     </div>
     <div>
         <label for="todo">ToDo</label>
-        <input type="radio" id="todo" name="TaskType" value="ToDo" />
+        <input type="radio" onchange="selectToDo(this)" id="todo" name="TaskType" value="ToDo" />
     </div>
     
 
@@ -59,3 +59,23 @@
 
     <button type="submit">Create Task</button>
 </form>
+
+<script>
+    function selectDaily(x) {
+        if (x.checked) {
+            document.getElementById("NewTaskForm").action = "/tasks/newdaily";
+        }
+    }
+    function selectWeekly(x) {
+        if (x.checked) {
+            document.getElementById("NewTaskForm").action = "/tasks/newweekly";
+        }
+    }
+    function selectToDo(x) {
+        if (x.checked) {
+            document.getElementById("NewTaskForm").action = "/tasks/newtodo";
+        }
+    }
+
+
+</script>
