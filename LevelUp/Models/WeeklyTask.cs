@@ -1,6 +1,6 @@
 ﻿namespace LevelUp.Models
 {
-    public class DailyTask : ITask
+    public class WeeklyTask : ITask
     {
         public int Id { get; set; }
         public string Title { get; set; }

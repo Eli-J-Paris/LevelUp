@@ -1,6 +1,6 @@
 ﻿namespace LevelUp.Models
 {
-    public class DailyTask : ITask
+    public class ToDoTask : ITask
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -17,7 +17,7 @@
         //DailyTask only
         public DateTime TimeCreated { get; set; }
         public DateTime TimeCompleted { get; set; }
-        public int Streak { get; set; }
+       
 
     }
 }
