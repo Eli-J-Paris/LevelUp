@@ -1,52 +1,87 @@
-﻿@model User
+﻿
+@model User
 <h1>@Model.Name Profile</h1>
 
 <div class="container">
     <div class="row">
          <!-- First Main Column -->
-        <div class="col-4">
+        <div class="col-4 vertical-center">
              <!-- Nested First Row -->
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col">
-                    <p>Content for the first row in the first main column.</p>
+                    <p>Profile Picture</p>
+                    <br>
+                    <p>XP BAR</p>
                 </div>
             </div>
              <!-- Nested Second Row -->
             <div class="row">
                 <div class="col">
-                    <p>Content for the second row in the first main column.</p>
+                    <p>Daiily Affermation</p>
                 </div>
             </div>
         </div>
 
          <!-- Second Main Column -->
-        <div class="col-4">
+        <div class="col-4 vertical-bottom">
              <!-- Nested First Row -->
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col">
-                    <p>Content for the first row in the second main column.</p>
+                    <p>Achievements</p>
                 </div>
             </div>
              <!-- Nested Second Row -->
             <div class="row">
                 <div class="col">
-                    <p>Content for the second row in the second main column.</p>
+                    <p>Task streak / Achievment tracker</p>
+                    <a href="/profile/streaks">Streaks Page</a>
                 </div>
             </div>
         </div>
 
          <!-- Third Main Column -->
-        <div class="col-4">
+        <div class="col-4 vertical-center">
              <!-- Nested First Row -->
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col">
-                    <p>Content for the first row in the third main column.</p>
+                    
                 </div>
             </div>
              <!-- Nested Second Row -->
             <div class="row">
                 <div class="col">
-                    <p>Content for the second row in the third main column.</p>
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Artibutes</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+
+                        <!-- Table Body -->
+                        <tbody>
+                            <tr>
+                                <td>Hygiene</td>
+                                <td>@Model.Hygiene</td>
+                            </tr>
+                            <tr>
+                                <td>Productivity</td>
+                                <td>@Model.Productivity</td>
+                            </tr>
+                            <tr>
+                                <td>Wellness</td>
+                                <td>@Model.Wellness</td>
+                            </tr>
+                            <tr>
+                                <td>Mindfulness</td>
+                                <td>@Model.Mindfullness</td>
+                            </tr>
+                            <tr>
+                                <td>Habit Building</td>
+                                <td>@Model.HabitBuilding</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
