@@ -1,0 +1,25 @@
+﻿@model User
+@{
+    Dictionary<string, int> streaks = Model.GetStreaks() as Dictionary<string, int>;
+}
+
+<div class="row">
+    <div class="textblock col-6">
+        <h2>Streaks</h2>
+        <ul>
+            @foreach(KeyValuePair<string, int> streak in streaks)
+            {
+                <li>@streak.Key - @streak.Value</li>
+            }
+        </ul>
+    </div>
+    <div class="textblock col-6">
+        <h2>Achievements</h2>
+        <ul>
+            @foreach (KeyValuePair<string, int> streak in streaks)
+            {
+                <li>@streak.Key - @streak.Value</li>
+            }
+        </ul>
+    </div>
+</div>
