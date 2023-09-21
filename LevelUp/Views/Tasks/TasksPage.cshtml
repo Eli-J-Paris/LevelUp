@@ -1,15 +1,41 @@
-﻿<h1>Tasks</h1>
+﻿@model User
+@{
+    List<DailyTask> dailys = Model.DailyTasks as List<DailyTask>;
+    List<WeeklyTask> weeklys = Model.WeeklyTasks as List<WeeklyTask>;
+    List<ToDoTask> todos = Model.ToDoTasks as List<ToDoTask>;
 
-<div class="daily-tasks">
-    <h1>Daily Tasks</h1>
-</div>
-<div class="weekly-tasks">
-    <h1>weekly Tasks</h1>
-</div>
-<div class="Todo's-tasks">
-    <h1>Todos</h1>
-</div>
+}
+<h1>Tasks</h1>
 
+<div class="task-lists row"
+    <div class="daily-tasks col-4 textblock">
+        <h1>Daily Tasks</h1>
+        <ul>
+            @foreach(DailyTask task in dailys)
+            {
+                <li>@task.Title</li>
+            }
+        </ul>
+    </div>
+    <div class="weekly-tasks col-4 textblock">
+        <h1>weekly Tasks</h1>
+        <ul>
+            @foreach (WeeklyTask task in weeklys)
+            {
+                    <li>@task.Title</li>
+            }
+        </ul>
+    </div>
+    <div class="Todo's-tasks col-4 textblock">
+        <h1>Todos</h1>
+        <ul>
+            @foreach (ToDoTask task in todos)
+            {
+                    <li>@task.Title</li>
+            }
+        </ul>
+    </div>
+</div>
 <form action="/tasks/new">
     <button>Create Custom Task</button>
 </form>

@@ -2,6 +2,7 @@
 using LevelUp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -97,7 +98,7 @@ namespace LevelUp.Controllers
             var userId = Convert.ToInt32(request.Cookies["activeUser"]);
             var userAuth = request.Cookies["userAuth"];
 
-            User? user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).FirstOrDefault(u => u.Id == userId);
 
             if (user != null)
             {
@@ -114,10 +115,16 @@ namespace LevelUp.Controllers
         public IActionResult Profile()
         {
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/");
+            if (user == null) return Redirect("/users/login");
             return View(user);
         }
 
-        
+        [Route("/profile/streaks")]
+        public IActionResult Streaks()
+        {
+            var user = GetActiveUser(Request);
+            if (user == null) return Redirect("/users/login");
+            return View(user);
+        }
     }
 }

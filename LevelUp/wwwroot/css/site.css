@@ -15,6 +15,7 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color: #C3DBC5;
 }
 
 .vertical-center {
@@ -46,4 +47,8 @@ th, td {
     border: 1px solid black; /* Puts a border around each cell */
     padding: 10px; /* Adds space inside each cell */
     text-align: center; /* Centers the content in each cell */
+}
+
+.textblock{
+    background-color: #E8DCB9;
 }
