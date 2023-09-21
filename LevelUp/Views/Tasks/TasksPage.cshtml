@@ -13,7 +13,7 @@
         <ul>
             @foreach(DailyTask task in dailys)
             {
-                <li>@task.Title</li>
+                    <li><a href ="/tasks/@task.Id" onclick="setcookiedaily()">@task.Title</a></li>
             }
         </ul>
     </div>
@@ -22,7 +22,7 @@
         <ul>
             @foreach (WeeklyTask task in weeklys)
             {
-                    <li>@task.Title</li>
+                    <li><a href ="/tasks/@task.Id" onclick="setcookieweekly()">@task.Title</a></li>
             }
         </ul>
     </div>
@@ -31,7 +31,7 @@
         <ul>
             @foreach (ToDoTask task in todos)
             {
-                    <li>@task.Title</li>
+                    <li><a href ="/tasks/@task.Id" onclick="setcookietodo()">@task.Title</a></li>
             }
         </ul>
     </div>
@@ -39,3 +39,16 @@
 <form action="/tasks/new">
     <button>Create Custom Task</button>
 </form>
+
+ <script>
+     function setcookiedaily(){
+         document.cookie = "tasktype=daily"
+     }
+    function setcookieweekly() {
+        document.cookie = "tasktype=weekly"
+    }
+    function setcookietodo() {
+        document.cookie = "tasktype=todo"
+    }
+
+</script>
