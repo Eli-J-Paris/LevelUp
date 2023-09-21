@@ -18,6 +18,37 @@ body {
   background-color: #C3DBC5;
 }
 
+.vertical-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 60vh;
+}
+
+.vertical-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+}
+
+.vertical-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+table {
+    border-collapse: collapse; /* Removes spacing between table cells */
+    width: 50%; /* Adjust as needed */
+}
+
+th, td {
+    border: 1px solid black; /* Puts a border around each cell */
+    padding: 10px; /* Adds space inside each cell */
+    text-align: center; /* Centers the content in each cell */
+}
+
 .textblock{
     background-color: #E8DCB9;
 }
