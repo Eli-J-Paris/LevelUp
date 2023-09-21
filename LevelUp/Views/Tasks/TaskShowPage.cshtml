@@ -51,8 +51,11 @@
         </select>
     </div>
 
-    <button >save changes</button>
+    <button>save changes</button>
     <a href="/tasks">cancel changes</a>
+</form>
+<form method="post" action="/tasks/delete/@Model.Id">
+    <button>Delete Task</button>
 </form>
 
 <script>

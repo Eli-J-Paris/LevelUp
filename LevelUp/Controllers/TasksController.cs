@@ -3,6 +3,7 @@ using LevelUp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LevelUp.Controllers
 {
@@ -119,6 +120,30 @@ namespace LevelUp.Controllers
                 task = _context.ToDoTasks.Find(taskId);
             }
             return View(task);
+        }
+
+        [HttpPost]
+        [Route("/tasks/delete/{taskId:int}")]
+        public IActionResult Delete(int taskId)
+        {
+            if (Request.Cookies["tasktype"] == "daily")
+            {
+                var dailyTask = _context.DailyTasks.Find(taskId);
+                _context.DailyTasks.Remove(dailyTask);
+            }
+            else if (Request.Cookies["tasktype"] == "weekly")
+            {
+                var weeklyTask = _context.WeeklyTasks.Find(taskId);
+                _context.WeeklyTasks.Remove(weeklyTask);
+
+            }
+            else if (Request.Cookies["tasktype"] == "todo")
+            {
+                var todoTask = _context.ToDoTasks.Find(taskId);
+                _context.ToDoTasks.Remove(todoTask);
+            }
+            _context.SaveChanges();
+            return Redirect("/tasks");
         }
     }
 }
