@@ -34,5 +34,19 @@ namespace LevelUp.Models
             }
             return passwordBuilder.ToString();
         }
+
+        public Dictionary<string, int> GetStreaks()
+        {
+            var returnDict = new Dictionary<string, int>();
+            foreach(var task in DailyTasks)
+            {
+                returnDict.Add(task.Title, task.Streak);
+            }
+            foreach (var task in WeeklyTasks)
+            {
+                returnDict.Add(task.Title, task.Streak);
+            }
+            return returnDict;
+        }
     }
 }
