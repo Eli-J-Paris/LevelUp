@@ -1,0 +1,76 @@
+﻿@model ITask
+<form id="NewTaskForm" method="post" action="/tasks/newdaily">
+    <div>
+        <label for="easy">Easy</label>
+        <input type="radio" id="easy" name="Difficulty" value="1" checked />
+    </div>
+    <div>
+        <label for="medium">Medium</label>
+        <input type="radio" id="medium" name="Difficulty" value="2" />
+    </div>
+    <div>
+        <label for="hard">Hard</label>
+        <input type="radio" id="hard" name="Difficulty" value="3" />
+    </div>
+
+    <br />
+
+    <div>
+        <label for="daily">Daily</label>
+        <input type="radio" onchange="selectDaily(this)" id="daily" name="TaskType" value="Daily" checked />
+    </div>
+    <div>
+        <label for="weekly">Weekly</label>
+        <input type="radio" onchange="selectWeekly(this)" id="weekly" name="TaskType" value="Weekly" />
+    </div>
+    <div>
+        <label for="todo">ToDo</label>
+        <input type="radio" onchange="selectToDo(this)" id="todo" name="TaskType" value="ToDo" />
+    </div>
+
+
+    <div>
+        <label for="taskname">Task Name:</label>
+        <input type="text" id="taskname" name="Title" value="@Model.Title" />
+    </div>
+    <div>
+        <label for="description">Description</label>
+        <textarea id="description" rows="5" maxlength="255" name="Description">@Model.Description</textarea>
+    </div>
+
+    <div>
+        <label for="category">Choose a Category:</label>
+
+        <select name="Category" id="category" value="@Model.Category">
+            <option value="@Model.Category">@Model.Category</option>
+            <option value="Hygiene">Hygiene</option>
+            <option value="Wellness">Wellness</option>
+            <option value="Mindfullness">Mindfullness</option>
+            <option value="Productivity">Productivity</option>
+            <option value="HabitBuilding">HabitBuilding</option>
+        </select>
+    </div>
+
+    <button >save changes</button>
+    <a href="/tasks">cancel changes</a>
+</form>
+
+<script>
+    function selectDaily(x) {
+        if (x.checked) {
+            document.getElementById("NewTaskForm").action = "/tasks/newdaily";
+        }
+    }
+    function selectWeekly(x) {
+        if (x.checked) {
+            document.getElementById("NewTaskForm").action = "/tasks/newweekly";
+        }
+    }
+    function selectToDo(x) {
+        if (x.checked) {
+            document.getElementById("NewTaskForm").action = "/tasks/newtodo";
+        }
+    }
+
+
+</script>

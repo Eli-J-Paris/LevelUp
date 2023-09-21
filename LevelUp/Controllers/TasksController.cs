@@ -100,5 +100,25 @@ namespace LevelUp.Controllers
 
             return user;
         }
+
+        [HttpGet]
+        [Route("/tasks/{taskId:int}")]
+        public IActionResult TaskShowPage(int taskId)
+        {
+            ITask task = null;
+            if (Request.Cookies["tasktype"] == "daily")
+            {
+                 task = _context.DailyTasks.Find(taskId);
+            }
+            else if(Request.Cookies["tasktype"] == "weekly")
+            {
+                 task = _context.WeeklyTasks.Find(taskId);
+            }
+            else if(Request.Cookies["tasktype"] == "todo")
+            {
+                task = _context.ToDoTasks.Find(taskId);
+            }
+            return View(task);
+        }
     }
 }
