@@ -15,4 +15,9 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color: #C3DBC5;
+}
+
+.textblock{
+    background-color: #E8DCB9;
 }
