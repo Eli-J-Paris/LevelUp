@@ -1,5 +1,5 @@
 ﻿@model ITask
-<form id="NewTaskForm" method="post" action="/tasks/newdaily">
+<form id="NewTaskForm" method="post" action="/tasks/update/@Model.Id">
     <div>
         <label for="easy">Easy</label>
         <input type="radio" id="easy" name="Difficulty" value="1" checked />
@@ -15,20 +15,29 @@
 
     <br />
 
-    <div>
-        <label for="daily">Daily</label>
-        <input type="radio" onchange="selectDaily(this)" id="daily" name="TaskType" value="Daily" checked />
-    </div>
-    <div>
-        <label for="weekly">Weekly</label>
-        <input type="radio" onchange="selectWeekly(this)" id="weekly" name="TaskType" value="Weekly" />
-    </div>
-    <div>
-        <label for="todo">ToDo</label>
-        <input type="radio" onchange="selectToDo(this)" id="todo" name="TaskType" value="ToDo" />
-    </div>
-
-
+    @{
+        if (Context.Request.Cookies["tasktype"] == "daily")
+        {
+            <div>
+                <label for="daily">Daily</label>
+                <input type="radio" onchange="selectDaily(this)" id="daily" name="TaskType" value="Daily" checked />
+            </div>
+        }
+        else if (Context.Request.Cookies["tasktype"] == "weekly")
+        {
+            <div>
+                <label for="weekly">Weekly</label>
+                <input type="radio" onchange="selectWeekly(this)" id="weekly" name="TaskType" value="Weekly" checked />
+            </div>
+        }
+        else if (Context.Request.Cookies["tasktype"] == "todo")
+        {
+            <div>
+                <label for="todo">ToDo</label>
+                <input type="radio" onchange="selectToDo(this)" id="todo" name="TaskType" value="ToDo" checked />
+            </div>
+        }
+    }
     <div>
         <label for="taskname">Task Name:</label>
         <input type="text" id="taskname" name="Title" value="@Model.Title" />
@@ -51,7 +60,7 @@
         </select>
     </div>
 
-    <button>save changes</button>
+    <button type="submit">save changes</button>
     <a href="/tasks">cancel changes</a>
 </form>
 <form method="post" action="/tasks/delete/@Model.Id">
@@ -59,21 +68,15 @@
 </form>
 
 <script>
-    function selectDaily(x) {
-        if (x.checked) {
-            document.getElementById("NewTaskForm").action = "/tasks/newdaily";
-        }
-    }
-    function selectWeekly(x) {
-        if (x.checked) {
-            document.getElementById("NewTaskForm").action = "/tasks/newweekly";
-        }
-    }
-    function selectToDo(x) {
-        if (x.checked) {
-            document.getElementById("NewTaskForm").action = "/tasks/newtodo";
-        }
+    if (document.getElementById("daily")) {
+        document.getElementById("NewTaskForm").action = "/tasks/update/daily/@Model.Id";
     }
 
+    if (document.getElementById("weekly")) {
+        document.getElementById("NewTaskForm").action = "/tasks/update/weekly/@Model.Id";
+    }
 
+    if (document.getElementById("todo")) {
+        document.getElementById("NewTaskForm").action = "/tasks/update/todo/@Model.Id";
+    }  
 </script>

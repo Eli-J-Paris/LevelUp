@@ -122,6 +122,38 @@ namespace LevelUp.Controllers
             return View(task);
         }
 
+
+        [HttpPost]
+        [Route("/tasks/update/daily/{taskId:int}")]
+        public IActionResult UpdateDaily( DailyTask task, int taskId)
+        {
+            task.Id =taskId;
+            _context.DailyTasks.Update(task);
+            _context.SaveChanges();
+            return Redirect("/tasks");
+        }
+
+        [HttpPost]
+        [Route("/tasks/update/weekly/{taskId:int}")]
+        public IActionResult UpdateWeekly(WeeklyTask task, int taskId)
+        {
+            task.Id = taskId;
+            _context.WeeklyTasks.Update(task);
+            _context.SaveChanges();
+            return Redirect("/tasks");
+        }
+
+        [HttpPost]
+        [Route("/tasks/update/todo/{taskId:int}")]
+        public IActionResult UpdateTodo(ToDoTask task, int taskId)
+        {
+            task.Id = taskId;
+            _context.ToDoTasks.Update(task);
+            _context.SaveChanges();
+            return Redirect("/tasks");
+        }
+
+
         [HttpPost]
         [Route("/tasks/delete/{taskId:int}")]
         public IActionResult Delete(int taskId)
