@@ -126,5 +126,54 @@ namespace LevelUp.Controllers
             if (user == null) return Redirect("/users/login");
             return View(user);
         }
+
+        [HttpPost]
+        [Route("/users/checktask")]
+        public IActionResult CheckTask(string? type, int? id)
+        {
+            if(type == "daily")
+            {
+                var task = _context.DailyTasks.Find(id);
+                if (!task.IsCompleted)
+                {
+                    task.IsCompleted = true;
+                }
+                else
+                {
+                    task.IsCompleted = false;
+                }
+                _context.DailyTasks.Update(task);
+                _context.SaveChanges();
+            }
+            else if (type == "weekly")
+            {
+                var task = _context.WeeklyTasks.Find(id);
+                if (!task.IsCompleted)
+                {
+                    task.IsCompleted = true;
+                }
+                else
+                {
+                    task.IsCompleted = false;
+                }
+                _context.WeeklyTasks.Update(task);
+                _context.SaveChanges();
+            }
+            else if (type == "todo")
+            {
+                var task = _context.ToDoTasks.Find(id);
+                if (!task.IsCompleted)
+                {
+                    task.IsCompleted = true;
+                }
+                else
+                {
+                    task.IsCompleted = false;
+                }
+                _context.ToDoTasks.Update(task);
+                _context.SaveChanges();
+            }
+            return Json(new { success = true, message = "task checked" }); ;
+        }
     }
 }

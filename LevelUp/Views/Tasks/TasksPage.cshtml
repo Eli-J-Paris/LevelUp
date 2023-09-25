@@ -7,31 +7,63 @@
 }
 <h1>Tasks</h1>
 
-<div class="task-lists row"
+<div class="task-lists row">
     <div class="daily-tasks col-4 textblock">
         <h1>Daily Tasks</h1>
-        <ul>
+        <ul style="list-style-type:none">
             @foreach(DailyTask task in dailys)
             {
-                    <li><a href ="/tasks/@task.Id" onclick="setcookiedaily()">@task.Title</a></li>
+                
+                <li>
+                    @if (task.IsCompleted)
+                    {
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="checkTask('daily', @task.Id)" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="checkTask('daily', @task.Id)">
+                    }
+                    <label for="@task.Title">@task.Title</label>
+                </li>
+
             }
         </ul>
     </div>
     <div class="weekly-tasks col-4 textblock">
         <h1>weekly Tasks</h1>
-        <ul>
+        <ul style="list-style-type:none">
             @foreach (WeeklyTask task in weeklys)
             {
-                    <li><a href ="/tasks/@task.Id" onclick="setcookieweekly()">@task.Title</a></li>
+                <li>
+                    @if (task.IsCompleted)
+                    {
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="checkTask('weekly', @task.Id)" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="checkTask('weekly', @task.Id)">
+                    }
+                    <label for="@task.Title">@task.Title</label>
+                </li>
             }
         </ul>
     </div>
     <div class="Todo's-tasks col-4 textblock">
         <h1>Todos</h1>
-        <ul>
+        <ul style="list-style-type:none">
             @foreach (ToDoTask task in todos)
             {
-                    <li><a href ="/tasks/@task.Id" onclick="setcookietodo()">@task.Title</a></li>
+                <li>
+                    @if (task.IsCompleted)
+                    {
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="checkTask('todo', @task.Id)"checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="checkTask('todo', @task.Id)">
+                    }
+                    <label for="@task.Title">@task.Title</label>
+                </li>
             }
         </ul>
     </div>
@@ -40,15 +72,13 @@
     <button>Create Custom Task</button>
 </form>
 
- <script>
-     function setcookiedaily(){
-         document.cookie = "tasktype=daily"
-     }
-    function setcookieweekly() {
-        document.cookie = "tasktype=weekly"
+<script>
+    async function checkTask(type, id){
+        const url = '/users/checktask?type=' + type + '&id=' + id;
+        const request = new Request(url,{
+            method: 'POST'
+        })
+        const response = await fetch(request);
+        //const data = await response.json();
     }
-    function setcookietodo() {
-        document.cookie = "tasktype=todo"
-    }
-
 </script>
