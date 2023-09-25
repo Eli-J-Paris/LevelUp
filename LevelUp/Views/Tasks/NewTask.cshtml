@@ -8,34 +8,37 @@
 <div class="col-md-6 offset-lg-3 align-middle">
     <h1 class=" d-flex justify-content-center ">Create Custom Task</h1>
     <form id="NewTaskForm" method="post" action="/tasks/newdaily">
+
         <div class="d-flex justify-content-center">
             <div style="margin-left:25px; margin-right:25px;">
                 <label for="easy">Easy</label>
-                <input type="radio" id="easy" name="Difficulty" value="1" checked />
+                <input input class="form-check-input" type="radio" name="Difficulty" id="easy" value="1" checked />
             </div>
             <div style="margin-left:25px; margin-right:25px;">
                 <label for="medium">Medium</label>
-                <input type="radio" id="medium" name="Difficulty" value="2" />
+                <input class ="form-check-input" type="radio" name="Difficulty" id="medium" value="2" />
 
             </div>
             <div style="margin-left:25px; margin-right:25px;">
                 <label for="hard">Hard</label>
-                <input type="radio" id="hard" name="Difficulty" value="3" />
+                <input class ="form-check-input" type="radio" name="Difficulty" id="hard" />
             </div>
+
+            
         </div>
         <br />
         <div class="d-flex justify-content-center">
             <div style="margin-left:25px; margin-right:25px;">
                 <label for="daily">Daily</label>
-                <input type="radio" onchange="selectDaily(this)" id="daily" name="TaskType" value="Daily" checked />
+                <input class="form-check-input" type="radio" onchange="selectDaily(this)" id="daily" name="TaskType" value="Daily" checked />
             </div>
             <div style="margin-left:25px; margin-right:25px;">
                 <label for="weekly">Weekly</label>
-                <input type="radio" onchange="selectWeekly(this)" id="weekly" name="TaskType" value="Weekly" />
+                <input class="form-check-input" type="radio" onchange="selectWeekly(this)" id="weekly" name="TaskType" value="Weekly" />
             </div>
             <div style="margin-left:25px; margin-right:25px;">
                 <label for="todo">ToDo</label>
-                <input type="radio" onchange="selectToDo(this)" id="todo" name="TaskType" value="ToDo" />
+                <input class="form-check-input" type="radio" onchange="selectToDo(this)" id="todo" name="TaskType" value="ToDo" />
             </div>
 
         </div>
