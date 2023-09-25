@@ -206,7 +206,7 @@ namespace LevelUp.Controllers
 
 
             private RadarChart GetRadarChartData(User user)
-        {
+            {
             return new RadarChart
             {
                 Labels = new List<string>
