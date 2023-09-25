@@ -35,14 +35,14 @@
                 {
                     <div style="margin-left:25px; margin-right:25px;">
                         <label for="weekly">Weekly</label>
-                        <input class="form-check-input" type="radio" onchange="selectWeekly(this)" id="weekly" name="TaskType" value="Weekly" />
+                        <input class="form-check-input" type="radio" onchange="selectWeekly(this)" id="weekly" name="TaskType" value="Weekly" checked />
                     </div>
                 }
                 else if (Context.Request.Cookies["tasktype"] == "todo")
                 {
                     <div style="margin-left:25px; margin-right:25px;">
                         <label for="todo">ToDo</label>
-                        <input class="form-check-input" type="radio" onchange="selectToDo(this)" id="todo" name="TaskType" value="ToDo" />
+                        <input class="form-check-input" type="radio" onchange="selectToDo(this)" id="todo" name="TaskType" value="ToDo" checked />
                     </div>
                 }
             }
