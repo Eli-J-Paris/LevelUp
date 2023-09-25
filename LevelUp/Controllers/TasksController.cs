@@ -3,6 +3,7 @@ using LevelUp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LevelUp.Controllers
 {
@@ -99,6 +100,82 @@ namespace LevelUp.Controllers
             }
 
             return user;
+        }
+
+        [HttpGet]
+        [Route("/tasks/{taskId:int}")]
+        public IActionResult TaskShowPage(int taskId)
+        {
+            ITask task = null;
+            if (Request.Cookies["tasktype"] == "daily")
+            {
+                 task = _context.DailyTasks.Find(taskId);
+            }
+            else if(Request.Cookies["tasktype"] == "weekly")
+            {
+                 task = _context.WeeklyTasks.Find(taskId);
+            }
+            else if(Request.Cookies["tasktype"] == "todo")
+            {
+                task = _context.ToDoTasks.Find(taskId);
+            }
+            return View(task);
+        }
+
+
+        [HttpPost]
+        [Route("/tasks/update/daily/{taskId:int}")]
+        public IActionResult UpdateDaily( DailyTask task, int taskId)
+        {
+            task.Id =taskId;
+            _context.DailyTasks.Update(task);
+            _context.SaveChanges();
+            return Redirect("/tasks");
+        }
+
+        [HttpPost]
+        [Route("/tasks/update/weekly/{taskId:int}")]
+        public IActionResult UpdateWeekly(WeeklyTask task, int taskId)
+        {
+            task.Id = taskId;
+            _context.WeeklyTasks.Update(task);
+            _context.SaveChanges();
+            return Redirect("/tasks");
+        }
+
+        [HttpPost]
+        [Route("/tasks/update/todo/{taskId:int}")]
+        public IActionResult UpdateTodo(ToDoTask task, int taskId)
+        {
+            task.Id = taskId;
+            _context.ToDoTasks.Update(task);
+            _context.SaveChanges();
+            return Redirect("/tasks");
+        }
+
+
+        [HttpPost]
+        [Route("/tasks/delete/{taskId:int}")]
+        public IActionResult Delete(int taskId)
+        {
+            if (Request.Cookies["tasktype"] == "daily")
+            {
+                var dailyTask = _context.DailyTasks.Find(taskId);
+                _context.DailyTasks.Remove(dailyTask);
+            }
+            else if (Request.Cookies["tasktype"] == "weekly")
+            {
+                var weeklyTask = _context.WeeklyTasks.Find(taskId);
+                _context.WeeklyTasks.Remove(weeklyTask);
+
+            }
+            else if (Request.Cookies["tasktype"] == "todo")
+            {
+                var todoTask = _context.ToDoTasks.Find(taskId);
+                _context.ToDoTasks.Remove(todoTask);
+            }
+            _context.SaveChanges();
+            return Redirect("/tasks");
         }
     }
 }

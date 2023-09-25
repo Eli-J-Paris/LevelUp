@@ -1,0 +1,99 @@
+﻿@model ITask
+<head>
+    <link rel="stylesheet" href="/css/MintTheme.css">
+</head>
+<div class="col-md-6 offset-lg-3 align-middle">
+    <h1 class=" d-flex justify-content-center ">@Model.Title Details</h1>
+    <form id="NewTaskForm" method="post" action="/tasks/update/@Model.Id">
+        <div class="d-flex justify-content-center">
+            <div style="margin-left:25px; margin-right:25px;">
+                <label for="easy">Easy</label>
+                <input input class="form-check-input" type="radio" name="Difficulty" id="easy" value="1" checked />
+            </div>
+            <div style="margin-left:25px; margin-right:25px;">
+                <label for="medium">Medium</label>
+                <input class="form-check-input" type="radio" name="Difficulty" id="medium" value="2" />
+
+            </div>
+            <div style="margin-left:25px; margin-right:25px;">
+                <label for="hard">Hard</label>
+                <input class="form-check-input" type="radio" name="Difficulty" id="hard" />
+            </div>
+        </div>
+
+        <br />
+        <div class="d-flex justify-content-center">
+            @{
+                if (Context.Request.Cookies["tasktype"] == "daily")
+                {
+                    <div style="margin-left:25px; margin-right:25px;">
+                        <label for="daily">Daily</label>
+                        <input class="form-check-input" type="radio" onchange="selectDaily(this)" id="daily" name="TaskType" value="Daily" checked />
+                    </div>
+                }
+                else if (Context.Request.Cookies["tasktype"] == "weekly")
+                {
+                    <div style="margin-left:25px; margin-right:25px;">
+                        <label for="weekly">Weekly</label>
+                        <input class="form-check-input" type="radio" onchange="selectWeekly(this)" id="weekly" name="TaskType" value="Weekly" />
+                    </div>
+                }
+                else if (Context.Request.Cookies["tasktype"] == "todo")
+                {
+                    <div style="margin-left:25px; margin-right:25px;">
+                        <label for="todo">ToDo</label>
+                        <input class="form-check-input" type="radio" onchange="selectToDo(this)" id="todo" name="TaskType" value="ToDo" />
+                    </div>
+                }
+            }
+        </div>
+
+        <br />
+        <div class="form-group">
+            <input class="form-control form-control-lg" type="text" id="taskname" name="Title" value="@Model.Title" fdprocessedid="wval2n">
+        </div>
+        <br />
+        <div class="form-group">
+            <textarea class="form-control" id="description" rows="5" maxlength="255" placeholder="Description" name="Description">@Model.Description</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="category" class="form-label mt-4 d-flex justify-content-center">Type of Task</label>
+            <select name="Category" id="category" class="form-select" fdprocessedid="jt9bpd">
+                <option value="@Model.Category">@Model.Category</option>
+                <option value="Hygiene">Hygiene</option>
+                <option value="Wellness">Wellness</option>
+                <option value="Mindfullness">Mindfulness</option>
+                <option value="Productivity">Productivity</option>
+                <option value="HabitBuilding">HabitBuilding</option>
+            </select>
+        </div>
+        <br />
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-success" fdprocessedid="r7n6ym">Save Changes</button>
+            <a style="margin-left:25px;" href="/tasks">cancel changes</a>
+
+        </div>
+    </form>
+    <br />
+    <form method="post" action="/tasks/delete/@Model.Id">
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-danger" fdprocessedid="r7n6ym">Delete Task</button>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    if (document.getElementById("daily")) {
+        document.getElementById("NewTaskForm").action = "/tasks/update/daily/@Model.Id";
+    }
+
+    if (document.getElementById("weekly")) {
+        document.getElementById("NewTaskForm").action = "/tasks/update/weekly/@Model.Id";
+    }
+
+    if (document.getElementById("todo")) {
+        document.getElementById("NewTaskForm").action = "/tasks/update/todo/@Model.Id";
+    }  
+</script>

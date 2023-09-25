@@ -2,26 +2,38 @@
     bool? failedLogin = TempData["FailedLogin"] as bool?;
     Layout = null;
 }
+<head>
+    <link rel="stylesheet" href="/css/site.css" />
+    <link rel="stylesheet" href="/css/MintTheme.css">
+</head>
 
-<h1>Sign up</h1>
-<form method = "post" action ="/users/create">
-    <div class="form-group">
-        <label for="Name">Name:</label>
-        <input type="text" id="Name" name="Name" required/>
+<div class ="col-md-6 offset-lg-3 align-middle" style="margin-top: 50px">
+    <h2 class=" d-flex justify-content-center ">LevelUp Sign up</h2>
+    <form method="post" action="/users/create">
+        <div class="form-group">
+            <label for="Name">Name:</label>
+            <input type="text" class="form-control" id="Name" name="Name" required />
+        </div>
+        <div class="form-group">
+            <label for="Username">Username:</label>
+            <input type="text" class="form-control" id="Username" name="Username" required />
+        </div>
+        <div class="form-group">
+            <label for="Password">Password:</label>
+            <input type="password" class="form-control" id="Password" name="Password" required />
+        </div>
+        <br />
+        <div class="d-grid gap-3">
+            <button type="submit" class="btn btn-primary d-flex justify-content-center align-middle" fdprocessedid="n78ig">Create Account</button>
+        </div>        
+        @if (failedLogin == true)
+        {
+            <p class="text-danger">Account with that Username already exsists</p>
+        }
+    </form>
+    <div class ="d-flex justify-content-center">
+        <p>already have an account?</p>
     </div>
-    <div class="form-group">
-        <label for="Username">Username:</label>
-        <input type="text" id="Username" name="Username" required />
-    </div>
-    <div class="form-group">
-        <label for="Password">Password:</label>
-        <input type="text" id="Password" name="Password" required />
-    </div>
-    <button type ="submit">Sign up</button>
-    @if (failedLogin == true)
-    {
-        <p class="text-danger">Account with that Username already exsists</p>
-    }
-</form>
-<p>already have an account? <a href="/users/login">login</a></p>
-
+    <a href="/users/login" class=" d-flex justify-content-center ">login</a>
+     
+</div>
