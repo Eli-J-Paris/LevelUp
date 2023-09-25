@@ -81,6 +81,7 @@ namespace LevelUp.Controllers
             {
                 Response.Cookies.Append("activeUser", user.Id.ToString());
                 Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
+                Response.Cookies.Append("name", user.Name);
                 return Json(new { success = true, redirectUrl = Url.Action("Profile", "Users") });
             }
 
