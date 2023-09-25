@@ -1,6 +1,6 @@
-﻿
-@model User
-<h1>@Model.Name Profile</h1>
+﻿@using Newtonsoft.Json
+@model UserProfileView
+<h1>@Model.User.Name Profile</h1>
 
 <div class="container">
     <div class="row">
@@ -44,7 +44,8 @@
              <!-- Nested First Row -->
             <div class="row mb-2">
                 <div class="col">
-                    
+                     <!-- Use Canvas to Draw Radar Chart with a height and width of 400 pixels -->
+                    <canvas id="userRadarChart" width="400" height="400"></canvas>
                 </div>
             </div>
              <!-- Nested Second Row -->
@@ -62,23 +63,23 @@
                         <tbody>
                             <tr>
                                 <td>Hygiene</td>
-                                <td>@Model.Hygiene</td>
+                                <td>@Model.User.Hygiene</td>
                             </tr>
                             <tr>
                                 <td>Productivity</td>
-                                <td>@Model.Productivity</td>
+                                <td>@Model.User.Productivity</td>
                             </tr>
                             <tr>
                                 <td>Wellness</td>
-                                <td>@Model.Wellness</td>
+                                <td>@Model.User.Wellness</td>
                             </tr>
                             <tr>
                                 <td>Mindfulness</td>
-                                <td>@Model.Mindfullness</td>
+                                <td>@Model.User.Mindfullness</td>
                             </tr>
                             <tr>
                                 <td>Habit Building</td>
-                                <td>@Model.HabitBuilding</td>
+                                <td>@Model.User.HabitBuilding</td>
                             </tr>
                         </tbody>
                     </table>
@@ -87,3 +88,31 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+     // Get data from the model to JavaScript variables
+    var labels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RadarChart.Labels));
+    var dataValues = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RadarChart.Values));
+
+     // Retrieves the <canvas> element with the ID 'userRadarChart' from the DOM and obtains its 2D drawing context
+    var ctx = document.getElementById('userRadarChart').getContext('2d');
+
+     // Create Radar Chart from Model using Data and Labels from the model
+    var userRadarChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'User Attributes',
+                data: dataValues,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', 
+                borderColor: 'rgba(75, 192, 192, 1)',     
+                borderWidth: 1
+            }]
+        },
+        options: {
+           
+        }
+    });
+</script>
