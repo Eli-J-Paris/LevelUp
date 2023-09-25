@@ -36,9 +36,15 @@ namespace LevelUp.Models
 
         public void Reset()
         {
-            var dayCompleted = DateOnly.FromDateTime((DateTime)TimeCompleted);
+
+            DateOnly dayCompleted = new DateOnly(2000, 1, 1);
             var today = DateOnly.FromDateTime((DateTime)DateTime.UtcNow);
             var yesterday = today.AddDays(-1);
+
+            if (TimeCompleted != null)
+            {
+                dayCompleted = DateOnly.FromDateTime((DateTime)TimeCompleted);
+            }
 
             if(dayCompleted != today)
             {

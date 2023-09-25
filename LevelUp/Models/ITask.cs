@@ -4,6 +4,7 @@
     {
         int Id { get; set; }
         string Title { get; set; }
+        string TaskType { get; set; }
         string Description { get; set; }
         string Category { get; set; }
         int Difficulty { get; set; }
