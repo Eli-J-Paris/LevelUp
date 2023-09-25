@@ -44,6 +44,7 @@ namespace LevelUp.Controllers
             if (validateUser == null)
             {
                 user.Password = user.Encrypt(user.Password);
+                
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
@@ -132,16 +133,21 @@ namespace LevelUp.Controllers
         [Route("/users/checktask")]
         public IActionResult CheckTask(string? type, int? id)
         {
-            if(type == "daily")
+            var user = GetActiveUser(Request);
+            if (user == null) return Redirect("/users/login");
+
+            if (type == "daily")
             {
                 var task = _context.DailyTasks.Find(id);
                 if (!task.IsCompleted)
                 {
                     task.Complete();
+                    user.UpdateAchievement(task.Category);
                 }
                 else
                 {
                     task.UndoComplete();
+                    user.UndoAchievement(task.Category);
                 }
                 _context.DailyTasks.Update(task);
                 _context.SaveChanges();
@@ -152,10 +158,12 @@ namespace LevelUp.Controllers
                 if (!task.IsCompleted)
                 {
                     task.Complete();
+                    user.UpdateAchievement(task.Category);
                 }
                 else
                 {
                     task.UndoComplete();
+                    user.UndoAchievement(task.Category);
                 }
                 _context.WeeklyTasks.Update(task);
                 _context.SaveChanges();
@@ -166,10 +174,12 @@ namespace LevelUp.Controllers
                 if (!task.IsCompleted)
                 {
                     task.Complete();
+                    user.UpdateAchievement(task.Category);
                 }
                 else
                 {
                     task.UndoComplete();
+                    user.UndoAchievement(task.Category);
                 }
                 _context.ToDoTasks.Update(task);
                 _context.SaveChanges();

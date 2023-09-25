@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks.Sources;
 
@@ -21,6 +22,7 @@ namespace LevelUp.Models
         public int Mindfullness { get; set; } = 0;
         public int Productivity { get; set; } = 0;
         public int HabitBuilding { get; set; } = 0;
+        public  AchievementHandler Achievements { get; set; } 
 
         public string Encrypt(string password)
         {
@@ -65,5 +67,58 @@ namespace LevelUp.Models
                 task.Reset();
             }
         }
+
+        public void UpdateAchievement(string category)
+        {
+            category = category.ToLower();
+            if(category == "hygiene")
+            {
+                Achievements.Hygenie5Achievement.IncreaseScore();
+            }
+            else if(category == "wellness")
+            {
+                Achievements.Wellness5Achievement.IncreaseScore();
+            }
+            else if(category == "mindfullness")
+            {
+                Achievements.Mindfulness5Achievement.IncreaseScore();
+            }
+            else if (category == "productivity")
+            {
+                Achievements.Productivity5Achievement.IncreaseScore();
+            }
+            else if (category == "habitbuilding")
+            {
+                Achievements.HabitBuilding5Achievement.IncreaseScore();
+            }
+        }
+       
+        public void UndoAchievement(string category)
+        {
+            category = category.ToLower();
+            if (category == "hygiene")
+            {
+                Achievements.Hygenie5Achievement.DecreaseScore();
+            }
+            else if (category == "wellness")
+            {
+                Achievements.Wellness5Achievement.DecreaseScore();
+            }
+            else if (category == "mindfullness")
+            {
+                Achievements.Mindfulness5Achievement.DecreaseScore();
+            }
+            else if (category == "productivity")
+            {
+                Achievements.Productivity5Achievement.DecreaseScore();
+            }
+            else if (category == "habitbuilding")
+            {
+                Achievements.HabitBuilding5Achievement.DecreaseScore();
+            }
+        }
+
     }
+
 }
+
