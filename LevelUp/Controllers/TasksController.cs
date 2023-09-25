@@ -34,6 +34,7 @@ namespace LevelUp.Controllers
             //gets active user
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
+            // send both to view
             List<User> viewData = new List<User> { user, taskSeed };
             return View(viewData);
         }

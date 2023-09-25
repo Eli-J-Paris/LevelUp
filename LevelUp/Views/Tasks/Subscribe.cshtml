@@ -1,0 +1,62 @@
+﻿@model List<User>
+@{
+    List<DailyTask> dailys = Model[1].DailyTasks as List<DailyTask>;
+    List<WeeklyTask> weeklys = Model[1].WeeklyTasks as List<WeeklyTask>;
+    User user = Model[0] as User;
+}
+
+<h1>Tasks</h1>
+
+<div class="task-lists row">
+    <div class="daily-tasks col-4 textblock">
+        <h1>Daily Tasks</h1>
+        <ul style="list-style-type:none">
+            @foreach (DailyTask task in dailys)
+            {
+
+                <li>
+                    @if (user.DailyTasks.Select(t => t.Title).Contains(task.Title))
+                    {
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="subscribe('daily', @task.Id)" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="subscribe('daily', @task.Id)">
+                    }
+                    <label for="@task.Title"><a href="/tasks/@task.Id">@task.Title</a></label>
+                </li>
+
+            }
+        </ul>
+    </div>
+    <div class="weekly-tasks col-4 textblock">
+        <h1>weekly Tasks</h1>
+        <ul style="list-style-type:none">
+            @foreach (WeeklyTask task in weeklys)
+            {
+                <li>
+                    @if (user.DailyTasks.Select(t => t.Title).Contains(task.Title))
+                    {
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="subscribe('weekly', @task.Id)" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="subscribe('weekly', @task.Id)">
+                    }
+                    <label for="@task.Title"><a href="/tasks/@task.Id">@task.Title</a></label>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<script>
+    async function subscribe(type, id) {
+        const url = '/tasks/subscribe?type=' + type + '&id=' + id;
+        const request = new Request(url, {
+            method: 'POST'
+        })
+        const response = await fetch(request);
+        //const data = await response.json();
+    }
+</script>
