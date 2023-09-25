@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
-
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace LevelUp.Controllers
 {
@@ -82,6 +83,7 @@ namespace LevelUp.Controllers
             {
                 Response.Cookies.Append("activeUser", user.Id.ToString());
                 Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
+                Response.Cookies.Append("name", user.Name);
                 return Json(new { success = true, redirectUrl = Url.Action("Profile", "Users") });
             }
 
@@ -117,8 +119,20 @@ namespace LevelUp.Controllers
         {
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
+
+            var radarChartData = GetRadarChartData(user);
+
+            var viewModel = new UserProfileView
+            {
+                User = user,
+                DailyAffirmation = _GetAffirmation().Result,
+                RadarChart = radarChartData
+            };
             user.Reset();
-            return View(user);
+                        
+            return View(viewModel);
+
+
         }
 
         [Route("/profile/streaks")]
@@ -138,7 +152,7 @@ namespace LevelUp.Controllers
 
             if (type == "daily")
             {
-                var task = _context.DailyTasks.Find(id);
+                var task = _context.DailyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
                 if (!task.IsCompleted)
                 {
                     task.Complete();
@@ -154,7 +168,7 @@ namespace LevelUp.Controllers
             }
             else if (type == "weekly")
             {
-                var task = _context.WeeklyTasks.Find(id);
+                var task = _context.WeeklyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
                 if (!task.IsCompleted)
                 {
                     task.Complete();
@@ -170,7 +184,7 @@ namespace LevelUp.Controllers
             }
             else if (type == "todo")
             {
-                var task = _context.ToDoTasks.Find(id);
+                var task = _context.ToDoTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
                 if (!task.IsCompleted)
                 {
                     task.Complete();
@@ -185,6 +199,44 @@ namespace LevelUp.Controllers
                 _context.SaveChanges();
             }
             return Json(new { success = true, message = "task checked" }); ;
+        }
+
+        private readonly string _ApiCallForAffirmation = "https://www.affirmations.dev";
+
+        private async Task<string> _GetAffirmation()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetStringAsync(_ApiCallForAffirmation);
+                var jsonResponse = JObject.Parse(response);
+                return jsonResponse["affirmation"].ToString();
+            }
+
+            return "Error Getting affirmation";
+        }
+
+
+            private RadarChart GetRadarChartData(User user)
+        {
+            return new RadarChart
+            {
+                Labels = new List<string>
+            {
+                "Hygiene",
+                "Productivity",
+                "Wellness",
+                "Mindfullness",
+                "HabitBuilding"
+            },
+            Values = new List<int>
+            {
+                user.Hygiene,
+                user.Productivity,
+                user.Wellness,
+                user.Mindfullness,
+                user.HabitBuilding
+            }
+            };
         }
     }
 }

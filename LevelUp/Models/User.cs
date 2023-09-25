@@ -1,4 +1,7 @@
+
 ﻿using System.Runtime.InteropServices;
+﻿using LevelUp.DataAccess;
+
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks.Sources;
@@ -68,6 +71,7 @@ namespace LevelUp.Models
             }
         }
 
+
         public void UpdateAchievement(string category)
         {
             category = category.ToLower();
@@ -116,6 +120,21 @@ namespace LevelUp.Models
             {
                 Achievements.HabitBuilding5Achievement.DecreaseScore();
             }
+        }
+
+
+        public void AddDaily(ITask task, LevelUpContext context)
+        {
+            var newTask = new DailyTask {User = this, Title = task.Title, Description = task.Description, TaskType = task.TaskType, Category = task.Category, Difficulty = task.Difficulty, XpReward = task.XpReward, AttributeReward = task.AttributeReward };
+            context.DailyTasks.Add(newTask);
+            context.SaveChanges();
+        }
+
+        public void AddWeekly(ITask task, LevelUpContext context)
+        {
+            var newTask = new WeeklyTask { User = this, Title = task.Title, Description = task.Description, TaskType = task.TaskType, Category = task.Category, Difficulty = task.Difficulty, XpReward = task.XpReward, AttributeReward = task.AttributeReward };
+            context.WeeklyTasks.Add(newTask);
+            context.SaveChanges();
         }
 
     }

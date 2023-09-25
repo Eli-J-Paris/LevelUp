@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LevelUp.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body onload="getName()">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #8Da9B9">
             <div class="container-fluid">
@@ -28,7 +28,10 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Tasks" asp-action="TasksPage">Tasks</a>
                         </li>
-                      <li class="nav-item">
+                        <li class="nav-item">
+                            <a id="profileLink" class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Profile">profile</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Login">Log Out</a>
                         </li>
                     </ul>
@@ -51,5 +54,21 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+<script>
+    function getName(){
+        const profileLink = document.getElementById('profileLink');
+            profileLink.innerText = decodeURI(getCookiesMap(document.cookie)["name"]);
+    }
+    function getCookiesMap(cookiesString) {
+        return cookiesString.split(";")
+            .map(function (cookieString) {
+                return cookieString.trim().split("=");
+            })
+            .reduce(function (acc, curr) {
+                acc[curr[0]] = curr[1];
+                return acc;
+            }, {});
+        }
+</script>
 </body>
 </html>
