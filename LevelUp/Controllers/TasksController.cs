@@ -26,6 +26,17 @@ namespace LevelUp.Controllers
             //check id from cookie
         }
 
+        [Route("/tasks/subscribe")]
+        public IActionResult Subscribe()
+        {
+            //creates user to hold default tasks
+            var taskSeed = TaskSeed();
+            //gets active user
+            var user = GetActiveUser(Request);
+            if (user == null) return Redirect("/users/login");
+            List<User> viewData = new List<User> { user, taskSeed };
+            return View(viewData);
+        }
 
         [Route("/tasks/new")]
         public IActionResult NewTask(string tasktype)
@@ -191,5 +202,24 @@ namespace LevelUp.Controllers
             return isUniqueInDailyTasks && isUniqueInWeeklyTasks && isUniqueInToDoTasks;
         }
 
+        private User TaskSeed()
+        {
+            // creates the daily tasks
+            var defaultDailyTasks = new List<DailyTask>
+            {
+                new DailyTask {Title = "", Description = "", TaskType = "", Category = "", Difficulty = 0, XpReward = 0, AttributeReward = 0},
+            };
+            // creates the weekly tasks
+            var defaultWeeklyTasks = new List<WeeklyTask>
+            {
+                new WeeklyTask {Title = "", Description = "", TaskType = "", Category = "", Difficulty = 0, XpReward = 0, AttributeReward = 0},
+            };
+            // creates user to hold tasks
+            var returnUser = new User { Id = -1, Name = "TaskSeed", Username = "TaskSeed", Password = "TaskSeed" };
+            // puts tasks into user and returns user
+            returnUser.DailyTasks.AddRange(defaultDailyTasks);
+            returnUser.WeeklyTasks.AddRange(defaultWeeklyTasks);
+            return returnUser;
+        }
     }
 }
