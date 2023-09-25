@@ -116,8 +116,19 @@ namespace LevelUp.Controllers
         {
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
+
+            var radarChartData = GetRadarChartData(user);
+
+            var viewModel = new UserProfileView
+            {
+                User = user,
+                RadarChart = radarChartData
+            };
             user.Reset();
-            return View(user);
+                        
+            return View(viewModel);
+
+
         }
 
         [Route("/profile/streaks")]
@@ -175,6 +186,29 @@ namespace LevelUp.Controllers
                 _context.SaveChanges();
             }
             return Json(new { success = true, message = "task checked" }); ;
+        }
+
+        private RadarChart GetRadarChartData(User user)
+        {
+            return new RadarChart
+            {
+                Labels = new List<string>
+            {
+                "Hygiene",
+                "Productivity",
+                "Wellness",
+                "Mindfullness",
+                "HabitBuilding"
+            },
+            Values = new List<int>
+            {
+                user.Hygiene,
+                user.Productivity,
+                user.Wellness,
+                user.Mindfullness,
+                user.HabitBuilding
+            }
+            };
         }
     }
 }
