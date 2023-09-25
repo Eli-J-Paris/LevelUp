@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
-
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace LevelUp.Controllers
 {
@@ -123,6 +124,7 @@ namespace LevelUp.Controllers
             var viewModel = new UserProfileView
             {
                 User = user,
+                DailyAffirmation = _GetAffirmation().Result,
                 RadarChart = radarChartData
             };
             user.Reset();
@@ -189,7 +191,22 @@ namespace LevelUp.Controllers
             return Json(new { success = true, message = "task checked" }); ;
         }
 
-        private RadarChart GetRadarChartData(User user)
+        private readonly string _ApiCallForAffirmation = "https://www.affirmations.dev";
+
+        private async Task<string> _GetAffirmation()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetStringAsync(_ApiCallForAffirmation);
+                var jsonResponse = JObject.Parse(response);
+                return jsonResponse["affirmation"].ToString();
+            }
+
+            return "Error Getting affirmation";
+        }
+
+
+            private RadarChart GetRadarChartData(User user)
         {
             return new RadarChart
             {
