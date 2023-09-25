@@ -34,10 +34,13 @@
 
         public void Reset()
         {
-            var dayCompleted = DateOnly.FromDateTime((DateTime)TimeCompleted);
+            DateOnly dayCompleted = new DateOnly(2000, 1, 1);
             var thisWeek = GetWeek(true);
             var lastWeek = GetWeek(false);
-
+            if (TimeCompleted != null)
+            {
+                dayCompleted = DateOnly.FromDateTime((DateTime)TimeCompleted);
+            }
             if (!thisWeek.Contains(dayCompleted))
             {
                 if (IsCompleted)
