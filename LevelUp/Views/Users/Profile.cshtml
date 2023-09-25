@@ -2,6 +2,17 @@
 @model UserProfileView
 <h1>@Model.User.Name Profile</h1>
 
+@{
+    foreach (var achievement in Model.Achievements.GetType().GetProperties())
+    {
+       <p>@achievement.CustomAttributes.ToString()</p> 
+    }
+}
+    
+    
+        <p>@Model.Achievements.HabitBuilding5Achievement.Score </p>
+    
+
 <div class="container">
     <div class="row">
          <!-- First Main Column -->

@@ -9,10 +9,10 @@ namespace LevelUp.DataAccess
         public DbSet<DailyTask> DailyTasks { get; set; }
         public DbSet<WeeklyTask> WeeklyTasks { get; set; }
         public DbSet<ToDoTask> ToDoTasks { get; set; }
+        public DbSet<AchievementHandler> Achievements { get; set; }
         public LevelUpContext(DbContextOptions<LevelUpContext> options) : base(options)
         {
 
         }
-
     }
 }

@@ -1,4 +1,7 @@
+
+﻿using System.Runtime.InteropServices;
 ﻿using LevelUp.DataAccess;
+
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks.Sources;
@@ -22,6 +25,7 @@ namespace LevelUp.Models
         public int Mindfullness { get; set; } = 0;
         public int Productivity { get; set; } = 0;
         public int HabitBuilding { get; set; } = 0;
+        public AchievementHandler? Achievements { get; set; } = new AchievementHandler();
 
         public string Encrypt(string password)
         {
@@ -67,6 +71,58 @@ namespace LevelUp.Models
             }
         }
 
+
+        public void UpdateAchievement(string category)
+        {
+            category = category.ToLower();
+            if(category == "hygiene")
+            {
+                Achievements.Hygenie5Achievement.IncreaseScore();
+            }
+            else if(category == "wellness")
+            {
+                Achievements.Wellness5Achievement.IncreaseScore();
+            }
+            else if(category == "mindfullness")
+            {
+                Achievements.Mindfulness5Achievement.IncreaseScore();
+            }
+            else if (category == "productivity")
+            {
+                Achievements.Productivity5Achievement.IncreaseScore();
+            }
+            else if (category == "habitbuilding")
+            {
+                Achievements.HabitBuilding5Achievement.IncreaseScore();
+            }
+        }
+       
+        public void UndoAchievement(string category)
+        {
+            category = category.ToLower();
+            if (category == "hygiene")
+            {
+                Achievements.Hygenie5Achievement.DecreaseScore();
+            }
+            else if (category == "wellness")
+            {
+                Achievements.Wellness5Achievement.DecreaseScore();
+            }
+            else if (category == "mindfullness")
+            {
+                Achievements.Mindfulness5Achievement.DecreaseScore();
+            }
+            else if (category == "productivity")
+            {
+                Achievements.Productivity5Achievement.DecreaseScore();
+            }
+            else if (category == "habitbuilding")
+            {
+                Achievements.HabitBuilding5Achievement.DecreaseScore();
+            }
+        }
+
+
         public void AddDaily(ITask task, LevelUpContext context)
         {
             var newTask = new DailyTask {User = this, Title = task.Title, Description = task.Description, TaskType = task.TaskType, Category = task.Category, Difficulty = task.Difficulty, XpReward = task.XpReward, AttributeReward = task.AttributeReward };
@@ -80,5 +136,8 @@ namespace LevelUp.Models
             context.WeeklyTasks.Add(newTask);
             context.SaveChanges();
         }
+
     }
+
 }
+
