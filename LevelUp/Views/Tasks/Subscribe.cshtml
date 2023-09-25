@@ -8,7 +8,7 @@
 <h1>Tasks</h1>
 
 <div class="task-lists row">
-    <div class="daily-tasks col-4 textblock">
+    <div class="daily-tasks col-6 textblock">
         <h1>Daily Tasks</h1>
         <ul style="list-style-type:none">
             @foreach (DailyTask task in dailys)
@@ -17,42 +17,42 @@
                 <li>
                     @if (user.DailyTasks.Select(t => t.Title).Contains(task.Title))
                     {
-                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="subscribe('daily', @task.Id)" checked>
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="subscribe('daily', '@task.Title')" checked>
                     }
                     else
                     {
-                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="subscribe('daily', @task.Id)">
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="subscribe('daily', '@task.Title')">
                     }
-                    <label for="@task.Title"><a href="/tasks/@task.Id">@task.Title</a></label>
+                    <label for="@task.Title">@task.Title</label>
                 </li>
 
             }
         </ul>
     </div>
-    <div class="weekly-tasks col-4 textblock">
+    <div class="weekly-tasks col-6 textblock">
         <h1>weekly Tasks</h1>
         <ul style="list-style-type:none">
             @foreach (WeeklyTask task in weeklys)
             {
                 <li>
-                    @if (user.DailyTasks.Select(t => t.Title).Contains(task.Title))
+                    @if (user.WeeklyTasks.Select(t => t.Title).Contains(task.Title))
                     {
-                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="subscribe('weekly', @task.Id)" checked>
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="subscribe('weekly', '@task.Title')" checked>
                     }
                     else
                     {
-                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="subscribe('weekly', @task.Id)">
+                        <input type="checkbox" id="@task.Title" name="@task.Title" onchange="subscribe('weekly', '@task.Title')">
                     }
-                    <label for="@task.Title"><a href="/tasks/@task.Id">@task.Title</a></label>
+                    <label for="@task.Title">@task.Title</label>
                 </li>
             }
         </ul>
     </div>
 </div>
-
+<a href="/tasks">Back</a>
 <script>
-    async function subscribe(type, id) {
-        const url = '/tasks/subscribe?type=' + type + '&id=' + id;
+    async function subscribe(type, title) {
+        const url = '/tasks/subscribe?type=' + type + '&title=' + title;
         const request = new Request(url, {
             method: 'POST'
         })
