@@ -18,5 +18,16 @@
         //DailyTask only
         public int Streak { get; set; }
 
+        public void Complete()
+        {
+            IsCompleted = true;
+            User.XpGain(XpReward);
+        }
+
+        public void UndoComplete()
+        {
+            IsCompleted = false;
+            User.XpGain(-XpReward);
+        }
     }
 }

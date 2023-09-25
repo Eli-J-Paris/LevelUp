@@ -48,5 +48,10 @@ namespace LevelUp.Models
             }
             return returnDict;
         }
+
+        public void XpGain(int xp)
+        {
+            Xp += xp;
+        }
     }
 }
