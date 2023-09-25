@@ -38,17 +38,26 @@ body {
     justify-content: flex-start;
 }
 
-table {
-    border-collapse: collapse; /* Removes spacing between table cells */
-    width: 50%; /* Adjust as needed */
-}
-
-th, td {
-    border: 1px solid black; /* Puts a border around each cell */
-    padding: 10px; /* Adds space inside each cell */
-    text-align: center; /* Centers the content in each cell */
-}
-
-.textblock{
+.textblock {
+    border: 1px solid #000; /* Black border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 10px; /* Space between the border and text */
     background-color: #E8DCB9;
+    display: inline-block; /* Allows the border to wrap */
 }
+
+.table-rounded {
+    border-collapse: separate; /* Needed to allow spacing between cells */
+    border-spacing: 0; /* No spacing between cells */
+    overflow: hidden; /* Ensures inner cells don't spill out of rounded corners */
+    border-radius: 10px; /* Rounded corners */
+    width: 100%; /* Optional: set table width */
+}
+
+    .table-rounded th,
+    .table-rounded td {
+        background-color: #fff; /* White background for cells */
+        border: 1px solid #ddd; /* Light border around cells */
+        padding: 10px; /* Adds space inside each cell */
+        text-align: center; /* Centers the content in each cell */
+    }
