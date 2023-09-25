@@ -13,5 +13,8 @@
         User User { get; set; }
         DateTime TimeCreated { get; set; }
         DateTime? TimeCompleted { get; set; }
+
+        void Complete();
+        void UndoComplete();
     }
 }

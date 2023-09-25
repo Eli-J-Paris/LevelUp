@@ -116,6 +116,7 @@ namespace LevelUp.Controllers
         {
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
+            user.Reset();
             return View(user);
         }
 
@@ -136,11 +137,11 @@ namespace LevelUp.Controllers
                 var task = _context.DailyTasks.Find(id);
                 if (!task.IsCompleted)
                 {
-                    task.IsCompleted = true;
+                    task.Complete();
                 }
                 else
                 {
-                    task.IsCompleted = false;
+                    task.UndoComplete();
                 }
                 _context.DailyTasks.Update(task);
                 _context.SaveChanges();
@@ -150,11 +151,11 @@ namespace LevelUp.Controllers
                 var task = _context.WeeklyTasks.Find(id);
                 if (!task.IsCompleted)
                 {
-                    task.IsCompleted = true;
+                    task.Complete();
                 }
                 else
                 {
-                    task.IsCompleted = false;
+                    task.UndoComplete();
                 }
                 _context.WeeklyTasks.Update(task);
                 _context.SaveChanges();
@@ -164,11 +165,11 @@ namespace LevelUp.Controllers
                 var task = _context.ToDoTasks.Find(id);
                 if (!task.IsCompleted)
                 {
-                    task.IsCompleted = true;
+                    task.Complete();
                 }
                 else
                 {
-                    task.IsCompleted = false;
+                    task.UndoComplete();
                 }
                 _context.ToDoTasks.Update(task);
                 _context.SaveChanges();

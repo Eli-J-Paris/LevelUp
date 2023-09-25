@@ -21,6 +21,7 @@ namespace LevelUp.Controllers
             // checks cookies to make sure a user is logged in and gets user
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
+            user.Reset();
             return View(user);
             //check id from cookie
         }

@@ -48,5 +48,22 @@ namespace LevelUp.Models
             }
             return returnDict;
         }
+
+        public void XpGain(int xp)
+        {
+            Xp += xp;
+        }
+
+        public void Reset()
+        {
+            foreach(DailyTask task in DailyTasks)
+            {
+                task.Reset();
+            }
+            foreach (WeeklyTask task in WeeklyTasks)
+            {
+                task.Reset();
+            }
+        }
     }
 }
