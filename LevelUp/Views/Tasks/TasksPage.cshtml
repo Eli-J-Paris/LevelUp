@@ -23,7 +23,7 @@
                     {
                         <input type="checkbox" id="@task.Title" name="@task.Title" onchange="checkTask('daily', @task.Id)">
                     }
-                    <label for="@task.Title">@task.Title</label>
+                    <label for="@task.Title"><a href="/tasks/@task.Id">@task.Title</a></label>
                 </li>
 
             }
@@ -43,7 +43,7 @@
                     {
                         <input type="checkbox" id="@task.Title" name="@task.Title" onchange="checkTask('weekly', @task.Id)">
                     }
-                    <label for="@task.Title">@task.Title</label>
+                    <label for="@task.Title"><a href="/tasks/@task.Id">@task.Title</a></label>
                 </li>
             }
         </ul>
@@ -62,7 +62,7 @@
                     {
                         <input type="checkbox" id="@task.Title" name="@task.Title" onchange="checkTask('todo', @task.Id)">
                     }
-                    <label for="@task.Title">@task.Title</label>
+                    <label for="@task.Title"><a href="/tasks/@task.Id">@task.Title</a></label>
                 </li>
             }
         </ul>
