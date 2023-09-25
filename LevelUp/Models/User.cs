@@ -22,7 +22,7 @@ namespace LevelUp.Models
         public int Mindfullness { get; set; } = 0;
         public int Productivity { get; set; } = 0;
         public int HabitBuilding { get; set; } = 0;
-        public  AchievementHandler Achievements { get; set; } 
+        public AchievementHandler? Achievements { get; set; } = new AchievementHandler();
 
         public string Encrypt(string password)
         {

@@ -22,6 +22,100 @@ namespace LevelUp.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("LevelUp.Models.Achievement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_completed");
+
+                    b.Property<int>("MaxScore")
+                        .HasColumnType("integer")
+                        .HasColumnName("max_score");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("integer")
+                        .HasColumnName("score");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.Property<int>("XpReward")
+                        .HasColumnType("integer")
+                        .HasColumnName("xp_reward");
+
+                    b.HasKey("Id")
+                        .HasName("pk_achievement");
+
+                    b.ToTable("achievement", (string)null);
+                });
+
+            modelBuilder.Entity("LevelUp.Models.AchievementHandler", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("HabitBuilding5AchievementId")
+                        .HasColumnType("integer")
+                        .HasColumnName("habit_building5achievement_id");
+
+                    b.Property<int>("Hygenie5AchievementId")
+                        .HasColumnType("integer")
+                        .HasColumnName("hygenie5achievement_id");
+
+                    b.Property<int>("Mindfulness5AchievementId")
+                        .HasColumnType("integer")
+                        .HasColumnName("mindfulness5achievement_id");
+
+                    b.Property<int>("Productivity5AchievementId")
+                        .HasColumnType("integer")
+                        .HasColumnName("productivity5achievement_id");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.Property<int>("Wellness5AchievementId")
+                        .HasColumnType("integer")
+                        .HasColumnName("wellness5achievement_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_achievements");
+
+                    b.HasIndex("HabitBuilding5AchievementId")
+                        .HasDatabaseName("ix_achievements_habit_building5achievement_id");
+
+                    b.HasIndex("Hygenie5AchievementId")
+                        .HasDatabaseName("ix_achievements_hygenie5achievement_id");
+
+                    b.HasIndex("Mindfulness5AchievementId")
+                        .HasDatabaseName("ix_achievements_mindfulness5achievement_id");
+
+                    b.HasIndex("Productivity5AchievementId")
+                        .HasDatabaseName("ix_achievements_productivity5achievement_id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_achievements_user_id");
+
+                    b.HasIndex("Wellness5AchievementId")
+                        .HasDatabaseName("ix_achievements_wellness5achievement_id");
+
+                    b.ToTable("achievements", (string)null);
+                });
+
             modelBuilder.Entity("LevelUp.Models.DailyTask", b =>
                 {
                     b.Property<int>("Id")
@@ -286,6 +380,61 @@ namespace LevelUp.Migrations
                     b.ToTable("weekly_tasks", (string)null);
                 });
 
+            modelBuilder.Entity("LevelUp.Models.AchievementHandler", b =>
+                {
+                    b.HasOne("LevelUp.Models.Achievement", "HabitBuilding5Achievement")
+                        .WithMany()
+                        .HasForeignKey("HabitBuilding5AchievementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_achievements_achievement_habit_building5achievement_id");
+
+                    b.HasOne("LevelUp.Models.Achievement", "Hygenie5Achievement")
+                        .WithMany()
+                        .HasForeignKey("Hygenie5AchievementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_achievements_achievement_hygenie5achievement_id");
+
+                    b.HasOne("LevelUp.Models.Achievement", "Mindfulness5Achievement")
+                        .WithMany()
+                        .HasForeignKey("Mindfulness5AchievementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_achievements_achievement_mindfulness5achievement_id");
+
+                    b.HasOne("LevelUp.Models.Achievement", "Productivity5Achievement")
+                        .WithMany()
+                        .HasForeignKey("Productivity5AchievementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_achievements_achievement_productivity5achievement_id");
+
+                    b.HasOne("LevelUp.Models.User", null)
+                        .WithOne("Achievements")
+                        .HasForeignKey("LevelUp.Models.AchievementHandler", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_achievements_users_user_id");
+
+                    b.HasOne("LevelUp.Models.Achievement", "Wellness5Achievement")
+                        .WithMany()
+                        .HasForeignKey("Wellness5AchievementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_achievements_achievement_wellness5achievement_id");
+
+                    b.Navigation("HabitBuilding5Achievement");
+
+                    b.Navigation("Hygenie5Achievement");
+
+                    b.Navigation("Mindfulness5Achievement");
+
+                    b.Navigation("Productivity5Achievement");
+
+                    b.Navigation("Wellness5Achievement");
+                });
+
             modelBuilder.Entity("LevelUp.Models.DailyTask", b =>
                 {
                     b.HasOne("LevelUp.Models.User", "User")
@@ -324,6 +473,8 @@ namespace LevelUp.Migrations
 
             modelBuilder.Entity("LevelUp.Models.User", b =>
                 {
+                    b.Navigation("Achievements");
+
                     b.Navigation("DailyTasks");
 
                     b.Navigation("ToDoTasks");

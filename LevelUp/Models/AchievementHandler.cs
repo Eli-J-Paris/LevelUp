@@ -2,12 +2,13 @@
 {
     public class AchievementHandler
     {
+        public int Id { get; set; }
         public Achievement Hygenie5Achievement { get; set; } 
         public Achievement Wellness5Achievement { get; set; } 
         public Achievement Mindfulness5Achievement { get; set; }
         public Achievement Productivity5Achievement { get; set; }
         public Achievement HabitBuilding5Achievement { get; set; }
-
+        public int UserId { get; set; }
 
         public AchievementHandler()
         {       
