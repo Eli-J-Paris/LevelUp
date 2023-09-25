@@ -116,6 +116,7 @@ namespace LevelUp.Controllers
         {
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
+            user.Reset();
             return View(user);
         }
 

@@ -53,5 +53,17 @@ namespace LevelUp.Models
         {
             Xp += xp;
         }
+
+        public void Reset()
+        {
+            foreach(DailyTask task in DailyTasks)
+            {
+                task.Reset();
+            }
+            foreach (WeeklyTask task in WeeklyTasks)
+            {
+                task.Reset();
+            }
+        }
     }
 }

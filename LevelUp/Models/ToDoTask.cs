@@ -19,12 +19,14 @@
         public void Complete()
         {
             IsCompleted = true;
+            TimeCompleted = DateTime.UtcNow;
             User.XpGain(XpReward);
         }
 
         public void UndoComplete()
         {
             IsCompleted = false;
+            TimeCompleted = null;
             User.XpGain(-XpReward);
         }
     }

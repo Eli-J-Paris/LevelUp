@@ -1,4 +1,5 @@
-﻿namespace LevelUp.Models
+﻿
+namespace LevelUp.Models
 {
     public class DailyTask : ITask
     {
@@ -22,13 +23,39 @@
         public void Complete()
         {
             IsCompleted = true;
+            TimeCompleted = DateTime.UtcNow;
             User.XpGain(XpReward);
         }
 
         public void UndoComplete()
         {
             IsCompleted = false;
+            TimeCompleted = null;
             User.XpGain(-XpReward);
+        }
+
+        public void Reset()
+        {
+            var dayCompleted = DateOnly.FromDateTime((DateTime)TimeCompleted);
+            var today = DateOnly.FromDateTime((DateTime)DateTime.UtcNow);
+            var yesterday = today.AddDays(-1);
+
+            if(dayCompleted != today)
+            {
+                if (IsCompleted)
+                {
+                    IsCompleted = false;
+                    Streak++;
+                }
+                else
+                {
+                    Streak = 0;
+                }
+                if(dayCompleted != yesterday)
+                {
+                    Streak = 0;
+                }
+            }
         }
     }
 }
