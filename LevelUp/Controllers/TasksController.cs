@@ -26,6 +26,78 @@ namespace LevelUp.Controllers
             //check id from cookie
         }
 
+        [Route("/tasks/subscribe")]
+        public IActionResult Subscribe()
+        {
+            //creates user to hold default tasks
+            var taskSeed = TaskSeed();
+            //gets active user
+            var user = GetActiveUser(Request);
+            if (user == null) return Redirect("/users/login");
+            // send both to view
+            List<User> viewData = new List<User> { user, taskSeed };
+            return View(viewData);
+        }
+
+        [HttpPost]
+        [Route("/tasks/subscribe")]
+        public IActionResult Subscribe(string? type, string? title)
+        {
+            // make sure data comes in correctly
+            if (type == null || title == null) return BadRequest();
+            // get user
+            var user = GetActiveUser(Request);
+            if (user == null) return Redirect("/users/login");
+            // get tasks
+            var taskSeed = TaskSeed();
+            ITask task = null;
+            // find task
+            if (type == "daily")
+            {
+                task = taskSeed.DailyTasks.FirstOrDefault(t => t.Title == title);
+            }
+            else if (type == "weekly")
+            {
+                task = taskSeed.WeeklyTasks.FirstOrDefault(t => t.Title == title);
+            }
+            else return BadRequest(); // ends action due to bad inputs
+            if (task == null) return BadRequest(); // ends action due to bad inputs
+
+            // check to see if the task is alredy subscribed to and needs to be removed
+            if (type == "daily")
+            {
+                if (user.DailyTasks.Select(t => t.Title).Contains(task.Title))
+                {
+                    // removes task
+                    user.DailyTasks.Remove(user.DailyTasks.FirstOrDefault(t => t.Title == task.Title));
+                    _context.Users.Update(user);
+                }
+                else
+                {
+                    // adds task
+                    user.AddDaily(task, _context);
+                    _context.Users.Update(user);
+
+                }
+            }
+            else if (type == "weekly")
+            {
+                if (user.WeeklyTasks.Select(t => t.Title).Contains(task.Title))
+                {
+                    // removes task
+                    user.WeeklyTasks.Remove(user.WeeklyTasks.FirstOrDefault(t => t.Title == task.Title));
+                    _context.Users.Update(user);
+                }
+                else
+                {
+                    // adds task
+                    user.AddWeekly(task, _context);
+                    _context.Users.Update(user);
+                }
+            }
+            _context.SaveChanges();
+            return Ok();
+        }
 
         [Route("/tasks/new")]
         public IActionResult NewTask(string tasktype)
@@ -191,5 +263,30 @@ namespace LevelUp.Controllers
             return isUniqueInDailyTasks && isUniqueInWeeklyTasks && isUniqueInToDoTasks;
         }
 
+        private User TaskSeed()
+        {
+            // creates the daily tasks
+            var defaultDailyTasks = new List<DailyTask>
+            {
+                //new DailyTask {Title = "", Description = "", TaskType = "", Category = "", Difficulty = 0, XpReward = 0, AttributeReward = 0},
+
+                new DailyTask {Title = "Take Supplements", Description = "take your daily vitamins and suppliments", TaskType = "daily", Category = "Wellness", Difficulty = 1, XpReward = 1, AttributeReward = 1},
+                new DailyTask {Title = "Make Bed", Description = "you made your bed this morning!", TaskType = "daily", Category = "HabitBuilding", Difficulty = 2, XpReward = 2, AttributeReward = 1},
+                
+            };
+            // creates the weekly tasks
+            var defaultWeeklyTasks = new List<WeeklyTask>
+            {
+                //new WeeklyTask {Title = "", Description = "", TaskType = "", Category = "", Difficulty = 0, XpReward = 0, AttributeReward = 0},
+                
+                new WeeklyTask {Title = "Laundry", Description = "do your laundry for the week", TaskType = "weekly", Category = "HabitBuilding", Difficulty = 1, XpReward = 5, AttributeReward = 2},
+            };
+            // creates user to hold tasks
+            var returnUser = new User { Id = -1, Name = "TaskSeed", Username = "TaskSeed", Password = "TaskSeed" };
+            // puts tasks into user and returns user
+            returnUser.DailyTasks.AddRange(defaultDailyTasks);
+            returnUser.WeeklyTasks.AddRange(defaultWeeklyTasks);
+            return returnUser;
+        }
     }
 }

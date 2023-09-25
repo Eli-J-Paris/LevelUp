@@ -82,6 +82,7 @@ namespace LevelUp.Controllers
             {
                 Response.Cookies.Append("activeUser", user.Id.ToString());
                 Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
+                Response.Cookies.Append("name", user.Name);
                 return Json(new { success = true, redirectUrl = Url.Action("Profile", "Users") });
             }
 
@@ -147,7 +148,7 @@ namespace LevelUp.Controllers
         {
             if(type == "daily")
             {
-                var task = _context.DailyTasks.Find(id);
+                var task = _context.DailyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
                 if (!task.IsCompleted)
                 {
                     task.Complete();
@@ -161,7 +162,7 @@ namespace LevelUp.Controllers
             }
             else if (type == "weekly")
             {
-                var task = _context.WeeklyTasks.Find(id);
+                var task = _context.WeeklyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
                 if (!task.IsCompleted)
                 {
                     task.Complete();
@@ -175,7 +176,7 @@ namespace LevelUp.Controllers
             }
             else if (type == "todo")
             {
-                var task = _context.ToDoTasks.Find(id);
+                var task = _context.ToDoTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
                 if (!task.IsCompleted)
                 {
                     task.Complete();
