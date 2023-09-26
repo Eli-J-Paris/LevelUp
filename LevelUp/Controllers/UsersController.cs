@@ -160,6 +160,7 @@ namespace LevelUp.Controllers
                 var task = _context.DailyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
                 if (!task.IsCompleted)
                 {
+
                     task.Complete();
                     user.UpdateAchievement(task.Category, _context);
                 }
@@ -177,11 +178,13 @@ namespace LevelUp.Controllers
                 if (!task.IsCompleted)
                 {
                     task.Complete();
+                    IncrementAtribute(task.Category, user);
                     user.UpdateAchievement(task.Category, _context);
                 }
                 else
                 {
                     task.UndoComplete();
+                    DeincrementAtribute(task.Category, user);
                     user.UndoAchievement(task.Category, _context);
                 }
                 _context.WeeklyTasks.Update(task);
@@ -204,6 +207,56 @@ namespace LevelUp.Controllers
                 _context.SaveChanges();
             }
             return Json(new { success = true, message = "task checked" }); ;
+        }
+
+        private void IncrementAtribute(string category, User user)
+        {
+            category = category.ToLower();
+            if (category == "hygiene")
+            {
+                user.Hygiene += 1;
+            }
+            else if (category == "wellness")
+            {
+                user.Wellness += 1;
+            }
+            else if (category == "mindfullness")
+            {
+                user.Mindfullness += 1;
+            }
+            else if (category == "productivity")
+            {
+               user.Productivity += 1;
+            }
+            else if (category == "habitbuilding")
+            {
+               user.HabitBuilding += 1;
+            }
+        }
+
+        private void DeincrementAtribute(string category, User user)
+        {
+            category = category.ToLower();
+            if (category == "hygiene")
+            {
+                user.Hygiene -= 1;
+            }
+            else if (category == "wellness")
+            {
+                user.Wellness -= 1;
+            }
+            else if (category == "mindfullness")
+            {
+                user.Mindfullness -= 1;
+            }
+            else if (category == "productivity")
+            {
+                user.Productivity -= 1;
+            }
+            else if (category == "habitbuilding")
+            {
+                user.HabitBuilding -= 1;
+            }
         }
 
         private readonly string _ApiCallForAffirmation = "https://www.affirmations.dev";
