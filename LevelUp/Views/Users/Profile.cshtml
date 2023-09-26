@@ -8,6 +8,7 @@
 
 <h1>@Model.User.Name Profile</h1>
 
+
 <div class="container">
     <div class="row">
          <!-- First Main Column -->
@@ -15,7 +16,7 @@
              <!-- Nested First Row -->
             <div class="row mb-2">
                 <div class="col">
-                    <img src="https://placehold.co/200x200/E8DCB9/FFF/?text=Profile%20+%20Pic">
+                    <img src="@Model.User.PfpUrl">
                     <br>
                     <br>
                     <p>Lexel: @Model.User.Level</p>

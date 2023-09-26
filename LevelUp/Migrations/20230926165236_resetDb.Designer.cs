@@ -3,6 +3,7 @@ using System;
 using LevelUp.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LevelUp.Migrations
 {
     [DbContext(typeof(LevelUpContext))]
-    partial class LevelUpContextModelSnapshot : ModelSnapshot
+    [Migration("20230926165236_resetDb")]
+    partial class resetDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,9 +56,9 @@ namespace LevelUp.Migrations
                         .HasColumnName("xp_reward");
 
                     b.HasKey("Id")
-                        .HasName("pk_achievements");
+                        .HasName("pk_achievement");
 
-                    b.ToTable("achievements", (string)null);
+                    b.ToTable("achievement", (string)null);
                 });
 
             modelBuilder.Entity("LevelUp.Models.AchievementHandler", b =>
@@ -92,28 +95,28 @@ namespace LevelUp.Migrations
                         .HasColumnName("wellness5achievement_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_all_achievements");
+                        .HasName("pk_achievements");
 
                     b.HasIndex("HabitBuilding5AchievementId")
-                        .HasDatabaseName("ix_all_achievements_habit_building5achievement_id");
+                        .HasDatabaseName("ix_achievements_habit_building5achievement_id");
 
                     b.HasIndex("Hygenie5AchievementId")
-                        .HasDatabaseName("ix_all_achievements_hygenie5achievement_id");
+                        .HasDatabaseName("ix_achievements_hygenie5achievement_id");
 
                     b.HasIndex("Mindfulness5AchievementId")
-                        .HasDatabaseName("ix_all_achievements_mindfulness5achievement_id");
+                        .HasDatabaseName("ix_achievements_mindfulness5achievement_id");
 
                     b.HasIndex("Productivity5AchievementId")
-                        .HasDatabaseName("ix_all_achievements_productivity5achievement_id");
+                        .HasDatabaseName("ix_achievements_productivity5achievement_id");
 
                     b.HasIndex("UserId")
                         .IsUnique()
-                        .HasDatabaseName("ix_all_achievements_user_id");
+                        .HasDatabaseName("ix_achievements_user_id");
 
                     b.HasIndex("Wellness5AchievementId")
-                        .HasDatabaseName("ix_all_achievements_wellness5achievement_id");
+                        .HasDatabaseName("ix_achievements_wellness5achievement_id");
 
-                    b.ToTable("all_achievements", (string)null);
+                    b.ToTable("achievements", (string)null);
                 });
 
             modelBuilder.Entity("LevelUp.Models.DailyTask", b =>
@@ -392,42 +395,42 @@ namespace LevelUp.Migrations
                         .HasForeignKey("HabitBuilding5AchievementId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_all_achievements_achievements_habit_building5achievement_id");
+                        .HasConstraintName("fk_achievements_achievement_habit_building5achievement_id");
 
                     b.HasOne("LevelUp.Models.Achievement", "Hygenie5Achievement")
                         .WithMany()
                         .HasForeignKey("Hygenie5AchievementId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_all_achievements_achievements_hygenie5achievement_id");
+                        .HasConstraintName("fk_achievements_achievement_hygenie5achievement_id");
 
                     b.HasOne("LevelUp.Models.Achievement", "Mindfulness5Achievement")
                         .WithMany()
                         .HasForeignKey("Mindfulness5AchievementId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_all_achievements_achievements_mindfulness5achievement_id");
+                        .HasConstraintName("fk_achievements_achievement_mindfulness5achievement_id");
 
                     b.HasOne("LevelUp.Models.Achievement", "Productivity5Achievement")
                         .WithMany()
                         .HasForeignKey("Productivity5AchievementId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_all_achievements_achievements_productivity5achievement_id");
+                        .HasConstraintName("fk_achievements_achievement_productivity5achievement_id");
 
                     b.HasOne("LevelUp.Models.User", null)
                         .WithOne("Achievements")
                         .HasForeignKey("LevelUp.Models.AchievementHandler", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_all_achievements_users_user_id");
+                        .HasConstraintName("fk_achievements_users_user_id");
 
                     b.HasOne("LevelUp.Models.Achievement", "Wellness5Achievement")
                         .WithMany()
                         .HasForeignKey("Wellness5AchievementId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_all_achievements_achievements_wellness5achievement_id");
+                        .HasConstraintName("fk_achievements_achievement_wellness5achievement_id");
 
                     b.Navigation("HabitBuilding5Achievement");
 

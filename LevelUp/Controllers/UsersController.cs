@@ -7,6 +7,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using OpenAI_API.Images;
+using OpenAI_API;
+
 using System.Collections;
 namespace LevelUp.Controllers
 {
@@ -127,7 +130,9 @@ namespace LevelUp.Controllers
             if (user == null) return Redirect("/users/login");
 
             var radarChartData = GetRadarChartData(user);
-
+             user.PfpUrl = user.GetAIGeneratedAvatar().Result;
+            _context.Users.Update(user);
+            _context.SaveChanges();
             var viewModel = new UserProfileView
             {
                 User = user,
@@ -136,7 +141,9 @@ namespace LevelUp.Controllers
             };
 
             user.Reset();
-                        
+
+
+
             return View(viewModel);
         }
 
@@ -221,8 +228,8 @@ namespace LevelUp.Controllers
         }
 
 
-            private RadarChart GetRadarChartData(User user)
-            {
+        private RadarChart GetRadarChartData(User user)
+        {
             return new RadarChart
             {
                 Labels = new List<string>
@@ -243,5 +250,7 @@ namespace LevelUp.Controllers
             }
             };
         }
+
+        
     }
 }
