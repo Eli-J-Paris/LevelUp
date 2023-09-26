@@ -1,7 +1,13 @@
-﻿@using Newtonsoft.Json
+@using Newtonsoft.Json
 @model UserProfileView
+
+@{
+    double xpPercent = Math.Round(Convert.ToDouble(Model.User.Xp) / Convert.ToDouble(Model.User.NeededXp()), 2);
+    string xpPercentString = (xpPercent * 100).ToString() + "%";
+}
+
 <h1>@Model.User.Name Profile</h1>
-    
+
 <div class="container">
     <div class="row">
          <!-- First Main Column -->
@@ -12,6 +18,10 @@
                     <img src="https://placehold.co/200x200/E8DCB9/FFF/?text=Profile%20+%20Pic">
                     <br>
                     <br>
+                    <p>Lexel: @Model.User.Level</p>
+                    <div class="progress" style="width: 57.5%">
+                        <div class="progress-bar" role="progressbar" style="width: @xpPercentString" aria-valuenow="@Model.User.Xp" aria-valuemin="0" aria-valuemax="@Model.User.NeededXp()">@Model.User.Xp / @Model.User.NeededXp()</div>
+                    </div>
                     <img src="https://placehold.co/200x50/E8DCB9/FFF/?text=Level%20+%20Bar">
                 </div>
             </div>
@@ -21,6 +31,50 @@
                     <br>
                     <br>
                     <img src="https://placehold.co/300x400/E8DCB9/FFF/?text=Achievements%20">
+                    @{
+                        if(Model.User.Achievements.Hygenie5Achievement.Score != 5)
+                        {
+                            <p> Complete five Hygenie Tasks @Model.User.Achievements.Hygenie5Achievement.Score/5</p>
+                        }
+                        else
+                        {
+                            <p>Complete five hygenie tasks: <span class="text-success">COMPLETED</span></p>
+                        }
+
+                        if (Model.User.Achievements.Productivity5Achievement.Score != 5)
+                        {
+                            <p> Complete five productivity Tasks @Model.User.Achievements.Productivity5Achievement.Score/5</p>
+                        }
+                        else
+                        {
+                            <p>Complete five productivity tasks: <span class="text-success">COMPLETED</span></p>
+                        }
+
+                        if (Model.User.Achievements.Wellness5Achievement.Score != 5)
+                        {
+                            <p> Complete five wellness Tasks @Model.User.Achievements.Wellness5Achievement.Score/5</p>
+                        }
+                        else
+                        {
+                            <p>Complete five wellness tasks: <span class="text-success">COMPLETED</span></p>
+                        }
+                        if (Model.User.Achievements.Mindfulness5Achievement.Score != 5)
+                        {
+                            <p> Complete five mindfulness Tasks @Model.User.Achievements.Mindfulness5Achievement.Score/5</p>
+                        }
+                        else
+                        {
+                            <p>Complete five mindfulness tasks: <span class="text-success">COMPLETED</span></p>
+                        }
+                        if (Model.User.Achievements.HabitBuilding5Achievement.Score != 5)
+                        {
+                            <p> Complete five habit building Tasks @Model.User.Achievements.HabitBuilding5Achievement.Score/5</p>
+                        }
+                        else
+                        {
+                            <p>Complete five habit building tasks: <span class="text-success">COMPLETED</span></p>
+                        }
+                    }
                 </div>
             </div>
         </div>
