@@ -144,7 +144,7 @@ namespace LevelUp.Controllers
                 RadarChart = radarChartData
             };
 
-            user.Reset(_configuration["AppSettings:LEVELUP_APICONNECTIONKEY"]);
+            user.Reset(_context, _configuration["LEVELUP_APICONNECTIONKEY"]);
 
             return View(viewModel);
         }

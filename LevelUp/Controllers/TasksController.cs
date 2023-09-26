@@ -23,7 +23,7 @@ namespace LevelUp.Controllers
             // checks cookies to make sure a user is logged in and gets user
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
-            user.Reset(_configuration["AppSettings:LEVELUP_APICONNECTIONKEY"]);
+            user.Reset(_context, _configuration["LEVELUP_APICONNECTIONKEY"]);
             return View(user);
             //check id from cookie
         }
