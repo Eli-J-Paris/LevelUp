@@ -134,11 +134,10 @@ namespace LevelUp.Controllers
                 DailyAffirmation = _GetAffirmation().Result,
                 RadarChart = radarChartData
             };
+
             user.Reset();
                         
             return View(viewModel);
-
-
         }
 
         [Route("/profile/streaks")]

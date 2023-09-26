@@ -1,10 +1,11 @@
-﻿@using Newtonsoft.Json
+@using Newtonsoft.Json
 @model UserProfileView
 
 @{
     double xpPercent = Math.Round(Convert.ToDouble(Model.User.Xp) / Convert.ToDouble(Model.User.NeededXp()), 2);
     string xpPercentString = (xpPercent * 100).ToString() + "%";
 }
+
 <h1>@Model.User.Name Profile</h1>
 
 <div class="container">
