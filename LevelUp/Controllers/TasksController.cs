@@ -10,9 +10,11 @@ namespace LevelUp.Controllers
     public class TasksController : Controller
     {
         private readonly LevelUpContext _context;
-        public TasksController(LevelUpContext context)
+        private readonly IConfiguration _configuration;
+        public TasksController(LevelUpContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         [Route("/tasks")]
@@ -21,7 +23,7 @@ namespace LevelUp.Controllers
             // checks cookies to make sure a user is logged in and gets user
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
-            user.Reset();
+            user.Reset(_configuration["AppSettings:LEVELUP_APICONNECTIONKEY"]);
             return View(user);
             //check id from cookie
         }
