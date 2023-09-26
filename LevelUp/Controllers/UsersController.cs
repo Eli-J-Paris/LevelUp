@@ -29,7 +29,6 @@ namespace LevelUp.Controllers
 
         public IActionResult Signup()
         {
-           
             return View();
         }
 
@@ -47,6 +46,8 @@ namespace LevelUp.Controllers
             }
             if (validateUser == null)
             {
+                Response.Cookies.Append("name", user.Name);
+                user.PfpUrl = user.GetAIGeneratedAvatar().Result;
                 user.Password = user.Encrypt(user.Password);
                 
                 _context.Users.Add(user);
@@ -60,7 +61,7 @@ namespace LevelUp.Controllers
             else
             {
                 TempData["FailedLogin"] = true;
-                
+       
                 return Redirect("/users/signup");
             }
         }
@@ -68,6 +69,7 @@ namespace LevelUp.Controllers
         [HttpGet("users/login")]
         public IActionResult LogIn(string username)
         {
+            Response.Cookies.Append("name", "");
             Response.Cookies.Append("activeUser", "");
             Response.Cookies.Append("userAuth", "");
             ViewBag.Username = username;
@@ -130,7 +132,7 @@ namespace LevelUp.Controllers
             if (user == null) return Redirect("/users/login");
 
             var radarChartData = GetRadarChartData(user);
-             user.PfpUrl = user.GetAIGeneratedAvatar().Result;
+             
             _context.Users.Update(user);
             _context.SaveChanges();
             var viewModel = new UserProfileView
@@ -141,8 +143,6 @@ namespace LevelUp.Controllers
             };
 
             user.Reset();
-
-
 
             return View(viewModel);
         }

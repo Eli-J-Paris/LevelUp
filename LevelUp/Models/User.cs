@@ -68,18 +68,22 @@ namespace LevelUp.Models
             if(Xp >= NeededXp())
             {
                 Xp -= NeededXp();
-                Level++;  
+                Level++;
+                PfpUrl = GetAIGeneratedAvatar().Result;
             }
 
             if(Xp < 0)
             {
                 Level--;
                 Xp += NeededXp();
+                PfpUrl = GetAIGeneratedAvatar().Result;
             }
+
             foreach(DailyTask task in DailyTasks)
             {
                 task.Reset();
             }
+
             foreach (WeeklyTask task in WeeklyTasks)
             {
                 task.Reset();
@@ -174,7 +178,7 @@ namespace LevelUp.Models
 
         public async Task<string> GetAIGeneratedAvatar()
         {
-            OpenAIAPI api = new OpenAIAPI("API KEY HERE");
+            OpenAIAPI api = new OpenAIAPI("API-KEY");
             //async Task<ImageResult> CreateImageAsync(ImageGenerationRequest request);
             var result = await api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest(GetAvatarPrompt(), 1, ImageSize._256));
             return result.Data[0].Url;
@@ -192,10 +196,6 @@ namespace LevelUp.Models
             };
             return $"a {FavoriteAnimal} wearing a {hats[Level - 1]}";
         }
-
-
-
     }
-
 }
 

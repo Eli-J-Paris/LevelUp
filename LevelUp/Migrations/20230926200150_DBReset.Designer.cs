@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LevelUp.Migrations
 {
     [DbContext(typeof(LevelUpContext))]
-    [Migration("20230926195214_addFavAnimal")]
-    partial class addFavAnimal
+    [Migration("20230926200150_DBReset")]
+    partial class DBReset
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
