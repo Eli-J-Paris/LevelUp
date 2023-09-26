@@ -190,7 +190,7 @@ namespace LevelUp.Models
                 "pink cowboy hat",
                 "golden crown"
             };
-            return $"a {FavoriteAnimal} wearing a {hats[Level] - 1}";
+            return $"a {FavoriteAnimal} wearing a {hats[Level - 1]}";
         }
 
 
