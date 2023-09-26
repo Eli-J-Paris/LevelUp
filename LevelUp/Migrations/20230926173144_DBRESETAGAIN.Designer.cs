@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LevelUp.Migrations
 {
     [DbContext(typeof(LevelUpContext))]
-    [Migration("20230926153409_DBRESET")]
-    partial class DBRESET
+    [Migration("20230926173144_DBRESETAGAIN")]
+    partial class DBRESETAGAIN
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,25 @@ namespace LevelUp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("CampUser", b =>
+                {
+                    b.Property<int>("CampsId")
+                        .HasColumnType("integer")
+                        .HasColumnName("camps_id");
+
+                    b.Property<int>("MembersId")
+                        .HasColumnType("integer")
+                        .HasColumnName("members_id");
+
+                    b.HasKey("CampsId", "MembersId")
+                        .HasName("pk_camp_user");
+
+                    b.HasIndex("MembersId")
+                        .HasDatabaseName("ix_camp_user_members_id");
+
+                    b.ToTable("camp_user", (string)null);
+                });
 
             modelBuilder.Entity("LevelUp.Models.Achievement", b =>
                 {
@@ -119,6 +138,31 @@ namespace LevelUp.Migrations
                     b.ToTable("all_achievements", (string)null);
                 });
 
+            modelBuilder.Entity("LevelUp.Models.Camp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id")
+                        .HasName("pk_camps");
+
+                    b.ToTable("camps", (string)null);
+                });
+
             modelBuilder.Entity("LevelUp.Models.DailyTask", b =>
                 {
                     b.Property<int>("Id")
@@ -187,6 +231,44 @@ namespace LevelUp.Migrations
                         .HasDatabaseName("ix_daily_tasks_user_id");
 
                     b.ToTable("daily_tasks", (string)null);
+                });
+
+            modelBuilder.Entity("LevelUp.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CampId")
+                        .HasColumnType("integer")
+                        .HasColumnName("camp_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.Property<string>("content")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("content");
+
+                    b.HasKey("Id")
+                        .HasName("pk_messages");
+
+                    b.HasIndex("CampId")
+                        .HasDatabaseName("ix_messages_camp_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_messages_user_id");
+
+                    b.ToTable("messages", (string)null);
                 });
 
             modelBuilder.Entity("LevelUp.Models.ToDoTask", b =>
@@ -383,6 +465,23 @@ namespace LevelUp.Migrations
                     b.ToTable("weekly_tasks", (string)null);
                 });
 
+            modelBuilder.Entity("CampUser", b =>
+                {
+                    b.HasOne("LevelUp.Models.Camp", null)
+                        .WithMany()
+                        .HasForeignKey("CampsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_camp_user_camps_camps_id");
+
+                    b.HasOne("LevelUp.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("MembersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_camp_user_users_members_id");
+                });
+
             modelBuilder.Entity("LevelUp.Models.AchievementHandler", b =>
                 {
                     b.HasOne("LevelUp.Models.Achievement", "HabitBuilding5Achievement")
@@ -450,6 +549,23 @@ namespace LevelUp.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("LevelUp.Models.Message", b =>
+                {
+                    b.HasOne("LevelUp.Models.Camp", null)
+                        .WithMany("MessageBoard")
+                        .HasForeignKey("CampId")
+                        .HasConstraintName("fk_messages_camps_camp_id");
+
+                    b.HasOne("LevelUp.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_messages_users_user_id");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("LevelUp.Models.ToDoTask", b =>
                 {
                     b.HasOne("LevelUp.Models.User", "User")
@@ -472,6 +588,11 @@ namespace LevelUp.Migrations
                         .HasConstraintName("fk_weekly_tasks_users_user_id");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LevelUp.Models.Camp", b =>
+                {
+                    b.Navigation("MessageBoard");
                 });
 
             modelBuilder.Entity("LevelUp.Models.User", b =>

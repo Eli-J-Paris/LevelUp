@@ -11,6 +11,8 @@ namespace LevelUp.DataAccess
         public DbSet<ToDoTask> ToDoTasks { get; set; }
         public DbSet<AchievementHandler> AllAchievements { get; set; }
         public DbSet<Achievement> Achievements { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Camp> Camps { get; set; }
         public LevelUpContext(DbContextOptions<LevelUpContext> options) : base(options)
         {
 

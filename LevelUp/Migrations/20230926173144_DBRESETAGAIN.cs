@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LevelUp.Migrations
 {
     /// <inheritdoc />
-    public partial class DBRESET : Migration
+    public partial class DBRESETAGAIN : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,6 +27,20 @@ namespace LevelUp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_achievements", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "camps",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    title = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_camps", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -106,6 +120,30 @@ namespace LevelUp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "camp_user",
+                columns: table => new
+                {
+                    camps_id = table.Column<int>(type: "integer", nullable: false),
+                    members_id = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_camp_user", x => new { x.camps_id, x.members_id });
+                    table.ForeignKey(
+                        name: "fk_camp_user_camps_camps_id",
+                        column: x => x.camps_id,
+                        principalTable: "camps",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_camp_user_users_members_id",
+                        column: x => x.members_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "daily_tasks",
                 columns: table => new
                 {
@@ -129,6 +167,33 @@ namespace LevelUp.Migrations
                     table.PrimaryKey("pk_daily_tasks", x => x.id);
                     table.ForeignKey(
                         name: "fk_daily_tasks_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "messages",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    content = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    camp_id = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_messages", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_messages_camps_camp_id",
+                        column: x => x.camp_id,
+                        principalTable: "camps",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "fk_messages_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -226,8 +291,23 @@ namespace LevelUp.Migrations
                 column: "wellness5achievement_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_camp_user_members_id",
+                table: "camp_user",
+                column: "members_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_daily_tasks_user_id",
                 table: "daily_tasks",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_messages_camp_id",
+                table: "messages",
+                column: "camp_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_messages_user_id",
+                table: "messages",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
@@ -248,7 +328,13 @@ namespace LevelUp.Migrations
                 name: "all_achievements");
 
             migrationBuilder.DropTable(
+                name: "camp_user");
+
+            migrationBuilder.DropTable(
                 name: "daily_tasks");
+
+            migrationBuilder.DropTable(
+                name: "messages");
 
             migrationBuilder.DropTable(
                 name: "to_do_tasks");
@@ -258,6 +344,9 @@ namespace LevelUp.Migrations
 
             migrationBuilder.DropTable(
                 name: "achievements");
+
+            migrationBuilder.DropTable(
+                name: "camps");
 
             migrationBuilder.DropTable(
                 name: "users");
