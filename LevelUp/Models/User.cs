@@ -72,53 +72,69 @@ namespace LevelUp.Models
         }
 
 
-        public void UpdateAchievement(string category)
+        public void UpdateAchievement(string category,LevelUpContext context)
         {
             category = category.ToLower();
             if(category == "hygiene")
             {
-                Achievements.Hygenie5Achievement.IncreaseScore();
-            }
-            else if(category == "wellness")
+              Achievements.Hygenie5Achievement.IncreaseScore();
+              context.AllAchievements.Update(Achievements);
+            }  
+            else if (category == "wellness")
             {
                 Achievements.Wellness5Achievement.IncreaseScore();
+                context.AllAchievements.Update(Achievements);
             }
-            else if(category == "mindfullness")
+            else if (category == "mindfullness")
             {
                 Achievements.Mindfulness5Achievement.IncreaseScore();
+                context.AllAchievements.Update(Achievements);
             }
             else if (category == "productivity")
             {
                 Achievements.Productivity5Achievement.IncreaseScore();
+                context.AllAchievements.Update(Achievements);
             }
             else if (category == "habitbuilding")
             {
                 Achievements.HabitBuilding5Achievement.IncreaseScore();
+                context.AllAchievements.Update(Achievements);
             }
+            context.SaveChanges();
+
         }
-       
-        public void UndoAchievement(string category)
+
+        public void UndoAchievement(string category,LevelUpContext context)
         {
             category = category.ToLower();
             if (category == "hygiene")
             {
                 Achievements.Hygenie5Achievement.DecreaseScore();
+                context.AllAchievements.Update(Achievements);
+
             }
             else if (category == "wellness")
             {
                 Achievements.Wellness5Achievement.DecreaseScore();
+                context.AllAchievements.Update(Achievements);
+
             }
             else if (category == "mindfullness")
             {
                 Achievements.Mindfulness5Achievement.DecreaseScore();
+                context.AllAchievements.Update(Achievements);
+
             }
             else if (category == "productivity")
             {
                 Achievements.Productivity5Achievement.DecreaseScore();
+                context.AllAchievements.Update(Achievements);
+
             }
             else if (category == "habitbuilding")
             {
                 Achievements.HabitBuilding5Achievement.DecreaseScore();
+                context.AllAchievements.Update(Achievements);
             }
         }
 

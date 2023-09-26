@@ -6,7 +6,7 @@
         public string Title { get; set; }
         public int XpReward { get; set; }
         public bool IsCompleted { get; set; }
-        public int Score { get; set; }
+        public int Score { get; set; } 
         public int MaxScore { get; set; }
         
         public Achievement(string title, int xpReward, int maxScore)

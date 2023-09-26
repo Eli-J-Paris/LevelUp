@@ -7,13 +7,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LevelUp.Migrations
 {
     /// <inheritdoc />
-    public partial class DBResetAgain : Migration
+    public partial class DBRESET : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "achievement",
+                name: "achievements",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -26,7 +26,7 @@ namespace LevelUp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_achievement", x => x.id);
+                    table.PrimaryKey("pk_achievements", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -52,7 +52,7 @@ namespace LevelUp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "achievements",
+                name: "all_achievements",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -66,39 +66,39 @@ namespace LevelUp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_achievements", x => x.id);
+                    table.PrimaryKey("pk_all_achievements", x => x.id);
                     table.ForeignKey(
-                        name: "fk_achievements_achievement_habit_building5achievement_id",
+                        name: "fk_all_achievements_achievements_habit_building5achievement_id",
                         column: x => x.habit_building5achievement_id,
-                        principalTable: "achievement",
+                        principalTable: "achievements",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_achievements_achievement_hygenie5achievement_id",
+                        name: "fk_all_achievements_achievements_hygenie5achievement_id",
                         column: x => x.hygenie5achievement_id,
-                        principalTable: "achievement",
+                        principalTable: "achievements",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_achievements_achievement_mindfulness5achievement_id",
+                        name: "fk_all_achievements_achievements_mindfulness5achievement_id",
                         column: x => x.mindfulness5achievement_id,
-                        principalTable: "achievement",
+                        principalTable: "achievements",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_achievements_achievement_productivity5achievement_id",
+                        name: "fk_all_achievements_achievements_productivity5achievement_id",
                         column: x => x.productivity5achievement_id,
-                        principalTable: "achievement",
+                        principalTable: "achievements",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_achievements_achievement_wellness5achievement_id",
+                        name: "fk_all_achievements_achievements_wellness5achievement_id",
                         column: x => x.wellness5achievement_id,
-                        principalTable: "achievement",
+                        principalTable: "achievements",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_achievements_users_user_id",
+                        name: "fk_all_achievements_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -195,34 +195,34 @@ namespace LevelUp.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_achievements_habit_building5achievement_id",
-                table: "achievements",
+                name: "ix_all_achievements_habit_building5achievement_id",
+                table: "all_achievements",
                 column: "habit_building5achievement_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_achievements_hygenie5achievement_id",
-                table: "achievements",
+                name: "ix_all_achievements_hygenie5achievement_id",
+                table: "all_achievements",
                 column: "hygenie5achievement_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_achievements_mindfulness5achievement_id",
-                table: "achievements",
+                name: "ix_all_achievements_mindfulness5achievement_id",
+                table: "all_achievements",
                 column: "mindfulness5achievement_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_achievements_productivity5achievement_id",
-                table: "achievements",
+                name: "ix_all_achievements_productivity5achievement_id",
+                table: "all_achievements",
                 column: "productivity5achievement_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_achievements_user_id",
-                table: "achievements",
+                name: "ix_all_achievements_user_id",
+                table: "all_achievements",
                 column: "user_id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "ix_achievements_wellness5achievement_id",
-                table: "achievements",
+                name: "ix_all_achievements_wellness5achievement_id",
+                table: "all_achievements",
                 column: "wellness5achievement_id");
 
             migrationBuilder.CreateIndex(
@@ -245,7 +245,7 @@ namespace LevelUp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "achievements");
+                name: "all_achievements");
 
             migrationBuilder.DropTable(
                 name: "daily_tasks");
@@ -257,7 +257,7 @@ namespace LevelUp.Migrations
                 name: "weekly_tasks");
 
             migrationBuilder.DropTable(
-                name: "achievement");
+                name: "achievements");
 
             migrationBuilder.DropTable(
                 name: "users");

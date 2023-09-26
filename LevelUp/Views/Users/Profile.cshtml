@@ -2,16 +2,11 @@
 @model UserProfileView
 <h1>@Model.User.Name Profile</h1>
 
-@{
-    foreach (var achievement in Model.Achievements.GetType().GetProperties())
-    {
-       <p>@achievement.CustomAttributes.ToString()</p> 
-    }
-}
-    
-    
-        <p>@Model.Achievements.HabitBuilding5Achievement.Score </p>
-    
+<p> HYgenie @Model.User.Achievements.Hygenie5Achievement.Score</p>
+<p> habit @Model.User.Achievements.HabitBuilding5Achievement.Score</p>
+<p> wellness @Model.User.Achievements.Wellness5Achievement.Score</p>
+<p>pro @Model.User.Achievements.Productivity5Achievement.Score</p>
+<p> mind @Model.User.Achievements.Mindfulness5Achievement.Score</p>
 
 <div class="container">
     <div class="row">
@@ -32,6 +27,50 @@
                     <br>
                     <br>
                     <img src="https://placehold.co/300x400/E8DCB9/FFF/?text=Achievements%20">
+                    @{
+                        if(Model.User.Achievements.Hygenie5Achievement.Score != 5)
+                        {
+                            <p> Complete five Hygenie Tasks @Model.User.Achievements.Hygenie5Achievement.Score/5</p>
+                        }
+                        else
+                        {
+                            <p>Complete five hygenie tasks: <span class="text-success">COMPLETED</span></p>
+                        }
+
+                        if (Model.User.Achievements.Productivity5Achievement.Score != 5)
+                        {
+                            <p> Complete five productivity Tasks @Model.User.Achievements.Productivity5Achievement.Score/5</p>
+                        }
+                        else
+                        {
+                            <p>Complete five productivity tasks: <span class="text-success">COMPLETED</span></p>
+                        }
+
+                        if (Model.User.Achievements.Wellness5Achievement.Score != 5)
+                        {
+                            <p> Complete five wellness Tasks @Model.User.Achievements.Wellness5Achievement.Score/5</p>
+                        }
+                        else
+                        {
+                            <p>Complete five wellness tasks: <span class="text-success">COMPLETED</span></p>
+                        }
+                        if (Model.User.Achievements.Mindfulness5Achievement.Score != 5)
+                        {
+                            <p> Complete five mindfulness Tasks @Model.User.Achievements.Mindfulness5Achievement.Score/5</p>
+                        }
+                        else
+                        {
+                            <p>Complete five mindfulness tasks: <span class="text-success">COMPLETED</span></p>
+                        }
+                        if (Model.User.Achievements.HabitBuilding5Achievement.Score != 5)
+                        {
+                            <p> Complete five habit building Tasks @Model.User.Achievements.HabitBuilding5Achievement.Score/5</p>
+                        }
+                        else
+                        {
+                            <p>Complete five habit building tasks: <span class="text-success">COMPLETED</span></p>
+                        }
+                    }
                 </div>
             </div>
         </div>
