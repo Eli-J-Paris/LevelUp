@@ -15,7 +15,8 @@ namespace LevelUp.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Username { get; set; }
-        public string  Password { get; set; }
+        public string Password { get; set; }
+        public string FavoriteAnimal { get; set; }
         public List<DailyTask> DailyTasks { get; set; } = new List<DailyTask>();
         public List<WeeklyTask> WeeklyTasks { get; set; } = new List<WeeklyTask>();
         public List<ToDoTask> ToDoTasks { get; set; } = new List<ToDoTask>();
@@ -181,7 +182,15 @@ namespace LevelUp.Models
 
         private string GetAvatarPrompt()
         {
-            return "a dog wearing a hat";
+            var hats = new List<string>
+            {
+                "blue baseball cap",
+                "black beanie",
+                "Top hat",
+                "pink cowboy hat",
+                "golden crown"
+            };
+            return $"a {FavoriteAnimal} wearing a {hats[Level - 1]}";
         }
 
 
