@@ -142,7 +142,7 @@ namespace LevelUp.Models
 
         public async Task<string> GetAIGeneratedAvatar()
         {
-            OpenAIAPI api = new OpenAIAPI("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");
+            OpenAIAPI api = new OpenAIAPI("API KEY HERE");
             //async Task<ImageResult> CreateImageAsync(ImageGenerationRequest request);
             var result = await api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest(GetAvatarPrompt(), 1, ImageSize._256));
             return result.Data[0].Url;
