@@ -16,9 +16,11 @@ namespace LevelUp.Controllers
     public class UsersController : Controller
     {
         private readonly LevelUpContext _context;
-        public UsersController(LevelUpContext context)
+        private readonly IConfiguration _configuration;
+        public UsersController(LevelUpContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
 
@@ -47,7 +49,7 @@ namespace LevelUp.Controllers
             if (validateUser == null)
             {
                 Response.Cookies.Append("name", user.Name);
-                user.PfpUrl = user.GetAIGeneratedAvatar().Result;
+                user.PfpUrl = user.GetAIGeneratedAvatar(_configuration["LEVELUP_APICONNECTIONKEY"]).Result;
                 user.Password = user.Encrypt(user.Password);
                 
                 _context.Users.Add(user);
@@ -142,7 +144,7 @@ namespace LevelUp.Controllers
                 RadarChart = radarChartData
             };
 
-            user.Reset();
+            user.Reset(_configuration["AppSettings:LEVELUP_APICONNECTIONKEY"]);
 
             return View(viewModel);
         }
