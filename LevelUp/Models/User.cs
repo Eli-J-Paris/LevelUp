@@ -61,6 +61,17 @@ namespace LevelUp.Models
 
         public void Reset()
         {
+            if(Xp >= NeededXp())
+            {
+                Xp -= NeededXp();
+                Level++;  
+            }
+
+            if(Xp < 0)
+            {
+                Level--;
+                Xp += NeededXp();
+            }
             foreach(DailyTask task in DailyTasks)
             {
                 task.Reset();
@@ -70,7 +81,11 @@ namespace LevelUp.Models
                 task.Reset();
             }
         }
-
+      
+        public int NeededXp()
+        {
+            return Level * 10;
+        }
 
         public void UpdateAchievement(string category,LevelUpContext context)
         {
