@@ -2,15 +2,6 @@
 @model UserProfileView
 <h1>@Model.User.Name Profile</h1>
 
-@{
-    foreach (var achievement in Model.Achievements.GetType().GetProperties())
-    {
-       <p>@achievement.CustomAttributes.ToString()</p> 
-    }
-}
-    
-    
-        <p>@Model.Achievements.HabitBuilding5Achievement.Score </p>
     
 
 <div class="container">
@@ -20,7 +11,7 @@
              <!-- Nested First Row -->
             <div class="row mb-2">
                 <div class="col">
-                    <img src="https://placehold.co/200x200/E8DCB9/FFF/?text=Profile%20+%20Pic">
+                    <img src="@Model.User.PfpUrl">
                     <br>
                     <br>
                     <img src="https://placehold.co/200x50/E8DCB9/FFF/?text=Level%20+%20Bar">

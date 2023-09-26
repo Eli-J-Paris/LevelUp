@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LevelUp.Migrations
 {
     [DbContext(typeof(LevelUpContext))]
-    [Migration("20230925202915_DBResetAgain")]
-    partial class DBResetAgain
+    [Migration("20230926165236_resetDb")]
+    partial class resetDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -289,6 +289,11 @@ namespace LevelUp.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("password");
+
+                    b.Property<string>("PfpUrl")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("pfp_url");
 
                     b.Property<int>("Productivity")
                         .HasColumnType("integer")

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LevelUp.Migrations
 {
     /// <inheritdoc />
-    public partial class DBResetAgain : Migration
+    public partial class resetDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -44,7 +44,8 @@ namespace LevelUp.Migrations
                     wellness = table.Column<int>(type: "integer", nullable: false),
                     mindfullness = table.Column<int>(type: "integer", nullable: false),
                     productivity = table.Column<int>(type: "integer", nullable: false),
-                    habit_building = table.Column<int>(type: "integer", nullable: false)
+                    habit_building = table.Column<int>(type: "integer", nullable: false),
+                    pfp_url = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

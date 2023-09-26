@@ -287,6 +287,11 @@ namespace LevelUp.Migrations
                         .HasColumnType("text")
                         .HasColumnName("password");
 
+                    b.Property<string>("PfpUrl")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("pfp_url");
+
                     b.Property<int>("Productivity")
                         .HasColumnType("integer")
                         .HasColumnName("productivity");

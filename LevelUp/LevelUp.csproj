@@ -34,6 +34,7 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
+    <PackageReference Include="OpenAI" Version="1.7.2" />
   </ItemGroup>
 
   <ItemGroup>

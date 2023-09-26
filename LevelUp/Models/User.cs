@@ -5,6 +5,8 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks.Sources;
+using OpenAI_API.Images;
+using OpenAI_API;
 
 namespace LevelUp.Models
 {
@@ -25,6 +27,7 @@ namespace LevelUp.Models
         public int Mindfullness { get; set; } = 0;
         public int Productivity { get; set; } = 0;
         public int HabitBuilding { get; set; } = 0;
+        public string PfpUrl { get; set; } = "";
         public AchievementHandler? Achievements { get; set; } = new AchievementHandler();
 
         public string Encrypt(string password)
@@ -136,6 +139,21 @@ namespace LevelUp.Models
             context.WeeklyTasks.Add(newTask);
             context.SaveChanges();
         }
+
+        public async Task<string> GetAIGeneratedAvatar()
+        {
+            OpenAIAPI api = new OpenAIAPI("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");
+            //async Task<ImageResult> CreateImageAsync(ImageGenerationRequest request);
+            var result = await api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest(GetAvatarPrompt(), 1, ImageSize._256));
+            return result.Data[0].Url;
+        }
+
+        private string GetAvatarPrompt()
+        {
+            return "a dog wearing a hat";
+        }
+
+
 
     }
 
