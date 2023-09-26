@@ -37,8 +37,10 @@ namespace LevelUp.Controllers
         {
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
-            
-            user.Camps.Add(camp);
+
+            _context.Camps.Add(camp);
+            camp.Members.Add(user);
+            //user.Camps.Add(camp);
             _context.SaveChanges();
             return Redirect("/camps");
         }
@@ -46,7 +48,7 @@ namespace LevelUp.Controllers
         [Route("/camps/{campId:int}")]
         public IActionResult Show(int campId)
         {
-            var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).ThenInclude(c=>c.User).First();
+            var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).Include(c => c.Members).First();
             return View(camp);
         }
 
@@ -75,7 +77,18 @@ namespace LevelUp.Controllers
             return View(camps);
         }
 
+        [Route("/camps/{campId:int}/join")]
+        public IActionResult Join(int campId)
+        {
+            var camp = _context.Camps.Find(campId);
 
+            var user = GetActiveUser(Request);
+            if (user == null) return Redirect("/users/login");
+
+            camp.Members.Add(user);
+            _context.SaveChanges();
+            return Redirect($"/camps/{campId}");
+        }
 
 
 
