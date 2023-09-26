@@ -1,17 +1,12 @@
 ﻿@using Newtonsoft.Json
 @model UserProfileView
+@{
+    double xpPercent = Math.Round(Convert.ToDouble(Model.User.Xp) / Convert.ToDouble(Model.User.NeededXp()), 2);
+    string xpPercentString = (xpPercent * 100).ToString() + "%";
+}
 <h1>@Model.User.Name Profile</h1>
 
-@{
-    foreach (var achievement in Model.Achievements.GetType().GetProperties())
-    {
-       <p>@achievement.CustomAttributes.ToString()</p> 
-    }
-}
-    
-    
-        <p>@Model.Achievements.HabitBuilding5Achievement.Score </p>
-    
+
 
 <div class="container">
     <div class="row">
@@ -23,6 +18,10 @@
                     <img src="https://placehold.co/200x200/E8DCB9/FFF/?text=Profile%20+%20Pic">
                     <br>
                     <br>
+                    <p>Lexel: @Model.User.Level</p>
+                    <div class="progress" style="width: 57.5%">
+                        <div class="progress-bar" role="progressbar" style="width: @xpPercentString" aria-valuenow="@Model.User.Xp" aria-valuemin="0" aria-valuemax="@Model.User.NeededXp()">@Model.User.Xp / @Model.User.NeededXp()</div>
+                    </div>
                     <img src="https://placehold.co/200x50/E8DCB9/FFF/?text=Level%20+%20Bar">
                 </div>
             </div>
