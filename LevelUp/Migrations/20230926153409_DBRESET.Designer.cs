@@ -3,6 +3,7 @@ using System;
 using LevelUp.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LevelUp.Migrations
 {
     [DbContext(typeof(LevelUpContext))]
-    partial class LevelUpContextModelSnapshot : ModelSnapshot
+    [Migration("20230926153409_DBRESET")]
+    partial class DBRESET
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -286,11 +289,6 @@ namespace LevelUp.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("password");
-
-                    b.Property<string>("PfpUrl")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("pfp_url");
 
                     b.Property<int>("Productivity")
                         .HasColumnType("integer")

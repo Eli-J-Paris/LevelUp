@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using OpenAI_API.Images;
 using OpenAI_API;
 
+using System.Collections;
 namespace LevelUp.Controllers
 {
     public class UsersController : Controller
@@ -103,7 +104,13 @@ namespace LevelUp.Controllers
             var userId = Convert.ToInt32(request.Cookies["activeUser"]);
             var userAuth = request.Cookies["userAuth"];
 
-            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).FirstOrDefault(u => u.Id == userId);
+            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).Include(u =>u.Achievements)
+                .ThenInclude(a =>a.Hygenie5Achievement)
+                        .Include(a=> a.Achievements).ThenInclude(a =>a.HabitBuilding5Achievement)
+                                .Include(a => a.Achievements).ThenInclude(a => a.Mindfulness5Achievement)
+                                                .Include(a => a.Achievements).ThenInclude(a => a.Productivity5Achievement)
+                                                                .Include(a => a.Achievements).ThenInclude(a => a.Wellness5Achievement)
+                                                                .FirstOrDefault(u => u.Id == userId);
 
             if (user != null)
             {
@@ -132,13 +139,12 @@ namespace LevelUp.Controllers
                 DailyAffirmation = _GetAffirmation().Result,
                 RadarChart = radarChartData
             };
+
             user.Reset();
 
 
 
             return View(viewModel);
-
-
         }
 
         [Route("/profile/streaks")]
@@ -162,12 +168,12 @@ namespace LevelUp.Controllers
                 if (!task.IsCompleted)
                 {
                     task.Complete();
-                    user.UpdateAchievement(task.Category);
+                    user.UpdateAchievement(task.Category, _context);
                 }
                 else
                 {
                     task.UndoComplete();
-                    user.UndoAchievement(task.Category);
+                    user.UndoAchievement(task.Category,_context);
                 }
                 _context.DailyTasks.Update(task);
                 _context.SaveChanges();
@@ -178,12 +184,12 @@ namespace LevelUp.Controllers
                 if (!task.IsCompleted)
                 {
                     task.Complete();
-                    user.UpdateAchievement(task.Category);
+                    user.UpdateAchievement(task.Category, _context);
                 }
                 else
                 {
                     task.UndoComplete();
-                    user.UndoAchievement(task.Category);
+                    user.UndoAchievement(task.Category, _context);
                 }
                 _context.WeeklyTasks.Update(task);
                 _context.SaveChanges();
@@ -194,12 +200,12 @@ namespace LevelUp.Controllers
                 if (!task.IsCompleted)
                 {
                     task.Complete();
-                    user.UpdateAchievement(task.Category);
+                    user.UpdateAchievement(task.Category, _context);
                 }
                 else
                 {
                     task.UndoComplete();
-                    user.UndoAchievement(task.Category);
+                    user.UndoAchievement(task.Category, _context);
                 }
                 _context.ToDoTasks.Update(task);
                 _context.SaveChanges();
