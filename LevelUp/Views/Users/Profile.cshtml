@@ -6,7 +6,7 @@
     string xpPercentString = (xpPercent * 100).ToString() + "%";
 }
 
-<h1>@Model.User.Name Profile</h1>
+<h1>@Model.User.Name's Profile</h1>
 
 
 <div class="container">
@@ -23,7 +23,6 @@
                     <div class="progress" style="width: 57.5%">
                         <div class="progress-bar" role="progressbar" style="width: @xpPercentString" aria-valuenow="@Model.User.Xp" aria-valuemin="0" aria-valuemax="@Model.User.NeededXp()">@Model.User.Xp / @Model.User.NeededXp()</div>
                     </div>
-                    <img src="https://placehold.co/200x50/E8DCB9/FFF/?text=Level%20+%20Bar">
                 </div>
             </div>
              <!-- Nested Second Row -->
@@ -31,7 +30,8 @@
                 <div class="col">
                     <br>
                     <br>
-                    <img src="https://placehold.co/300x400/E8DCB9/FFF/?text=Achievements%20">
+                    <h2>Achievements</h2>
+                     <div class="textblock">
                     @{
                         if(Model.User.Achievements.Hygenie5Achievement.Score != 5)
                         {
@@ -76,12 +76,13 @@
                             <p>Complete five habit building tasks: <span class="text-success">COMPLETED</span></p>
                         }
                     }
+                    </div>
                 </div>
             </div>
         </div>
 
          <!-- Second Main Column -->
-        <div class="col-4 vertical-center">
+        <div class="col-4 vertical-top">
              <!-- Nested First Row -->
             <div class="row mb-2">
                 <div class="col">
@@ -94,7 +95,7 @@
             <div class="row">
                 <div class="col">
                     <br>
-                    <a href="/profile/streaks">Streaks Page</a>
+                    <a class = "textblock" href="/profile/streaks">Streaks Page</a>
                 </div>
             </div>
         </div>
@@ -172,7 +173,12 @@
             }]
         },
         options: {
-           
+            beginAtZero: true, 
+            max: 10, 
+            min: 0,
+            ticks: {
+                stepSize: 1
+            }
         }
     });
 </script>
