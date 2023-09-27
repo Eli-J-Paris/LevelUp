@@ -149,6 +149,11 @@ namespace LevelUp.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
+                    b.Property<string>("Owner")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("owner");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text")
@@ -243,6 +248,11 @@ namespace LevelUp.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("camp_id");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("content");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -250,11 +260,6 @@ namespace LevelUp.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer")
                         .HasColumnName("user_id");
-
-                    b.Property<string>("content")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("content");
 
                     b.HasKey("Id")
                         .HasName("pk_messages");

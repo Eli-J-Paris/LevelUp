@@ -40,6 +40,8 @@ namespace LevelUp.Controllers
 
             _context.Camps.Add(camp);
             camp.Members.Add(user);
+            camp.Owner = user.Username;
+
             //user.Camps.Add(camp);
             _context.SaveChanges();
             return Redirect("/camps");

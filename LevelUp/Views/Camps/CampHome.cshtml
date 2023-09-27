@@ -5,6 +5,10 @@
     {
         <a href="/camps/@camp.Id">@camp.Title</a>
         <br />
+        if(camp.Owner == Model.Username)
+        {
+            <p>Disban @camp.Title</p>
+        }
     }
 }
 <br />
