@@ -121,7 +121,7 @@ namespace LevelUp.Controllers
             if (!IsTaskUnique(task, user))
             {
                 return Json(new { success = false, message = "Task is not Unique" });
-
+            }
             user.DailyTasks.Add(task);
             _context.Users.Update(user);
 
