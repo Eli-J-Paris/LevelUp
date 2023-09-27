@@ -301,7 +301,7 @@ namespace LevelUp.Controllers
                 new WeeklyTask {Title = "Grocery Shopping", Description = "stock up on healthy food stuffs", TaskType = "weekly", Category = "Productivity", Difficulty = 2, XpReward = 7, AttributeReward = 1},
                 new WeeklyTask {Title = "Reflect", Description = "reflect on your week, what has gone well and what could you have done differently?", TaskType = "weekly", Category = "Mindfulness", Difficulty = 3, XpReward = 10, AttributeReward = 3},
                 new WeeklyTask {Title = "Clean Your Home", Description = "A clean space is a canvas for a clear mind", TaskType = "weekly", Category = "Hygenie", Difficulty = 2, XpReward = 6, AttributeReward = 1},
-                new WeeklyTask {Title = "Meet Your Nutritional Goals", Description = "make a plan on how you can eat health and stick to it!", TaskType = "weekly", Category = "Wellness", Difficulty = 3, XpReward = 9, AttributeReward = 1},
+                new WeeklyTask {Title = "Meet Your Nutritional Goals", Description = "make a plan on how you can eat healthly and stick to it!", TaskType = "weekly", Category = "Wellness", Difficulty = 3, XpReward = 9, AttributeReward = 1},
 
 
 
