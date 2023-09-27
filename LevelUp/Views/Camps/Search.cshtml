@@ -1,9 +1,25 @@
 ﻿@model List<Camp>
-<h1>Camps</h1>
 @{
-    foreach(var camp in Model)
-    {
-        <h1>@camp.Title</h1> 
-        <a href="/camps/@camp.Id/join">Join</a>
-    }
+    
+        <div class="col-md-6 offset-lg-3 align-middle">
+            <h1 class="flex-container d-flex justify-content-center">Camps</h1>
+        <form class="d-flex" method="post" action="/camps/search">
+            <input class="form-control me-sm-2" type="search" name="query" placeholder="Find a Camp">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+            <br class="text-decoration-underline" />
+            @{
+                foreach (var camp in Model)
+                {
+                    <div class="flex-container d-flex textblock">
+                        <a href="/camps/@camp.Id/details"><h1>@camp.Title</h1></a>
+                        <form method="get" action="/camps/@camp.Id/join">
+                            <button type="submit" class="btn btn-success" fdprocessedid="r7n6ym">Join @camp.Title</button>
+                        </form>
+                    </div>
+                }
+            
+            }
+        </div>    
+    
 }

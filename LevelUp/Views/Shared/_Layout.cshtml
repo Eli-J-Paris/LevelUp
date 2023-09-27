@@ -21,14 +21,19 @@
                     <ul class="navbar-nav flex-grow-1">
                         
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Tasks" asp-action="TasksPage">Tasks</a>
-                        </li>
-                        <li class="nav-item">
                             <a id="profileLink" class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Profile">profile</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Tasks" asp-action="TasksPage">Tasks</a>
+                        </li>
+                        
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Camps" asp-action="CampHome">Camps</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Camps" asp-action="Search">Find Camp</a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Login">Log Out</a>
                         </li> 

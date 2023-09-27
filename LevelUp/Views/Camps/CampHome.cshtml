@@ -1,15 +1,26 @@
 ﻿@model User
-<p>@Model.Username Camps page</p>
+
+<div class="flex-container">
+    <h1>Your Camps</h1>
+    <form method="get" action="/camps/new">
+        <button class="btn btn-success my-2 my-sm-0" type="submit">Create Camp</button>
+    </form>
+</div>
 @{
-    foreach(var camp in Model.Camps)
+    foreach (var camp in Model.Camps)
     {
-        <a href="/camps/@camp.Id">@camp.Title</a>      
+        <li>
+            <div class="textblock">
+                <form action="/camps/@camp.Id">
+                    <button class="btn btn-success my-2 my-sm-0" type="submit">@camp.Title</button>
+                </form>
+            </div>
+        </li>
     }
 }
 <br />
-<a href="/camps/new">Create new Camp</a>
-
-<form class="d-flex" method="post" action="/camps/search">
+   
+@*<form class="d-flex" method="post" action="/camps/search">
     <input class="form-control me-sm-2" type="search" name="query" placeholder="Find a Camp">
     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-</form>
+</form>*@

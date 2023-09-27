@@ -6,7 +6,7 @@
     <h1 class=" d-flex justify-content-center ">Create Camp</h1>
     <form method="post" action="/camps/create">
         <div class="form-group">
-            <input class="form-control form-control-lg" type="text" id="taskname" name="Title" placeholder="Camp Title" required fdprocessedid="wval2n">
+            <input class="form-control form-control-lg" type="text" id="taskname" name="Title" maxlength="50" placeholder="Camp Title" required fdprocessedid="wval2n">
         </div>
         <br />
         <div class="form-group">
@@ -17,5 +17,9 @@
             <button type="submit" class="btn btn-success" fdprocessedid="r7n6ym">Create Camp</button>
         </div>
     </form>
+    <br />
+    <div class="d-flex justify-content-center">
+        <a href="/camps">Cancel</a>
+    </div>
 
 </div>
