@@ -1,18 +1,32 @@
 ﻿@model Camp
-
+@{
+   User activeUser = ViewData["ActiveUser"] as User;
+}
 <div class="flex-container">
-    <h1>@Model.Title's Home</h1>
+    <h1>@Model.Title's Message Board</h1>
     <form method="get" action="/camps/@Model.Id/details">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Details</button>
+        <button class="btn btn-success my-2 my-sm-0" type="submit">Details</button>
     </form>
 </div>
 <br />
-<div class="scrollable-div textblock">
+<div class="scrollable-div textblock" style="height:550px">
     @{
         foreach (var message in Model.MessageBoard)
         {
-            <h5>@message.Content</h5>
-            <p>~@message.User.Username</p>
+            if (message.User == activeUser)
+            {
+                <div class="flex-container justify-content-end">
+                    <h5 style="margin-left:20%">"@message.Content"</h5>
+                </div>
+                
+            }
+            else
+            {
+                <div class="flex-container justify-content-lg-start">
+                    <p>@message.User.Username:</p>
+                    <h5 style="margin-right:20%">"@message.Content"</h5>
+                </div>
+            }   
         }
     }
 </div>
@@ -24,8 +38,8 @@
 }*@
 <div @*class="container"*@>
     <form class="d-flex" method="post" action="/camps/@Model.Id/addMessage">
-        <input class="form-control me-sm-2 " type="search" name="message" placeholder="Add Message . . .">
-        <button class="btn btn-secondary my-2 my-sm-0 " type="submit">Post</button>
+        <input class="form-control me-sm-2 " type="search" name="message" placeholder="Add a Message . . .">
+        <button class="btn btn-success my-2 my-sm-0 " type="submit">Post</button>
     </form>
 </div>
 <script>

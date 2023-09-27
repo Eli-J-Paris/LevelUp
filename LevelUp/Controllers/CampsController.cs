@@ -51,6 +51,11 @@ namespace LevelUp.Controllers
         public IActionResult Show(int campId)
         {
             var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).Include(c => c.Members).First();
+           
+            var user = GetActiveUser(Request);
+            if (user == null) return Redirect("/users/login");
+            ViewData["ActiveUser"] = user;
+
             return View(camp);
         }
 
@@ -96,6 +101,12 @@ namespace LevelUp.Controllers
         [Route("/camps/{campId:int}/details")]
         public IActionResult Details(int campId)
         {
+            var user = GetActiveUser(Request);
+            if (user == null) return Redirect("/users/login");
+
+            ViewData["Owner"] = user.Username;
+            ViewData["ActiveUser"] = user;
+
             var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).Include(c => c.Members).First();
             return View(camp);
         }
@@ -114,8 +125,20 @@ namespace LevelUp.Controllers
         [Route("/camps/{campId:int}/delete")]
         public IActionResult Delete(int campId)
         {
-            var camp = _context.Camps.Find(campId);
+            var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).First();            
             _context.Camps.Remove(camp);
+            _context.SaveChanges();
+            return Redirect("/camps");
+        }
+
+
+        [HttpPost]
+        [Route("/camps/{campId:int}/{userId:int}/leave")]
+        public IActionResult Leave(int campId, int userId)
+        {
+            var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).Include(c => c.Members).First();
+            var user = _context.Users.Find(userId);
+            camp.Members.Remove(user);
             _context.SaveChanges();
             return Redirect("/camps");
         }
