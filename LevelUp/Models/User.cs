@@ -217,6 +217,8 @@ namespace LevelUp.Models
                 "space helmet",
                 "golden crown"
             };
+            var i = Level - 1;
+            if (i > 9) i = 9;
             return $"a {FavoriteAnimal} wearing a {hats[Level - 1]}";
         }
     }
