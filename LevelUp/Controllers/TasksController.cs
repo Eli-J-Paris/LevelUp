@@ -117,7 +117,7 @@ namespace LevelUp.Controllers
 
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
-            if(!IsTaskUnique(task)) return Redirect("/tasks");
+            if(!IsTaskUnique(task, user)) return Redirect("/tasks");
 
             user.DailyTasks.Add(task);
             _context.Users.Update(user);
@@ -135,7 +135,7 @@ namespace LevelUp.Controllers
 
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
-            if (!IsTaskUnique(task)) return Redirect("/tasks");
+            if (!IsTaskUnique(task, user)) return Redirect("/tasks");
 
             user.WeeklyTasks.Add(task);
             _context.Users.Update(user);
