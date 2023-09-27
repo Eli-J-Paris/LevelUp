@@ -1,24 +1,30 @@
 ﻿@model Camp
 
-<h1>@Model.Title's Home</h1>
-<form method="get" action ="/camps/@Model.Id/details">
-    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Details</button>
-</form>
-
-@{
-    foreach(var message in Model.MessageBoard)
-    {
-        <h5>@message.Content</h5>
-        <p>~@message.User.Username</p>
+<div class="flex-container">
+    <h1>@Model.Title's Home</h1>
+    <form method="get" action="/camps/@Model.Id/details">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Details</button>
+    </form>
+</div>
+<br />
+<div class="scrollable-div textblock">
+    @{
+        foreach (var message in Model.MessageBoard)
+        {
+            <h5>@message.Content</h5>
+            <p>~@message.User.Username</p>
+        }
     }
-}
-@{
+</div>
+@*@{
     foreach(var member in Model.Members)
     {
         <p>Member: @member.Username</p>
     }
-}
-<form class="d-flex" method = "post" action = "/camps/@Model.Id/addMessage">
-    <input class="form-control me-sm-2" type="search" name="message" placeholder="Add Message . . .">
-    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Post</button>
-</form>
+}*@
+<div class="container">
+    <form class="d-flex input-bottom" method="post" action="/camps/@Model.Id/addMessage">
+        <input class="form-control me-sm-2 " type="search" name="message" placeholder="Add Message . . .">
+        <button class="btn btn-secondary my-2 my-sm-0 " type="submit">Post</button>
+    </form>
+</div>
