@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LevelUp.Migrations
 {
     [DbContext(typeof(LevelUpContext))]
-    [Migration("20230926222542_DBReset")]
-    partial class DBReset
+    [Migration("20230927152752_ResetingDBAgain")]
+    partial class ResetingDBAgain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -351,6 +351,11 @@ namespace LevelUp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("FavoriteAnimal")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("favorite_animal");
+
                     b.Property<int>("HabitBuilding")
                         .HasColumnType("integer")
                         .HasColumnName("habit_building");
@@ -376,6 +381,11 @@ namespace LevelUp.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("password");
+
+                    b.Property<string>("PfpUrl")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("pfp_url");
 
                     b.Property<int>("Productivity")
                         .HasColumnType("integer")

@@ -14,7 +14,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  margin-bottom: 0px;
   background-color: #C3DBC5;
 }
 
@@ -61,3 +61,22 @@ body {
         padding: 10px; /* Adds space inside each cell */
         text-align: center; /* Centers the content in each cell */
     }
+
+.container {
+    position: relative; /* Makes the container a positioning context */
+    min-height: 100vh; /* Ensures container fills at least the whole viewport */
+}
+
+.input-bottom {
+    position: absolute; /* Position it relative to the nearest positioned ancestor */
+    top: 10%; /* Anchor it to the bottom */
+    left: 50%;
+    width: 100%; /* Makes it span the entire width */
+    transform: translate(-50%, -50%);
+}
+
+.scrollable-div {
+    width: 1250px;
+    height: 300px;
+    overflow-y: auto;
+}
