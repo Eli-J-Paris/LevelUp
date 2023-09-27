@@ -22,9 +22,15 @@
         <p>Member: @member.Username</p>
     }
 }*@
-<div class="container">
-    <form class="d-flex input-bottom" method="post" action="/camps/@Model.Id/addMessage">
+<div @*class="container"*@>
+    <form class="d-flex" method="post" action="/camps/@Model.Id/addMessage">
         <input class="form-control me-sm-2 " type="search" name="message" placeholder="Add Message . . .">
         <button class="btn btn-secondary my-2 my-sm-0 " type="submit">Post</button>
     </form>
 </div>
+<script>
+    var messageBody = document.querySelector('.scrollable-div');
+    window.onload = function () {
+        messageBody.scrollTo(0, document.body.scrollHeight);
+    }
+</script>

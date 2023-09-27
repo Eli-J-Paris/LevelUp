@@ -76,7 +76,14 @@ body {
 }
 
 .scrollable-div {
-    width: 1250px;
-    height: 300px;
+    width: 100%;
+    height: 725px;
     overflow-y: auto;
+    /*flex-direction: column-reverse;*/
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+
 }
