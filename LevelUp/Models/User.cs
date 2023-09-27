@@ -63,38 +63,50 @@ namespace LevelUp.Models
             Xp += xp;
         }
 
-        public void Reset(LevelUpContext context, string apiKey)
+        public void Reset(LevelUpContext? context, string apiKey)
         {
             if(Xp >= NeededXp())
             {
                 Xp -= NeededXp();
                 Level++;
-                PfpUrl = GetAIGeneratedAvatar(apiKey).Result;
-                context.Users.Update(this);
-                context.SaveChanges();
+                if (context != null)
+                {
+                    PfpUrl = GetAIGeneratedAvatar(apiKey).Result;
+                    context.Users.Update(this);
+                    context.SaveChanges();
+                }
             }
 
             if(Xp < 0)
             {
                 Level--;
                 Xp += NeededXp();
-                PfpUrl = GetAIGeneratedAvatar(apiKey).Result;
-                context.Users.Update(this);
-                context.SaveChanges();
+                if (context != null)
+                {
+                    PfpUrl = GetAIGeneratedAvatar(apiKey).Result;
+                    context.Users.Update(this);
+                    context.SaveChanges();
+                }
             }
 
             foreach(DailyTask task in DailyTasks)
             {
                 task.Reset();
-                context.DailyTasks.Update(task);
-                context.SaveChanges();
+                if (context != null)
+                {
+                    context.DailyTasks.Update(task);
+                    context.SaveChanges();
+                };
             }
 
             foreach (WeeklyTask task in WeeklyTasks)
             {
                 task.Reset();
-                context.WeeklyTasks.Update(task);
-                context.SaveChanges();
+                if (context != null)
+                {
+                    context.WeeklyTasks.Update(task);
+                    context.SaveChanges();
+                };
             }
         }
       
