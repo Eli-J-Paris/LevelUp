@@ -17,7 +17,7 @@
             Wellness5Achievement = new Achievement("Complete 5 Wellness Tasks", 10, 5);
             Mindfulness5Achievement = new Achievement("Complete 5 Mindfulness Tasks", 10, 5);
             Productivity5Achievement = new Achievement("Complete 5 Productivity Tasks", 10, 5);
-            HabitBuilding5Achievement = new Achievement("Complete 5 HabbitBuilding Tasks", 10, 5);
+            HabitBuilding5Achievement = new Achievement("Complete 5 Habbit Building Tasks", 10, 5);
         }
 
     }

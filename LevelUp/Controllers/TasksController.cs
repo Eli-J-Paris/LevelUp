@@ -117,13 +117,17 @@ namespace LevelUp.Controllers
 
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
-            if(!IsTaskUnique(task)) return Redirect("/tasks");
+
+            if (!IsTaskUnique(task, user))
+            {
+                return Json(new { success = false, message = "Task is not Unique" });
 
             user.DailyTasks.Add(task);
             _context.Users.Update(user);
 
             _context.SaveChanges();
-            return Redirect("/tasks");
+
+            return Json(new { success = true, redirectUrl = Url.Action("","tasks") });
         }
 
         [HttpPost]
@@ -135,13 +139,14 @@ namespace LevelUp.Controllers
 
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
-            if (!IsTaskUnique(task)) return Redirect("/tasks");
+
+            if (!IsTaskUnique(task, user)) return Json(new { success = false, message = "Task is not Unique" });
 
             user.WeeklyTasks.Add(task);
             _context.Users.Update(user);
 
             _context.SaveChanges();
-            return Redirect("/tasks");
+            return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
         }
 
         [HttpPost]
@@ -153,13 +158,13 @@ namespace LevelUp.Controllers
 
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
-            if (!IsTaskUnique(task)) return Redirect("/tasks");
+            if (!IsTaskUnique(task, user)) return Json(new { success = false, message = "Task is not Unique" });
 
             user.ToDoTasks.Add(task);
             _context.Users.Update(user);
 
             _context.SaveChanges();
-            return Redirect("/tasks");
+            return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
         }
 
         private User? GetActiveUser(HttpRequest request)
@@ -167,7 +172,13 @@ namespace LevelUp.Controllers
             var userId = Convert.ToInt32(request.Cookies["activeUser"]);
             var userAuth = request.Cookies["userAuth"];
 
-            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).FirstOrDefault(u => u.Id == userId);
+            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).Include(u => u.Achievements)
+                .ThenInclude(a => a.Hygenie5Achievement)
+                        .Include(a => a.Achievements).ThenInclude(a => a.HabitBuilding5Achievement)
+                                .Include(a => a.Achievements).ThenInclude(a => a.Mindfulness5Achievement)
+                                                .Include(a => a.Achievements).ThenInclude(a => a.Productivity5Achievement)
+                                                                .Include(a => a.Achievements).ThenInclude(a => a.Wellness5Achievement)
+                                                                .FirstOrDefault(u => u.Id == userId);
 
             if (user != null)
             {
@@ -256,11 +267,13 @@ namespace LevelUp.Controllers
             return Redirect("/tasks");
         }
 
-        private bool IsTaskUnique(ITask taskToCheck)
+
+
+        private bool IsTaskUnique(ITask taskToCheck, User user)
         {
-            bool isUniqueInDailyTasks = !_context.DailyTasks.Any(t => t.Title == taskToCheck.Title);
-            bool isUniqueInWeeklyTasks = !_context.WeeklyTasks.Any(t => t.Title == taskToCheck.Title);
-            bool isUniqueInToDoTasks = !_context.ToDoTasks.Any(t => t.Title == taskToCheck.Title);
+            bool isUniqueInDailyTasks = !user.DailyTasks.Any(t => t.Title == taskToCheck.Title);
+            bool isUniqueInWeeklyTasks = !user.WeeklyTasks.Any(t => t.Title == taskToCheck.Title);
+            bool isUniqueInToDoTasks = !user.ToDoTasks.Any(t => t.Title == taskToCheck.Title);
 
             return isUniqueInDailyTasks && isUniqueInWeeklyTasks && isUniqueInToDoTasks;
         }
@@ -274,7 +287,10 @@ namespace LevelUp.Controllers
 
                 new DailyTask {Title = "Take Supplements", Description = "take your daily vitamins and suppliments", TaskType = "daily", Category = "Wellness", Difficulty = 1, XpReward = 1, AttributeReward = 1},
                 new DailyTask {Title = "Make Bed", Description = "you made your bed this morning!", TaskType = "daily", Category = "HabitBuilding", Difficulty = 2, XpReward = 2, AttributeReward = 1},
-                
+                new DailyTask {Title = "Brush Teeth", Description = "brush your teeth twice a day", TaskType = "daily", Category = "Hygenie", Difficulty = 1, XpReward = 1, AttributeReward = 0},
+                new DailyTask {Title = "Shower", Description = "clean your self", TaskType = "daily", Category = "Hygenie", Difficulty = 1, XpReward = 1, AttributeReward = 0},
+                new DailyTask {Title = "Meditate", Description = "clear your mind", TaskType = "daily", Category = "Mindfulness", Difficulty = 2, XpReward = 2, AttributeReward = 0},
+
             };
             // creates the weekly tasks
             var defaultWeeklyTasks = new List<WeeklyTask>
@@ -282,6 +298,14 @@ namespace LevelUp.Controllers
                 //new WeeklyTask {Title = "", Description = "", TaskType = "", Category = "", Difficulty = 0, XpReward = 0, AttributeReward = 0},
                 
                 new WeeklyTask {Title = "Laundry", Description = "do your laundry for the week", TaskType = "weekly", Category = "HabitBuilding", Difficulty = 1, XpReward = 5, AttributeReward = 2},
+                new WeeklyTask {Title = "Grocery Shopping", Description = "stock up on healthy food stuffs", TaskType = "weekly", Category = "Productivity", Difficulty = 2, XpReward = 7, AttributeReward = 1},
+                new WeeklyTask {Title = "Reflect", Description = "reflect on your week, what has gone well and what could you have done differently?", TaskType = "weekly", Category = "Mindfulness", Difficulty = 3, XpReward = 10, AttributeReward = 3},
+                new WeeklyTask {Title = "Clean Your Home", Description = "A clean space is a canvas for a clear mind", TaskType = "weekly", Category = "Hygenie", Difficulty = 2, XpReward = 6, AttributeReward = 1},
+                new WeeklyTask {Title = "Meet Your Nutritional Goals", Description = "make a plan on how you can eat health and stick to it!", TaskType = "weekly", Category = "Wellness", Difficulty = 3, XpReward = 9, AttributeReward = 1},
+
+
+
+
             };
             // creates user to hold tasks
             var returnUser = new User { Id = -1, Name = "TaskSeed", Username = "TaskSeed", Password = "TaskSeed" };

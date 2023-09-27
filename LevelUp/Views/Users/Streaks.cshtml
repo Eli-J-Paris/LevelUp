@@ -9,17 +9,18 @@
         <ul>
             @foreach(KeyValuePair<string, int> streak in streaks)
             {
-                <li>@streak.Key - @streak.Value</li>
+                <li>@streak.Key - @streak.Value Days in a row</li>
             }
         </ul>
     </div>
     <div class="textblock col-6">
         <h2>Achievements</h2>
         <ul>
-            @foreach (KeyValuePair<string, int> streak in streaks)
-            {
-                <li>@streak.Key - @streak.Value</li>
-            }
+            <li>Complete 5 Hygenie Tasks - @Model.Achievements.Hygenie5Achievement.Score / @Model.Achievements.Hygenie5Achievement.MaxScore</li>
+            <li>Complete 5 Wellness Tasks - @Model.Achievements.Wellness5Achievement.Score / @Model.Achievements.Wellness5Achievement.MaxScore</li>
+            <li>Complete 5 Mindfulness Tasks - @Model.Achievements.Mindfulness5Achievement.Score / @Model.Achievements.Mindfulness5Achievement.MaxScore</li>
+            <li>Complete 5 Productivity Tasks - @Model.Achievements.Productivity5Achievement.Score / @Model.Achievements.Productivity5Achievement.MaxScore</li>
+            <li>Complete 5 Habit Building Tasks - @Model.Achievements.HabitBuilding5Achievement.Score / @Model.Achievements.HabitBuilding5Achievement.MaxScore</li>
         </ul>
     </div>
 </div>

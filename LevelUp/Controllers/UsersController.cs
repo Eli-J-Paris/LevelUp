@@ -58,7 +58,7 @@ namespace LevelUp.Controllers
                 Response.Cookies.Append("activeUser", user.Id.ToString());
                 Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
 
-                return Redirect("/profile");
+                return Redirect("/tutorial");
             }
             else
             {
@@ -66,6 +66,11 @@ namespace LevelUp.Controllers
        
                 return Redirect("/users/signup");
             }
+        }
+        [Route("/tutorial")]
+        public IActionResult Tutorial()
+        {
+            return View();
         }
 
         [HttpGet("users/login")]
@@ -94,7 +99,7 @@ namespace LevelUp.Controllers
                 return Json(new { success = true, redirectUrl = Url.Action("Profile", "Users") });
             }
 
-            // If login fails, send a JSON response.
+             // If login fails, send a JSON response.
             return Json(new { success = false, message = "LogIn Failed" });
         }
 
@@ -229,7 +234,7 @@ namespace LevelUp.Controllers
             {
                 user.Wellness += 1;
             }
-            else if (category == "mindfullness")
+            else if (category == "mindfulness")
             {
                 user.Mindfullness += 1;
             }
