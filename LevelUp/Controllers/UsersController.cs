@@ -58,7 +58,7 @@ namespace LevelUp.Controllers
                 Response.Cookies.Append("activeUser", user.Id.ToString());
                 Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
 
-                return Redirect("/profile");
+                return Redirect("/tutorial");
             }
             else
             {
@@ -66,6 +66,11 @@ namespace LevelUp.Controllers
        
                 return Redirect("/users/signup");
             }
+        }
+        [Route("/tutorial")]
+        public IActionResult Tutorial()
+        {
+            return View();
         }
 
         [HttpGet("users/login")]
