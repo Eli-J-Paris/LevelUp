@@ -4,10 +4,13 @@
     foreach(var camp in Model.Camps)
     {
         <a href="/camps/@camp.Id">@camp.Title</a>
-        <br />
+
         if(camp.Owner == Model.Username)
         {
-            <p>Disban @camp.Title</p>
+            <form method="get" action ="/camps/@Model.Id/delete">
+                <button type="submit" class="btn btn-danger" fdprocessedid="r7n6ym">Disban @camp.Title</button>
+            </form>
+
         }
     }
 }

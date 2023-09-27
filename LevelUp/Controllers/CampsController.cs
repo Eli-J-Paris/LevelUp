@@ -93,7 +93,32 @@ namespace LevelUp.Controllers
         }
 
 
+        [Route("/camps/{campId:int}/details")]
+        public IActionResult Details(int campId)
+        {
+            var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).Include(c => c.Members).First();
+            return View(camp);
+        }
 
+        [HttpGet]
+        [Route("/camps/{campId:int}/delete")]
+        public IActionResult DeleteView(int campId)
+        {
+            var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).Include(c => c.Members).First();
+
+            return View(camp);
+        }
+
+
+        [HttpPost]
+        [Route("/camps/{campId:int}/delete")]
+        public IActionResult Delete(int campId)
+        {
+            var camp = _context.Camps.Find(campId);
+            _context.Camps.Remove(camp);
+            _context.SaveChanges();
+            return Redirect("/camps");
+        }
 
         private User? GetActiveUser(HttpRequest request)
         {
