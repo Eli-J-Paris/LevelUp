@@ -59,6 +59,7 @@
                 <option value="HabitBuilding">HabitBuilding</option>
             </select>
         </div>
+        <p id="TaskStatus" class="text-danger" style="display: none;"></p>
         <br />
         <div class="d-flex justify-content-center">
             <button type="submit" class="btn btn-success" fdprocessedid="r7n6ym">Create Task</button>
@@ -74,16 +75,61 @@
     function selectDaily(x) {
         if (x.checked) {
             document.getElementById("NewTaskForm").action = "/tasks/newdaily";
+            return true;
         }
+        return false;
     }
+
     function selectWeekly(x) {
         if (x.checked) {
             document.getElementById("NewTaskForm").action = "/tasks/newweekly";
+            return true;
         }
+        return false;
     }
+
     function selectToDo(x) {
         if (x.checked) {
             document.getElementById("NewTaskForm").action = "/tasks/newtodo";
         }
     }
+
+     // Fetching the `loginForm` and `loginStatus` elements from the DOM
+    const newTaskForm = document.getElementById('NewTaskForm');
+    const taskStatus = document.getElementById('TaskStatus');
+
+     // Adding an event listener to the `loginForm` for the `submit` button, if clicked this script will run
+    newTaskForm.addEventListener('submit', async (eventObject) => {
+        eventObject.preventDefault();
+
+        // Making an asynchronous POST request to the '/users/login' endpoint.
+        try {
+            const response = await fetch(newTaskForm.action, {
+                method: 'POST',
+                body: new FormData(newTaskForm)
+            });
+
+            // Parsing the JSON response from DB
+            const data = await response.json();
+
+            // If the data success property is true meaning the user inputed the correct username and password
+            if (data.success) {
+                // Rederecting to the user show page if successful
+                window.location.href = data.redirectUrl;
+            } else {
+                // The string I set in textContent is what will be displayed when made visible
+                taskStatus.textContent = "Task Already exists please re-name task and try again";
+
+                // By setting `loginStatus` to `block`,I can make the loginStatus
+                // element visible and it will take up the full width of its container
+                taskStatus.style.display = "block";
+            }
+            // If something goes wrong, catch it and then log it into the void
+            // I don't know much about error handling and how that would even work with
+            // javascript inside of a .Net MVC app figuring out the above out was hard enough to be honest
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
 </script>

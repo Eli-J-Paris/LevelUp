@@ -94,7 +94,7 @@ namespace LevelUp.Controllers
                 return Json(new { success = true, redirectUrl = Url.Action("Profile", "Users") });
             }
 
-            // If login fails, send a JSON response.
+             // If login fails, send a JSON response.
             return Json(new { success = false, message = "LogIn Failed" });
         }
 
@@ -229,7 +229,7 @@ namespace LevelUp.Controllers
             {
                 user.Wellness += 1;
             }
-            else if (category == "mindfullness")
+            else if (category == "mindfulness")
             {
                 user.Mindfullness += 1;
             }

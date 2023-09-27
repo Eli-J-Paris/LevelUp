@@ -117,13 +117,19 @@ namespace LevelUp.Controllers
 
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
-            if(!IsTaskUnique(task)) return Redirect("/tasks");
+
+
+            if (!IsTaskUnique(task, user))
+            {
+                return Json(new { success = false, message = "Task is not Unique" });
+            }
 
             user.DailyTasks.Add(task);
             _context.Users.Update(user);
 
             _context.SaveChanges();
-            return Redirect("/tasks");
+
+            return Json(new { success = true, redirectUrl = Url.Action("","tasks") });
         }
 
         [HttpPost]
@@ -135,13 +141,13 @@ namespace LevelUp.Controllers
 
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
-            if (!IsTaskUnique(task)) return Redirect("/tasks");
+            if (!IsTaskUnique(task, user)) return Json(new { success = false, message = "Task is not Unique" });
 
             user.WeeklyTasks.Add(task);
             _context.Users.Update(user);
 
             _context.SaveChanges();
-            return Redirect("/tasks");
+            return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
         }
 
         [HttpPost]
@@ -153,13 +159,13 @@ namespace LevelUp.Controllers
 
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
-            if (!IsTaskUnique(task, user)) return Redirect("/tasks");
+            if (!IsTaskUnique(task, user)) return Json(new { success = false, message = "Task is not Unique" });
 
             user.ToDoTasks.Add(task);
             _context.Users.Update(user);
 
             _context.SaveChanges();
-            return Redirect("/tasks");
+            return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
         }
 
         private User? GetActiveUser(HttpRequest request)
@@ -167,7 +173,13 @@ namespace LevelUp.Controllers
             var userId = Convert.ToInt32(request.Cookies["activeUser"]);
             var userAuth = request.Cookies["userAuth"];
 
-            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).FirstOrDefault(u => u.Id == userId);
+            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).Include(u => u.Achievements)
+                .ThenInclude(a => a.Hygenie5Achievement)
+                        .Include(a => a.Achievements).ThenInclude(a => a.HabitBuilding5Achievement)
+                                .Include(a => a.Achievements).ThenInclude(a => a.Mindfulness5Achievement)
+                                                .Include(a => a.Achievements).ThenInclude(a => a.Productivity5Achievement)
+                                                                .Include(a => a.Achievements).ThenInclude(a => a.Wellness5Achievement)
+                                                                .FirstOrDefault(u => u.Id == userId);
 
             if (user != null)
             {
@@ -255,6 +267,8 @@ namespace LevelUp.Controllers
             _context.SaveChanges();
             return Redirect("/tasks");
         }
+
+
 
         private bool IsTaskUnique(ITask taskToCheck, User user)
         {
