@@ -20,7 +20,6 @@ namespace LevelUp.Models
         public List<DailyTask> DailyTasks { get; set; } = new List<DailyTask>();
         public List<WeeklyTask> WeeklyTasks { get; set; } = new List<WeeklyTask>();
         public List<ToDoTask> ToDoTasks { get; set; } = new List<ToDoTask>();
-
         public int Level { get; set; } = 1;
         public int Xp { get; set; } = 0;
         public int Hygiene { get; set; } = 0;
@@ -30,7 +29,7 @@ namespace LevelUp.Models
         public int HabitBuilding { get; set; } = 0;
         public string PfpUrl { get; set; } = "";
         public AchievementHandler? Achievements { get; set; } = new AchievementHandler();
-
+        public List<Camp> Camps { get; set; } = new List<Camp>();
         public string Encrypt(string password)
         {
             HashAlgorithm sha = SHA256.Create();
@@ -180,7 +179,6 @@ namespace LevelUp.Models
                 context.AllAchievements.Update(Achievements);
             }
         }
-
 
         public void AddDaily(ITask task, LevelUpContext context)
         {

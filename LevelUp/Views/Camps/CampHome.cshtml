@@ -1,0 +1,23 @@
+﻿@model User
+<p>@Model.Username Camps page</p>
+@{
+    foreach(var camp in Model.Camps)
+    {
+        <a href="/camps/@camp.Id">@camp.Title</a>
+
+        if(camp.Owner == Model.Username)
+        {
+            <form method="get" action ="/camps/@Model.Id/delete">
+                <button type="submit" class="btn btn-danger" fdprocessedid="r7n6ym">Disban @camp.Title</button>
+            </form>
+
+        }
+    }
+}
+<br />
+<a href="/camps/new">Create new Camp</a>
+
+<form class="d-flex" method="post" action="/camps/search">
+    <input class="form-control me-sm-2" type="search" name="query" placeholder="Find a Camp">
+    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+</form>

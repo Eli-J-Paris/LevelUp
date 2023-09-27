@@ -1,0 +1,9 @@
+﻿@model List<Camp>
+<h1>Camps</h1>
+@{
+    foreach(var camp in Model)
+    {
+        <h1>@camp.Title</h1> 
+        <a href="/camps/@camp.Id/join">Join</a>
+    }
+}

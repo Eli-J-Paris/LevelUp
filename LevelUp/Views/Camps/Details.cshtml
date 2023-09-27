@@ -1,0 +1,21 @@
+﻿@model Camp;
+<div class="col-md-6 offset-lg-3 align-middle">
+    <h1 class="d-flex justify-content-center">@Model.Title</h1>
+    <h2 class="d-flex justify-content-center">Owner: @Model.Owner</h2>
+    <div class="textblock d-flex justify-content-center">
+        <h1 class=" d-flex justify-content-center"> Description:</h1>
+              <h3>@Model.Description</h3>
+    </div>
+   
+
+    <div class=" col-4  textblock">
+        <h1>Members:</h1>
+        @{
+            foreach (var member in Model.Members)
+            {
+                <li>@member.Username</li>
+            }
+        }
+    </div>
+</div>
+
