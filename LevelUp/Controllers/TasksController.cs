@@ -153,7 +153,7 @@ namespace LevelUp.Controllers
 
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
-            if (!IsTaskUnique(task)) return Redirect("/tasks");
+            if (!IsTaskUnique(task, user)) return Redirect("/tasks");
 
             user.ToDoTasks.Add(task);
             _context.Users.Update(user);
@@ -256,11 +256,11 @@ namespace LevelUp.Controllers
             return Redirect("/tasks");
         }
 
-        private bool IsTaskUnique(ITask taskToCheck)
+        private bool IsTaskUnique(ITask taskToCheck, User user)
         {
-            bool isUniqueInDailyTasks = !_context.DailyTasks.Any(t => t.Title == taskToCheck.Title);
-            bool isUniqueInWeeklyTasks = !_context.WeeklyTasks.Any(t => t.Title == taskToCheck.Title);
-            bool isUniqueInToDoTasks = !_context.ToDoTasks.Any(t => t.Title == taskToCheck.Title);
+            bool isUniqueInDailyTasks = !user.DailyTasks.Any(t => t.Title == taskToCheck.Title);
+            bool isUniqueInWeeklyTasks = !user.WeeklyTasks.Any(t => t.Title == taskToCheck.Title);
+            bool isUniqueInToDoTasks = !user.ToDoTasks.Any(t => t.Title == taskToCheck.Title);
 
             return isUniqueInDailyTasks && isUniqueInWeeklyTasks && isUniqueInToDoTasks;
         }
