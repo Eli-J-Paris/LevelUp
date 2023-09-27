@@ -208,10 +208,17 @@ namespace LevelUp.Models
             {
                 "blue baseball cap",
                 "black beanie",
+                "football helmet",
                 "Top hat",
+                "pirate hat",
+                "fantasy wizard hat",
                 "pink cowboy hat",
+                "joker hat",
+                "space helmet",
                 "golden crown"
             };
+            var i = Level - 1;
+            if (i > 9) i = 9;
             return $"a {FavoriteAnimal} wearing a {hats[Level - 1]}";
         }
     }
