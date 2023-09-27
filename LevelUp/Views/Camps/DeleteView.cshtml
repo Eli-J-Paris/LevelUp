@@ -6,12 +6,12 @@
     <link rel="stylesheet" href="/css/MintTheme.css">
 </head>
 
-<div class ="col-md-6 offset-lg-3 align-middle">
+<div style ="margin-top:50px;"class ="col-md-6 offset-lg-3 align-middle">
     <h1 class="d-flex justify-content-center">Are you sure you want to delete @Model.Title?</h1>
-    <form method="post" action="/camps/@Model.Id/delete">
+    <form class="d-flex justify-content-center" method="post" action="/camps/@Model.Id/delete">
         <button type="submit" class="btn btn-danger" fdprocessedid="r7n6ym">Disban @Model.Title</button>
     </form>
-    <form method="get" action="/camps/@Model.Id">
+    <form class="d-flex justify-content-center" method="get" action="/camps/@Model.Id">
         <button type="submit" class="btn btn-success" fdprocessedid="r7n6ym">On Second thought. . .</button>
     </form>
 </div>

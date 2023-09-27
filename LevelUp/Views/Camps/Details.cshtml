@@ -1,21 +1,51 @@
 ﻿@model Camp;
+@{
+    string owner = ViewData["Owner"] as string;
+    User activeUser = ViewData["ActiveUser"] as User;
+}
 <div class="col-md-6 offset-lg-3 align-middle">
+
     <h1 class="d-flex justify-content-center">@Model.Title</h1>
     <h2 class="d-flex justify-content-center">Owner: @Model.Owner</h2>
-    <div class="textblock d-flex justify-content-center">
-        <h1 class=" d-flex justify-content-center"> Description:</h1>
-              <h3>@Model.Description</h3>
-    </div>
-   
+    
+    <div class="flex-container d-flex justify-content-center">
+        <div class="textblock justify-content-center">
+            <h1 class=" d-flex justify-content-center"> Description:</h1>
+            
+            <h3 style="width:750px; height:250px; word-wrap: break-word">@Model.Description </h3>
+        </div>
 
-    <div class=" col-4  textblock">
-        <h1>Members:</h1>
-        @{
-            foreach (var member in Model.Members)
-            {
-                <li>@member.Username</li>
+
+        <div class="scrollable-div col-4 textblock">
+            <h1>Members:</h1>
+            @{
+                foreach (var member in Model.Members)
+                {
+                    <li>@member.Username</li>
+                }
+                for (int i = 0; i < 100; i++)
+                {
+                    <li>Member:@i</li>
+                }
             }
+        </div>
+    </div>
+    <br />
+    <div class="d-flex justify-content-center">
+        @if (Model.Owner == owner)
+        {
+            <form method="get" action="/camps/@Model.Id/delete">
+                <button type="submit" class="btn btn-danger" fdprocessedid="r7n6ym">Disban @Model.Title</button>
+            </form>
+
+        }
+        else if(Model.Members.Contains(activeUser))
+        {
+            <form>
+                <button type="submit" class="btn btn-danger" fdprocessedid="r7n6ym">Leave @Model.Title</button>
+            </form>
         }
     </div>
+    @*method="post" action="/camps/@Model.Id/@activeUser.Id/leave"*@
 </div>
 
