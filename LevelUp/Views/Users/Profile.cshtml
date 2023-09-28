@@ -33,7 +33,7 @@
                     <h2>Achievements</h2>
                      <div class="textblock">
                     @{
-                        if(Model.User.Achievements.Hygenie5Achievement.Score != 5)
+                        if(Model.User.Achievements.Hygenie5Achievement.Score < 5)
                         {
                             <p> Complete five Hygenie Tasks @Model.User.Achievements.Hygenie5Achievement.Score/5</p>
                         }
@@ -42,7 +42,7 @@
                             <p>Complete five hygenie tasks: <span class="text-success">COMPLETED</span></p>
                         }
 
-                        if (Model.User.Achievements.Productivity5Achievement.Score != 5)
+                            if (Model.User.Achievements.Productivity5Achievement.Score < 5)
                         {
                             <p> Complete five productivity Tasks @Model.User.Achievements.Productivity5Achievement.Score/5</p>
                         }
@@ -51,7 +51,7 @@
                             <p>Complete five productivity tasks: <span class="text-success">COMPLETED</span></p>
                         }
 
-                        if (Model.User.Achievements.Wellness5Achievement.Score != 5)
+                            if (Model.User.Achievements.Wellness5Achievement.Score < 5)
                         {
                             <p> Complete five wellness Tasks @Model.User.Achievements.Wellness5Achievement.Score/5</p>
                         }
@@ -59,7 +59,7 @@
                         {
                             <p>Complete five wellness tasks: <span class="text-success">COMPLETED</span></p>
                         }
-                        if (Model.User.Achievements.Mindfulness5Achievement.Score != 5)
+                            if (Model.User.Achievements.Mindfulness5Achievement.Score < 5)
                         {
                             <p> Complete five mindfulness Tasks @Model.User.Achievements.Mindfulness5Achievement.Score/5</p>
                         }
@@ -67,7 +67,7 @@
                         {
                             <p>Complete five mindfulness tasks: <span class="text-success">COMPLETED</span></p>
                         }
-                        if (Model.User.Achievements.HabitBuilding5Achievement.Score != 5)
+                            if (Model.User.Achievements.HabitBuilding5Achievement.Score < 5)
                         {
                             <p> Complete five habit building Tasks @Model.User.Achievements.HabitBuilding5Achievement.Score/5</p>
                         }
