@@ -112,59 +112,80 @@ namespace LevelUp.Controllers
         [Route("/tasks/newdaily")]
         public IActionResult CreateDailyTask(DailyTask task)
         {
-            task.XpReward = task.Difficulty;
-            task.AttributeReward = 1;
-
-            var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
-
-            if (!IsTaskUnique(task, user))
+            if (ModelState.IsValid)
             {
-                return Json(new { success = false, message = "Task is not Unique" });
+                task.XpReward = task.Difficulty;
+                task.AttributeReward = 1;
+
+                var user = GetActiveUser(Request);
+                if (user == null) return Redirect("/users/login");
+
+                if (!IsTaskUnique(task, user))
+                {
+                    return Json(new { success = false, message = "Task is not Unique" });
+                }
+                user.DailyTasks.Add(task);
+                _context.Users.Update(user);
+
+                _context.SaveChanges();
+
+                return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
             }
-            user.DailyTasks.Add(task);
-            _context.Users.Update(user);
-
-            _context.SaveChanges();
-
-            return Json(new { success = true, redirectUrl = Url.Action("","tasks") });
+            else
+            {
+                return View("NewTask", task);
+            }
         }
 
         [HttpPost]
         [Route("/tasks/newweekly")]
         public IActionResult CreateWeeklyTask(WeeklyTask task)
         {
-            task.XpReward = 3 * task.Difficulty;
-            task.AttributeReward = 1;
+            if (ModelState.IsValid)
+            {
+                task.XpReward = 3 * task.Difficulty;
+                task.AttributeReward = 1;
 
-            var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+                var user = GetActiveUser(Request);
+                if (user == null) return Redirect("/users/login");
 
-            if (!IsTaskUnique(task, user)) return Json(new { success = false, message = "Task is not Unique" });
+                if (!IsTaskUnique(task, user)) return Json(new { success = false, message = "Task is not Unique" });
 
-            user.WeeklyTasks.Add(task);
-            _context.Users.Update(user);
+                user.WeeklyTasks.Add(task);
+                _context.Users.Update(user);
 
-            _context.SaveChanges();
-            return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
+                _context.SaveChanges();
+                return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
+            }
+            else
+            {
+                return View("NewTask", task);
+            }
         }
 
         [HttpPost]
         [Route("/tasks/newtodo")]
         public IActionResult CreateToDoTask(ToDoTask task)
         {
-            task.XpReward = task.Difficulty;
-            task.AttributeReward = 1;
+            if (ModelState.IsValid)
+            {
+                task.XpReward = task.Difficulty;
+                task.AttributeReward = 1;
 
-            var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
-            if (!IsTaskUnique(task, user)) return Json(new { success = false, message = "Task is not Unique" });
+                var user = GetActiveUser(Request);
+                if (user == null) return Redirect("/users/login");
+                if (!IsTaskUnique(task, user)) return Json(new { success = false, message = "Task is not Unique" });
 
-            user.ToDoTasks.Add(task);
-            _context.Users.Update(user);
+                user.ToDoTasks.Add(task);
+                _context.Users.Update(user);
 
-            _context.SaveChanges();
-            return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
+                _context.SaveChanges();
+                return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
+            }
+            else
+            {
+                return View("NewTask", task);
+            }
         }
 
         private User? GetActiveUser(HttpRequest request)

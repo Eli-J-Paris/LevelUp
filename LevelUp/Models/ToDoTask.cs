@@ -1,10 +1,18 @@
-﻿namespace LevelUp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LevelUp.Models
 {
     public class ToDoTask : ITask
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
+
+        [Required(ErrorMessage = "Task Type is required")]
         public string TaskType { get; set; }
+
+        [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
         public string Category { get; set; }
         public int Difficulty { get; set; }

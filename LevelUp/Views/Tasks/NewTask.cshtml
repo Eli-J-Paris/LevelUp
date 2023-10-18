@@ -42,15 +42,17 @@
 
         <br />
         <div class="form-group">
-            <input class="form-control form-control-lg" type="text" id="taskname" name="Title" placeholder="What is your task called. . ." required fdprocessedid="wval2n">
+            <input asp-for="Title" class="form-control form-control-lg" type="text" id="taskname" name="Title" placeholder="What is your task called. . ." fdprocessedid="wval2n">
+            <span asp-validation-for="Title" class="text-danger"></span>
         </div>
         <br />
         <div class="form-group">
-            <textarea class="form-control" id="description" rows="5" maxlength="255" placeholder="Description" name="Description" required></textarea>
+            <textarea asp-for="Description" class="form-control" id="description" rows="5" maxlength="255" placeholder="Description" name="Description"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label for="category" class="form-label mt-4 d-flex justify-content-center">Type of Task</label>
-            <select name="Category" id="category" class="form-select" required fdprocessedid="jt9bpd">
+            <select asp-for="Category" name="Category" id="category" class="form-select" fdprocessedid="jt9bpd">
                 <option value="">--Please choose an option--</option>
                 <option value="Hygiene">Hygiene</option>
                 <option value="Wellness">Wellness</option>
@@ -58,6 +60,7 @@
                 <option value="Productivity">Productivity</option>
                 <option value="HabitBuilding">HabitBuilding</option>
             </select>
+            <span asp-validation-for="Category" class="text-danger"></span>
         </div>
         <p id="TaskStatus" class="text-danger" style="display: none;"></p>
         <br />
