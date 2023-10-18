@@ -286,6 +286,7 @@ namespace LevelUp.Controllers
                 {
                     var response = await httpClient.GetStringAsync(_ApiCallForAffirmation);
                     var jsonResponse = JObject.Parse(response);
+                    Log.Information($"Api call to affirmations.dev successful: {jsonResponse["affirmation"].ToString()}");
                     return jsonResponse["affirmation"].ToString();
                 }
             }
