@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks.Sources;
 using OpenAI_API.Images;
 using OpenAI_API;
+using Serilog;
+using static System.Net.WebRequestMethods;
 
 namespace LevelUp.Models
 {
@@ -193,10 +195,17 @@ namespace LevelUp.Models
 
         public async Task<string> GetAIGeneratedAvatar(string apiKey)
         {
-            OpenAIAPI api = new OpenAIAPI(apiKey);
-            //async Task<ImageResult> CreateImageAsync(ImageGenerationRequest request);
-            var result = await api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest(GetAvatarPrompt(), 1, ImageSize._256));
-            return result.Data[0].Url;
+            try
+            {
+                OpenAIAPI api = new OpenAIAPI(apiKey);
+                var result = await api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest(GetAvatarPrompt(), 1, ImageSize._256));
+                return result.Data[0].Url;
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "OpenAI API not responding");
+                return "https://placehold.co/256x256?text=OpenAI%20Api%20Not%20Responding";
+            }
         }
 
         private string GetAvatarPrompt()
