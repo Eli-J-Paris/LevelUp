@@ -9,6 +9,7 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using OpenAI_API.Images;
 using OpenAI_API;
+using Serilog;
 
 using System.Collections;
 namespace LevelUp.Controllers
@@ -54,6 +55,8 @@ namespace LevelUp.Controllers
                 
                 _context.Users.Add(user);
                 _context.SaveChanges();
+
+                Log.Information("User successfully created and saved to database.");
 
                 Response.Cookies.Append("activeUser", user.Id.ToString());
                 Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
