@@ -29,7 +29,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 // Handles status codes like 404
-app.UseStatusCodePagesWithReExecute("/Error/StatusCode/{0}");
+app.UseStatusCodePagesWithReExecute("/Error/Error", "?statusCode={0}");
+
 
 
 app.UseHttpsRedirection();
