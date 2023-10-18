@@ -1,7 +1,10 @@
 ﻿
+using LevelUp.DataAccess;
+using System.Threading.Tasks;
+
 namespace LevelUp.Models
 {
-    public class DailyTask : ITask
+    public class DailyTask : ITask, IRecuring
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -34,7 +37,7 @@ namespace LevelUp.Models
             User.XpGain(-XpReward);
         }
 
-        public void Reset()
+        public void Reset(LevelUpContext? context)
         {
 
             DateOnly dayCompleted = new DateOnly(2000, 1, 1);
@@ -62,6 +65,11 @@ namespace LevelUp.Models
                     Streak = 0;
                 }
             }
+            if (context != null)
+            {
+                context.DailyTasks.Update(this);
+                context.SaveChanges();
+            };
         }
     }
 }

@@ -1,6 +1,9 @@
-﻿namespace LevelUp.Models
+﻿using LevelUp.DataAccess;
+using System.Threading.Tasks;
+
+namespace LevelUp.Models
 {
-    public class WeeklyTask : ITask
+    public class WeeklyTask : ITask, IRecuring
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -32,7 +35,7 @@
             User.XpGain(-XpReward);
         }
 
-        public void Reset()
+        public void Reset(LevelUpContext? context)
         {
             DateOnly dayCompleted = new DateOnly(2000, 1, 1);
             var thisWeek = GetWeek(true);
@@ -57,6 +60,11 @@
                     Streak = 0;
                 }
             }
+            if (context != null)
+            {
+                context.WeeklyTasks.Update(this);
+                context.SaveChanges();
+            };
         }
 
         public List<DateOnly> GetWeek(bool thisWeek)

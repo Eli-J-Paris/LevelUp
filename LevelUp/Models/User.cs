@@ -64,7 +64,13 @@ namespace LevelUp.Models
 
         public void Reset(LevelUpContext? context, string apiKey)
         {
-            if(Xp >= NeededXp())
+            LevelUp(context, apiKey);
+            LevelDown(context, apiKey);
+            ResetTasks(context);
+        }
+        public void LevelUp(LevelUpContext? context, string apiKey)
+        {
+            if (Xp >= NeededXp())
             {
                 Xp -= NeededXp();
                 Level++;
@@ -75,8 +81,10 @@ namespace LevelUp.Models
                     context.SaveChanges();
                 }
             }
-
-            if(Xp < 0)
+        }
+        public void LevelDown(LevelUpContext? context, string apiKey)
+        {
+            if (Xp < 0)
             {
                 Level--;
                 Xp += NeededXp();
@@ -87,28 +95,17 @@ namespace LevelUp.Models
                     context.SaveChanges();
                 }
             }
-
-            foreach(DailyTask task in DailyTasks)
+        }
+        public void ResetTasks(LevelUpContext? context)
+        {
+            var tasks = new List<IRecuring>();
+            tasks.AddRange(DailyTasks);
+            tasks.AddRange(WeeklyTasks);
+            foreach (IRecuring task in tasks)
             {
-                task.Reset();
-                if (context != null)
-                {
-                    context.DailyTasks.Update(task);
-                    context.SaveChanges();
-                };
-            }
-
-            foreach (WeeklyTask task in WeeklyTasks)
-            {
-                task.Reset();
-                if (context != null)
-                {
-                    context.WeeklyTasks.Update(task);
-                    context.SaveChanges();
-                };
+                task.Reset(context);
             }
         }
-      
         public int NeededXp()
         {
             return Level * 10;
