@@ -218,8 +218,8 @@ namespace LevelUp.Models
                 "golden crown"
             };
             var i = Level - 1;
-            if (i > 9) i = 9;
-            return $"a {FavoriteAnimal} wearing a {hats[Level - 1]}";
+            if (i > hats.Count - 1) i = hats.Count - 1;
+            return $"a {FavoriteAnimal} wearing a {hats[i]}";
         }
     }
 }
