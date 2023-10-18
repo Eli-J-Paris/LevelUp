@@ -35,16 +35,23 @@ namespace LevelUp.Controllers
         [Route("/camps/create")]
         public IActionResult Create(Camp camp)
         {
-            var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (ModelState.IsValid)
+            {
+                var user = GetActiveUser(Request);
+                if (user == null) return Redirect("/users/login");
 
-            _context.Camps.Add(camp);
-            camp.Members.Add(user);
-            camp.Owner = user.Username;
+                _context.Camps.Add(camp);
+                camp.Members.Add(user);
+                camp.Owner = user.Username;
 
-            //user.Camps.Add(camp);
-            _context.SaveChanges();
-            return Redirect("/camps");
+                //user.Camps.Add(camp);
+                _context.SaveChanges();
+                return Redirect("/camps");
+            }
+            else
+            {
+                return View("New", camp);
+            }
         }
 
         [Route("/camps/{campId:int}")]
@@ -52,6 +59,11 @@ namespace LevelUp.Controllers
         {
             var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).Include(c => c.Members).First();
            
+            if (camp == null)
+            {
+                return NotFound();
+            }
+
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
             ViewData["ActiveUser"] = user;
@@ -70,6 +82,12 @@ namespace LevelUp.Controllers
 
             newmessage.User = user;
             var camp = _context.Camps.Where(c=>c.Id == campId).Include(c => c.MessageBoard).First();
+
+            if (camp == null)
+            {
+                return NotFound();
+            }
+
             camp.MessageBoard.Add(newmessage);
             _context.SaveChanges();
 
@@ -81,6 +99,12 @@ namespace LevelUp.Controllers
         public IActionResult Search(string query)
         {
             var camps = _context.Camps.Where(c => c.Title.Contains(query)).ToList();
+
+            if (camps == null)
+            {
+                return NotFound();
+            }
+
             return View(camps);
         }
 
@@ -88,6 +112,11 @@ namespace LevelUp.Controllers
         public IActionResult Join(int campId)
         {
             var camp = _context.Camps.Find(campId);
+
+            if (camp == null)
+            {
+                return NotFound();
+            }
 
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
@@ -108,6 +137,12 @@ namespace LevelUp.Controllers
             ViewData["ActiveUser"] = user;
 
             var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).Include(c => c.Members).First();
+
+            if (camp == null)
+            {
+                return NotFound();
+            }
+
             return View(camp);
         }
 
@@ -117,6 +152,11 @@ namespace LevelUp.Controllers
         {
             var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).Include(c => c.Members).First();
 
+            if (camp == null)
+            {
+                return NotFound();
+            }
+
             return View(camp);
         }
 
@@ -125,7 +165,13 @@ namespace LevelUp.Controllers
         [Route("/camps/{campId:int}/delete")]
         public IActionResult Delete(int campId)
         {
-            var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).First();            
+            var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).First();
+
+            if (camp == null)
+            {
+                return NotFound();
+            }
+
             _context.Camps.Remove(camp);
             _context.SaveChanges();
             return Redirect("/camps");
@@ -137,7 +183,19 @@ namespace LevelUp.Controllers
         public IActionResult Leave(int campId, int userId)
         {
             var camp = _context.Camps.Where(c => c.Id == campId).Include(c => c.MessageBoard).Include(c => c.Members).First();
+
+            if (camp == null)
+            {
+                return NotFound();
+            }
+
             var user = _context.Users.Find(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             camp.Members.Remove(user);
             _context.SaveChanges();
             return Redirect("/camps");
