@@ -280,14 +280,20 @@ namespace LevelUp.Controllers
 
         private async Task<string> _GetAffirmation()
         {
-            using (var httpClient = new HttpClient())
+            try
             {
-                var response = await httpClient.GetStringAsync(_ApiCallForAffirmation);
-                var jsonResponse = JObject.Parse(response);
-                return jsonResponse["affirmation"].ToString();
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetStringAsync(_ApiCallForAffirmation);
+                    var jsonResponse = JObject.Parse(response);
+                    return jsonResponse["affirmation"].ToString();
+                }
             }
-
-            return "Error Getting affirmation";
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "affirmations.dev not responding");
+                return "Error Loading Affirmation";
+            }
         }
 
 
