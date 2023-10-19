@@ -67,37 +67,6 @@ namespace LevelUp.Controllers
 
             // check to see if the task is alredy subscribed to and needs to be removed
             CheckSubscribeTaskStatus(type, user, task);
-            //if (type == "daily")
-            //{
-            //    if (user.DailyTasks.Select(t => t.Title).Contains(task.Title))
-            //    {
-            //        // removes task
-            //        user.DailyTasks.Remove(user.DailyTasks.FirstOrDefault(t => t.Title == task.Title));
-            //        _context.Users.Update(user);
-            //    }
-            //    else
-            //    {
-            //        // adds task
-            //        user.AddDaily(task, _context);
-            //        _context.Users.Update(user);
-
-            //    }
-            //}
-            //else if (type == "weekly")
-            //{
-            //    if (user.WeeklyTasks.Select(t => t.Title).Contains(task.Title))
-            //    {
-            //        // removes task
-            //        user.WeeklyTasks.Remove(user.WeeklyTasks.FirstOrDefault(t => t.Title == task.Title));
-            //        _context.Users.Update(user);
-            //    }
-            //    else
-            //    {
-            //        // adds task
-            //        user.AddWeekly(task, _context);
-            //        _context.Users.Update(user);
-            //    }
-            //}
             _context.SaveChanges();
             return Ok();
         }
