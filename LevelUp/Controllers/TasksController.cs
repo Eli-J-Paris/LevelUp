@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Serilog;
 namespace LevelUp.Controllers
 {
     public class TasksController : Controller
@@ -89,6 +89,13 @@ namespace LevelUp.Controllers
             }  // ends action due to bad inputs
 
             // check to see if the task is alredy subscribed to and needs to be removed
+            CheckSubscribeTaskStatus(type, user, task);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        public void CheckSubscribeTaskStatus(string type, User user, ITask task)
+        {
             if (type == "daily")
             {
                 if (user.DailyTasks.Select(t => t.Title).Contains(task.Title))
@@ -96,12 +103,14 @@ namespace LevelUp.Controllers
                     // removes task
                     user.DailyTasks.Remove(user.DailyTasks.FirstOrDefault(t => t.Title == task.Title));
                     _context.Users.Update(user);
+                    Log.Information("Daily subscribe Task Added");
                 }
                 else
                 {
                     // adds task
                     user.AddDaily(task, _context);
                     _context.Users.Update(user);
+                    Log.Information("Daily subscribe Task Removed");
 
                 }
             }
@@ -112,16 +121,16 @@ namespace LevelUp.Controllers
                     // removes task
                     user.WeeklyTasks.Remove(user.WeeklyTasks.FirstOrDefault(t => t.Title == task.Title));
                     _context.Users.Update(user);
+                    Log.Information("Weekly subscribe Task Added");
                 }
                 else
                 {
                     // adds task
                     user.AddWeekly(task, _context);
                     _context.Users.Update(user);
+                    Log.Information("Weekly subscribe Task Added");
                 }
             }
-            _context.SaveChanges();
-            return Ok();
         }
 
         [Route("/tasks/new")]
@@ -222,6 +231,10 @@ namespace LevelUp.Controllers
                 {
                     user = null;
                 }
+            }
+            else
+            {
+                Log.Error("User came back null.");
             }
 
             return user;
