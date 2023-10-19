@@ -2,6 +2,7 @@
 using LevelUp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace LevelUp.Controllers
 {
@@ -21,7 +22,12 @@ namespace LevelUp.Controllers
         public IActionResult CampHome()
         {
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
+
             return View(user);
         }
 
@@ -38,7 +44,11 @@ namespace LevelUp.Controllers
             if (ModelState.IsValid)
             {
                 var user = GetActiveUser(Request);
-                if (user == null) return Redirect("/users/login");
+                if (user == null)
+                {
+                    Log.Error("User returned null");
+                    return Redirect("/users/login");
+                }
 
                 _context.Camps.Add(camp);
                 camp.Members.Add(user);
@@ -61,11 +71,16 @@ namespace LevelUp.Controllers
            
             if (camp == null)
             {
+                Log.Error("Camp returned null");
                 return NotFound();
             }
 
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
             ViewData["ActiveUser"] = user;
 
             return View(camp);
@@ -78,13 +93,19 @@ namespace LevelUp.Controllers
             var newmessage = new Message(message);
 
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
+
 
             newmessage.User = user;
             var camp = _context.Camps.Where(c=>c.Id == campId).Include(c => c.MessageBoard).First();
 
             if (camp == null)
             {
+                Log.Error("Camp returned null");
                 return NotFound();
             }
 
@@ -102,6 +123,7 @@ namespace LevelUp.Controllers
 
             if (camps == null)
             {
+                Log.Error("Camps returned null");
                 return NotFound();
             }
 
@@ -115,11 +137,17 @@ namespace LevelUp.Controllers
 
             if (camp == null)
             {
+                Log.Error("Camp returned null");
                 return NotFound();
             }
 
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null) 
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
+
 
             camp.Members.Add(user);
             _context.SaveChanges();
@@ -131,7 +159,11 @@ namespace LevelUp.Controllers
         public IActionResult Details(int campId)
         {
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
 
             ViewData["Owner"] = user.Username;
             ViewData["ActiveUser"] = user;
@@ -140,6 +172,7 @@ namespace LevelUp.Controllers
 
             if (camp == null)
             {
+                Log.Error("Camp returned null");
                 return NotFound();
             }
 
@@ -154,6 +187,7 @@ namespace LevelUp.Controllers
 
             if (camp == null)
             {
+                Log.Error("Camp returned null");
                 return NotFound();
             }
 
@@ -169,6 +203,7 @@ namespace LevelUp.Controllers
 
             if (camp == null)
             {
+                Log.Error("Camp returned null");
                 return NotFound();
             }
 
@@ -186,6 +221,7 @@ namespace LevelUp.Controllers
 
             if (camp == null)
             {
+                Log.Error("Camp returned null");
                 return NotFound();
             }
 
@@ -193,6 +229,7 @@ namespace LevelUp.Controllers
 
             if (user == null)
             {
+                Log.Error("User returned null");
                 return NotFound();
             }
 
