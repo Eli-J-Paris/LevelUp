@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LevelUp.Migrations
 {
     [DbContext(typeof(LevelUpContext))]
-    [Migration("20231018163703_CreateDb")]
-    partial class CreateDb
+    [Migration("20231019172719_CreateDB")]
+    partial class CreateDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
