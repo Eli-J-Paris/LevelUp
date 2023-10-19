@@ -37,42 +37,50 @@ namespace LevelUp.Controllers
         [HttpPost]
         public IActionResult Create(User user)
         {
-            User validateUser;
-            try
+            if (ModelState.IsValid)
             {
-                validateUser = _context.Users.Where(u => u.Username == user.Username).First();
-            }
-            catch (InvalidOperationException)
-            {
-                validateUser = null;
-            }
-            if (validateUser == null)
-            {
-                Response.Cookies.Append("name", user.Name);
-                user.PfpUrl = user.GetAIGeneratedAvatar(_configuration["LEVELUP_APICONNECTIONKEY"]).Result;
-                user.Password = user.Encrypt(user.Password);
-                
-                _context.Users.Add(user);
-                _context.SaveChanges();
-
-                Log.Information("User successfully created and saved to database.");
-
-                Response.Cookies.Append("activeUser", user.Id.ToString());
-                Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
-
-                if(user.PfpUrl == "content_policy_violation")
+                User validateUser;
+                try
                 {
-                    return View("FixAnimal", user);
+                    validateUser = _context.Users.Where(u => u.Username == user.Username).First();
                 }
+                catch (InvalidOperationException)
+                {
+                    validateUser = null;
+                }
+                if (validateUser == null)
+                {
+                    Response.Cookies.Append("name", user.Name);
+                    user.PfpUrl = user.GetAIGeneratedAvatar(_configuration["LEVELUP_APICONNECTIONKEY"]).Result;
+                    user.Password = user.Encrypt(user.Password);
 
-                return Redirect("/tutorial");
+                    _context.Users.Add(user);
+                    _context.SaveChanges();
+
+                    Log.Information("User successfully created and saved to database.");
+
+                    Response.Cookies.Append("activeUser", user.Id.ToString());
+                    Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
+
+                    if(user.PfpUrl == "content_policy_violation")
+                    {
+                        return View("FixAnimal", user);
+                    }
+
+                    return Redirect("/tutorial");
+                }
+                else
+                {
+                    TempData["FailedLogin"] = true;
+                    Log.Error("User creation failed");
+                    return Redirect("/users/signup");
+                }
             }
             else
             {
-                TempData["FailedLogin"] = true;
-                Log.Error("User creation failed");
-                return Redirect("/users/signup");
+                return View("Signup", user);
             }
+
         }
         [Route("fixanimal")]
         [HttpPost]
@@ -105,11 +113,11 @@ namespace LevelUp.Controllers
         [HttpGet("users/login")]
         public IActionResult LogIn(string username)
         {
-                Response.Cookies.Append("name", "");
-                Response.Cookies.Append("activeUser", "");
-                Response.Cookies.Append("userAuth", "");
-                ViewBag.Username = username;
- 
+            Response.Cookies.Append("name", "");
+            Response.Cookies.Append("activeUser", "");
+            Response.Cookies.Append("userAuth", "");
+            ViewBag.Username = username;
+
             return View();
         }
 
@@ -118,22 +126,22 @@ namespace LevelUp.Controllers
         {
             try
             {
-                 // Fetch the user with the given username from the database
+                // Fetch the user with the given username from the database
                 var user = _context.Users.FirstOrDefault(u => u.Username == userToLogin.Username);
 
-                 // If the user exists and the password is correct
+                // If the user exists and the password is correct
                 if (user != null && VerifyPassword(user, userToLogin))
                 {
                     Log.Information("Existing user found");
                     Response.Cookies.Append("activeUser", user.Id.ToString());
                     Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
                     Response.Cookies.Append("name", user.Name);
-                    
+
                     return Json(new { success = true, redirectUrl = Url.Action("Profile", "Users") });
                 }
 
-                     // If login fails, send a JSON response.
-                    return Json(new { success = false, message = "LogIn Failed" });
+                // If login fails, send a JSON response.
+                return Json(new { success = false, message = "LogIn Failed" });
             }
             catch (Exception ex) // You can be more specific with the exception type if needed.
             {
@@ -156,9 +164,9 @@ namespace LevelUp.Controllers
             var userId = Convert.ToInt32(request.Cookies["activeUser"]);
             var userAuth = request.Cookies["userAuth"];
 
-            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).Include(u =>u.Achievements)
-                .ThenInclude(a =>a.Hygenie5Achievement)
-                        .Include(a=> a.Achievements).ThenInclude(a =>a.HabitBuilding5Achievement)
+            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).Include(u => u.Achievements)
+                .ThenInclude(a => a.Hygenie5Achievement)
+                        .Include(a => a.Achievements).ThenInclude(a => a.HabitBuilding5Achievement)
                                 .Include(a => a.Achievements).ThenInclude(a => a.Mindfulness5Achievement)
                                                 .Include(a => a.Achievements).ThenInclude(a => a.Productivity5Achievement)
                                                                 .Include(a => a.Achievements).ThenInclude(a => a.Wellness5Achievement)
@@ -190,7 +198,7 @@ namespace LevelUp.Controllers
             }
 
             var radarChartData = GetRadarChartData(user);
-             
+
             _context.Users.Update(user);
             _context.SaveChanges();
             var viewModel = new UserProfileView
@@ -227,62 +235,19 @@ namespace LevelUp.Controllers
             {
                 Log.Error("User returned null");
                 return Redirect("/users/login");
-            } 
 
-            if (type == "daily")
-            {
-                var task = _context.DailyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
-                if (!task.IsCompleted)
-                {
-
-                    task.Complete();
-                    user.UpdateAchievement(task.Category, _context);
-                }
-                else
-                {
-                    task.UndoComplete();
-                    user.UndoAchievement(task.Category,_context);
-                }
-                _context.DailyTasks.Update(task);
-                _context.SaveChanges();
             }
-            else if (type == "weekly")
+            
+            if(type == null)
             {
-                var task = _context.WeeklyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
-                if (!task.IsCompleted)
-                {
-                    task.Complete();
-                    IncrementAtribute(task.Category, user);
-                    user.UpdateAchievement(task.Category, _context);
-                }
-                else
-                {
-                    task.UndoComplete();
-                    DeincrementAtribute(task.Category, user);
-                    user.UndoAchievement(task.Category, _context);
-                }
-                _context.WeeklyTasks.Update(task);
-                _context.SaveChanges();
+                return BadRequest();
             }
-            else if (type == "todo")
-            {
-                var task = _context.ToDoTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
-                if (!task.IsCompleted)
-                {
-                    task.Complete();
-                    user.UpdateAchievement(task.Category, _context);
-                }
-                else
-                {
-                    task.UndoComplete();
-                    user.UndoAchievement(task.Category, _context);
-                }
-                _context.ToDoTasks.Update(task);
-                _context.SaveChanges();
-            }
+            CheckTaskType(type, user, id);
+            
             return Json(new { success = true, message = "task checked" }); ;
         }
 
+        
         private void IncrementAtribute(string category, User user)
         {
             category = category.ToLower();
@@ -300,11 +265,11 @@ namespace LevelUp.Controllers
             }
             else if (category == "productivity")
             {
-               user.Productivity += 1;
+                user.Productivity += 1;
             }
             else if (category == "habitbuilding")
             {
-               user.HabitBuilding += 1;
+                user.HabitBuilding += 1;
             }
         }
 
@@ -367,7 +332,7 @@ namespace LevelUp.Controllers
                 "Mindfullness",
                 "HabitBuilding"
             },
-            Values = new List<int>
+                Values = new List<int>
             {
                 user.Hygiene,
                 user.Productivity,
@@ -378,6 +343,66 @@ namespace LevelUp.Controllers
             };
         }
 
-        
+
+        public void CheckTaskType(string type, User user, int? id)
+        {
+            if (type == "daily")
+            {
+                var task = _context.DailyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
+
+
+                if (!task.IsCompleted)
+                {
+
+                    task.Complete();
+                    user.UpdateAchievement(task.Category, _context);
+                }
+                else
+                {
+                    task.UndoComplete();
+                    user.UndoAchievement(task.Category, _context);
+                }
+                _context.DailyTasks.Update(task);
+                _context.SaveChanges();
+            }
+            else if (type == "weekly")
+            {
+                var task = _context.WeeklyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
+
+                if (!task.IsCompleted)
+                {
+                    task.Complete();
+                    IncrementAtribute(task.Category, user);
+                    user.UpdateAchievement(task.Category, _context);
+                }
+                else
+                {
+                    task.UndoComplete();
+                    DeincrementAtribute(task.Category, user);
+                    user.UndoAchievement(task.Category, _context);
+                }
+                _context.WeeklyTasks.Update(task);
+                _context.SaveChanges();
+            }
+            else if (type == "todo")
+            {
+                var task = _context.ToDoTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
+
+                if (!task.IsCompleted)
+                {
+                    task.Complete();
+                    user.UpdateAchievement(task.Category, _context);
+                }
+                else
+                {
+                    task.UndoComplete();
+                    user.UndoAchievement(task.Category, _context);
+                }
+                _context.ToDoTasks.Update(task);
+                _context.SaveChanges();
+            }
+
+        }
+
     }
 }

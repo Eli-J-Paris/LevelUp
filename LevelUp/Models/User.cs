@@ -1,4 +1,3 @@
-
 ﻿using System.Runtime.InteropServices;
 ﻿using LevelUp.DataAccess;
 
@@ -9,15 +8,26 @@ using OpenAI_API.Images;
 using OpenAI_API;
 using Serilog;
 using static System.Net.WebRequestMethods;
+using System.ComponentModel.DataAnnotations;
 
 namespace LevelUp.Models
 {
     public class User
     {
         public int Id { get; set; }
+        [Required(ErrorMessage = "Name is required")]
+        [StringLength(747, ErrorMessage = "Name cannot exceed 747 characters")]
         public string Name { get; set; }
+
+        [Required(ErrorMessage = "Username is required")]
+        [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters")]
         public string Username { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Favorite Animal is required")]
+        [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters")]
         public string FavoriteAnimal { get; set; }
         public List<DailyTask> DailyTasks { get; set; } = new List<DailyTask>();
         public List<WeeklyTask> WeeklyTasks { get; set; } = new List<WeeklyTask>();
