@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ITask
+@{
     string typeTask = ViewBag.TypeTask as string;
 }
 <head>
@@ -11,16 +12,16 @@
         <div class="d-flex justify-content-center">
             <div style="margin-left:25px; margin-right:25px;">
                 <label for="easy">Easy</label>
-                <input input class="form-check-input" type="radio" name="Difficulty" id="easy" value="1" checked />
+                <input asp-for="Difficulty" input class="form-check-input" type="radio" name="Difficulty" id="easy" value="1" checked />
             </div>
             <div style="margin-left:25px; margin-right:25px;">
                 <label for="medium">Medium</label>
-                <input class ="form-check-input" type="radio" name="Difficulty" id="medium" value="2" />
+                <input asp-for="Difficulty" class="form-check-input" type="radio" name="Difficulty" id="medium" value="2" />
 
             </div>
             <div style="margin-left:25px; margin-right:25px;">
                 <label for="hard">Hard</label>
-                <input class="form-check-input" type="radio" name="Difficulty" id="hard" value="3" />
+                <input asp-for="Difficulty" class="form-check-input" type="radio" name="Difficulty" id="hard" value="3" />
             </div>    
         </div>
 
@@ -28,15 +29,15 @@
         <div class="d-flex justify-content-center">
             <div style="margin-left:25px; margin-right:25px;">
                 <label for="daily">Daily</label>
-                <input class="form-check-input" type="radio" onchange="selectDaily(this)" id="daily" name="TaskType" value="Daily" checked />
+                <input asp-for="TaskType" class="form-check-input" type="radio" onchange="selectDaily(this)" id="daily" name="TaskType" value="Daily" checked />
             </div>
             <div style="margin-left:25px; margin-right:25px;">
                 <label for="weekly">Weekly</label>
-                <input class="form-check-input" type="radio" onchange="selectWeekly(this)" id="weekly" name="TaskType" value="Weekly" />
+                <input asp-for="TaskType" class="form-check-input" type="radio" onchange="selectWeekly(this)" id="weekly" name="TaskType" value="Weekly" />
             </div>
             <div style="margin-left:25px; margin-right:25px;">
                 <label for="todo">ToDo</label>
-                <input class="form-check-input" type="radio" onchange="selectToDo(this)" id="todo" name="TaskType" value="ToDo" />
+                <input asp-for="TaskType" class="form-check-input" type="radio" onchange="selectToDo(this)" id="todo" name="TaskType" value="ToDo" />
             </div>
         </div>
 

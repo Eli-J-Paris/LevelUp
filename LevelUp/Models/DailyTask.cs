@@ -1,5 +1,6 @@
 ﻿
 using LevelUp.DataAccess;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -22,6 +23,7 @@ namespace LevelUp.Models
         public int XpReward { get; set; }
         public int AttributeReward { get; set; }
         public bool IsCompleted { get; set; } = false;
+        [ValidateNever]
         public User User { get; set; }
         public DateTime TimeCreated { get; set; } = DateTime.UtcNow;
         public DateTime? TimeCompleted { get; set; } = null;

@@ -2,6 +2,7 @@
 using LevelUp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -133,6 +134,7 @@ namespace LevelUp.Controllers
             }
             else
             {
+                Log.Error("Daily Task Model State Invalid");
                 return View("NewTask", task);
             }
         }
@@ -159,6 +161,7 @@ namespace LevelUp.Controllers
             }
             else
             {
+                Log.Error("Weekly Task Model State Invalid");
                 return View("NewTask", task);
             }
         }
@@ -184,6 +187,7 @@ namespace LevelUp.Controllers
             }
             else
             {
+                Log.Error("Todo Task Model State Invalid");
                 return View("NewTask", task);
             }
         }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace LevelUp.Models
 {
@@ -19,6 +20,7 @@ namespace LevelUp.Models
         public int XpReward { get; set; }
         public int AttributeReward { get; set; }
         public bool IsCompleted { get; set; }
+        [ValidateNever]
         public User User { get; set; }
         public DateTime TimeCreated { get; set; } = DateTime.UtcNow;
         public DateTime? TimeCompleted { get; set; } = null;
