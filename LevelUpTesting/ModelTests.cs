@@ -484,7 +484,7 @@ namespace LevelUpTesting
             };
             task.Complete();
             task.Streak = 3;
-            task.Reset();
+            task.Reset(null);
             Assert.Equal(3, task.Streak);
         }
         [Fact]
@@ -505,7 +505,7 @@ namespace LevelUpTesting
             task.Streak = 3;
             task.Complete();
             task.TimeCompleted = ((DateTime)task.TimeCompleted).AddDays(-1);
-            task.Reset();
+            task.Reset(null);
             Assert.Equal(4, task.Streak);
             Assert.False(task.IsCompleted);
         }
@@ -528,7 +528,7 @@ namespace LevelUpTesting
             task.IsCompleted = false;
             task.Streak = 3;
             task.TimeCompleted = ((DateTime)task.TimeCompleted).AddDays(-1);
-            task.Reset();
+            task.Reset(null);
             Assert.Equal(0, task.Streak);
             Assert.False(task.IsCompleted);
         }
@@ -550,7 +550,7 @@ namespace LevelUpTesting
             task.Streak = 3;
             task.Complete();
             task.TimeCompleted = ((DateTime)task.TimeCompleted).AddDays(-2);
-            task.Reset();
+            task.Reset(null);
             Assert.Equal(0, task.Streak);
             Assert.False(task.IsCompleted);
         }
@@ -571,7 +571,7 @@ namespace LevelUpTesting
             };
             task.Complete();
             task.Streak = 3;
-            task.Reset();
+            task.Reset(null);
             Assert.Equal(3, task.Streak);
         }
         [Fact]
@@ -592,7 +592,7 @@ namespace LevelUpTesting
             task.Streak = 3;
             task.Complete();
             task.TimeCompleted = ((DateTime)task.TimeCompleted).AddDays(-7);
-            task.Reset();
+            task.Reset(null);
             Assert.Equal(4, task.Streak);
             Assert.False(task.IsCompleted);
         }
@@ -615,7 +615,7 @@ namespace LevelUpTesting
             task.IsCompleted = false;
             task.Streak = 3;
             task.TimeCompleted = ((DateTime)task.TimeCompleted).AddDays(-7);
-            task.Reset();
+            task.Reset(null);
             Assert.Equal(0, task.Streak);
             Assert.False(task.IsCompleted);
         }
@@ -637,7 +637,7 @@ namespace LevelUpTesting
             task.Streak = 3;
             task.Complete();
             task.TimeCompleted = ((DateTime)task.TimeCompleted).AddDays(-14);
-            task.Reset();
+            task.Reset(null);
             Assert.Equal(0, task.Streak);
             Assert.False(task.IsCompleted);
         }

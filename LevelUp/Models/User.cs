@@ -199,6 +199,7 @@ namespace LevelUp.Models
             {
                 OpenAIAPI api = new OpenAIAPI(apiKey);
                 var result = await api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest(GetAvatarPrompt(), 1, ImageSize._256));
+                Log.Information($"Api call to OpenAIAPI successful: {result.Data[0].Url}");
                 return result.Data[0].Url;
             }
             catch (Exception ex)
