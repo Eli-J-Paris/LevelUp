@@ -171,10 +171,23 @@ namespace LevelUp.Controllers
         {
             var user = GetActiveUser(Request);
             if (user == null) return Redirect("/users/login");
+            if(type == null)
+            {
+                return BadRequest();
+            }
+            CheckTaskType(type, user, id);
+            
+            return Json(new { success = true, message = "task checked" }); ;
+        }
 
+        public void CheckTaskType(string type, User user, int? id)
+        {
             if (type == "daily")
             {
                 var task = _context.DailyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
+
+                //if (task == null) return NotFound();
+
                 if (!task.IsCompleted)
                 {
 
@@ -184,7 +197,7 @@ namespace LevelUp.Controllers
                 else
                 {
                     task.UndoComplete();
-                    user.UndoAchievement(task.Category,_context);
+                    user.UndoAchievement(task.Category, _context);
                 }
                 _context.DailyTasks.Update(task);
                 _context.SaveChanges();
@@ -223,9 +236,7 @@ namespace LevelUp.Controllers
                 _context.ToDoTasks.Update(task);
                 _context.SaveChanges();
             }
-            return Json(new { success = true, message = "task checked" }); ;
         }
-
         private void IncrementAtribute(string category, User user)
         {
             category = category.ToLower();
