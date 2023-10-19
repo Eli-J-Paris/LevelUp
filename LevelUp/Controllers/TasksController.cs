@@ -23,7 +23,12 @@ namespace LevelUp.Controllers
         {
             // checks cookies to make sure a user is logged in and gets user
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
+
             user.Reset(_context, _configuration["LEVELUP_APICONNECTIONKEY"]);
             return View(user);
             //check id from cookie
@@ -36,7 +41,11 @@ namespace LevelUp.Controllers
             var taskSeed = TaskSeed();
             //gets active user
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            } 
             // send both to view
             List<User> viewData = new List<User> { user, taskSeed };
             return View(viewData);
@@ -47,10 +56,19 @@ namespace LevelUp.Controllers
         public IActionResult Subscribe(string? type, string? title)
         {
             // make sure data comes in correctly
-            if (type == null || title == null) return BadRequest();
+            if (type == null || title == null)
+            {
+                Log.Error("'Type' or 'Title' returned null");
+                return BadRequest();
+            } 
             // get user
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
+            
             // get tasks
             var taskSeed = TaskSeed();
             ITask task = null;
@@ -64,7 +82,11 @@ namespace LevelUp.Controllers
                 task = taskSeed.WeeklyTasks.FirstOrDefault(t => t.Title == title);
             }
             else return BadRequest(); // ends action due to bad inputs
-            if (task == null) return BadRequest(); // ends action due to bad inputs
+            if (task == null)
+            {
+                Log.Error("Task returned null");
+                return BadRequest();
+            }  // ends action due to bad inputs
 
             // check to see if the task is alredy subscribed to and needs to be removed
             CheckSubscribeTaskStatus(type, user, task);
@@ -126,7 +148,11 @@ namespace LevelUp.Controllers
             task.AttributeReward = 1;
 
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            } 
 
             if (!IsTaskUnique(task, user))
             {
@@ -148,7 +174,11 @@ namespace LevelUp.Controllers
             task.AttributeReward = 1;
 
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            } 
 
             if (!IsTaskUnique(task, user)) return Json(new { success = false, message = "Task is not Unique" });
 
@@ -167,7 +197,12 @@ namespace LevelUp.Controllers
             task.AttributeReward = 1;
 
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
+            
             if (!IsTaskUnique(task, user)) return Json(new { success = false, message = "Task is not Unique" });
 
             user.ToDoTasks.Add(task);

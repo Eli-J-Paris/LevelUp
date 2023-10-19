@@ -65,7 +65,7 @@ namespace LevelUp.Controllers
             else
             {
                 TempData["FailedLogin"] = true;
-       
+                Log.Error("User creation failed");
                 return Redirect("/users/signup");
             }
         }
@@ -98,6 +98,7 @@ namespace LevelUp.Controllers
                  // If the user exists and the password is correct
                 if (user != null && VerifyPassword(user, userToLogin))
                 {
+                    Log.Information("Existing user found");
                     Response.Cookies.Append("activeUser", user.Id.ToString());
                     Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
                     Response.Cookies.Append("name", user.Name);
@@ -156,7 +157,11 @@ namespace LevelUp.Controllers
         public IActionResult Profile()
         {
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
 
             var radarChartData = GetRadarChartData(user);
              
@@ -178,7 +183,12 @@ namespace LevelUp.Controllers
         public IActionResult Streaks()
         {
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
+
             return View(user);
         }
 
@@ -187,7 +197,11 @@ namespace LevelUp.Controllers
         public IActionResult CheckTask(string? type, int? id)
         {
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null) 
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            } 
 
             if (type == "daily")
             {
