@@ -144,8 +144,11 @@ namespace LevelUp.Controllers
         [Route("/tasks/newdaily")]
         public IActionResult CreateDailyTask(DailyTask task)
         {
-            task.XpReward = task.Difficulty;
-            task.AttributeReward = 1;
+            if (ModelState.IsValid)
+            {
+                task.XpReward = task.Difficulty;
+                task.AttributeReward = 1;
+
 
             var user = GetActiveUser(Request);
             if (user == null)
@@ -154,24 +157,32 @@ namespace LevelUp.Controllers
                 return Redirect("/users/login");
             } 
 
-            if (!IsTaskUnique(task, user))
-            {
-                return Json(new { success = false, message = "Task is not Unique" });
+                if (!IsTaskUnique(task, user))
+                {
+                    return Json(new { success = false, message = "Task is not Unique" });
+                }
+                user.DailyTasks.Add(task);
+                _context.Users.Update(user);
+
+                _context.SaveChanges();
+
+                return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
             }
-            user.DailyTasks.Add(task);
-            _context.Users.Update(user);
-
-            _context.SaveChanges();
-
-            return Json(new { success = true, redirectUrl = Url.Action("","tasks") });
+            else
+            {
+                Log.Error("Daily Task Model State Invalid");
+                return View("NewTask", task);
+            }
         }
 
         [HttpPost]
         [Route("/tasks/newweekly")]
         public IActionResult CreateWeeklyTask(WeeklyTask task)
         {
-            task.XpReward = 3 * task.Difficulty;
-            task.AttributeReward = 1;
+            if (ModelState.IsValid)
+            {
+                task.XpReward = 3 * task.Difficulty;
+                task.AttributeReward = 1;
 
             var user = GetActiveUser(Request);
             if (user == null)
@@ -180,21 +191,29 @@ namespace LevelUp.Controllers
                 return Redirect("/users/login");
             } 
 
-            if (!IsTaskUnique(task, user)) return Json(new { success = false, message = "Task is not Unique" });
+                if (!IsTaskUnique(task, user)) return Json(new { success = false, message = "Task is not Unique" });
 
-            user.WeeklyTasks.Add(task);
-            _context.Users.Update(user);
+                user.WeeklyTasks.Add(task);
+                _context.Users.Update(user);
 
-            _context.SaveChanges();
-            return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
+                _context.SaveChanges();
+                return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
+            }
+            else
+            {
+                Log.Error("Weekly Task Model State Invalid");
+                return View("NewTask", task);
+            }
         }
 
         [HttpPost]
         [Route("/tasks/newtodo")]
         public IActionResult CreateToDoTask(ToDoTask task)
         {
-            task.XpReward = task.Difficulty;
-            task.AttributeReward = 1;
+            if (ModelState.IsValid)
+            {
+                task.XpReward = task.Difficulty;
+                task.AttributeReward = 1;
 
             var user = GetActiveUser(Request);
             if (user == null)
@@ -205,11 +224,17 @@ namespace LevelUp.Controllers
             
             if (!IsTaskUnique(task, user)) return Json(new { success = false, message = "Task is not Unique" });
 
-            user.ToDoTasks.Add(task);
-            _context.Users.Update(user);
+                user.ToDoTasks.Add(task);
+                _context.Users.Update(user);
 
-            _context.SaveChanges();
-            return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
+                _context.SaveChanges();
+                return Json(new { success = true, redirectUrl = Url.Action("", "tasks") });
+            }
+            else
+            {
+                Log.Error("Todo Task Model State Invalid");
+                return View("NewTask", task);
+            }
         }
 
         private User? GetActiveUser(HttpRequest request)
