@@ -197,66 +197,23 @@ namespace LevelUp.Controllers
         public IActionResult CheckTask(string? type, int? id)
         {
             var user = GetActiveUser(Request);
+
             if (user == null) 
             {
                 Log.Error("User returned null");
                 return Redirect("/users/login");
-            } 
-
-            if (type == "daily")
-            {
-                var task = _context.DailyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
-                if (!task.IsCompleted)
-                {
-
-                    task.Complete();
-                    user.UpdateAchievement(task.Category, _context);
-                }
-                else
-                {
-                    task.UndoComplete();
-                    user.UndoAchievement(task.Category,_context);
-                }
-                _context.DailyTasks.Update(task);
-                _context.SaveChanges();
             }
-            else if (type == "weekly")
+            
+            if(type == null)
             {
-                var task = _context.WeeklyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
-                if (!task.IsCompleted)
-                {
-                    task.Complete();
-                    IncrementAtribute(task.Category, user);
-                    user.UpdateAchievement(task.Category, _context);
-                }
-                else
-                {
-                    task.UndoComplete();
-                    DeincrementAtribute(task.Category, user);
-                    user.UndoAchievement(task.Category, _context);
-                }
-                _context.WeeklyTasks.Update(task);
-                _context.SaveChanges();
+                return BadRequest();
             }
-            else if (type == "todo")
-            {
-                var task = _context.ToDoTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
-                if (!task.IsCompleted)
-                {
-                    task.Complete();
-                    user.UpdateAchievement(task.Category, _context);
-                }
-                else
-                {
-                    task.UndoComplete();
-                    user.UndoAchievement(task.Category, _context);
-                }
-                _context.ToDoTasks.Update(task);
-                _context.SaveChanges();
-            }
+            CheckTaskType(type, user, id);
+            
             return Json(new { success = true, message = "task checked" }); ;
         }
 
+        
         private void IncrementAtribute(string category, User user)
         {
             category = category.ToLower();
@@ -352,6 +309,64 @@ namespace LevelUp.Controllers
             };
         }
 
-        
+        public void CheckTaskType(string type, User user, int? id)
+        {
+            if (type == "daily")
+            {
+                var task = _context.DailyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
+
+
+                if (!task.IsCompleted)
+                {
+
+                    task.Complete();
+                    user.UpdateAchievement(task.Category, _context);
+                }
+                else
+                {
+                    task.UndoComplete();
+                    user.UndoAchievement(task.Category, _context);
+                }
+                _context.DailyTasks.Update(task);
+                _context.SaveChanges();
+            }
+            else if (type == "weekly")
+            {
+                var task = _context.WeeklyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
+
+                if (!task.IsCompleted)
+                {
+                    task.Complete();
+                    IncrementAtribute(task.Category, user);
+                    user.UpdateAchievement(task.Category, _context);
+                }
+                else
+                {
+                    task.UndoComplete();
+                    DeincrementAtribute(task.Category, user);
+                    user.UndoAchievement(task.Category, _context);
+                }
+                _context.WeeklyTasks.Update(task);
+                _context.SaveChanges();
+            }
+            else if (type == "todo")
+            {
+                var task = _context.ToDoTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
+
+                if (!task.IsCompleted)
+                {
+                    task.Complete();
+                    user.UpdateAchievement(task.Category, _context);
+                }
+                else
+                {
+                    task.UndoComplete();
+                    user.UndoAchievement(task.Category, _context);
+                }
+                _context.ToDoTasks.Update(task);
+                _context.SaveChanges();
+            }
+
+        }
     }
 }
