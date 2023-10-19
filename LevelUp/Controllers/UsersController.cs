@@ -9,9 +9,9 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using OpenAI_API.Images;
 using OpenAI_API;
+using System.Collections;
 using Serilog;
 
-using System.Collections;
 namespace LevelUp.Controllers
 {
     public class UsersController : Controller
@@ -23,7 +23,6 @@ namespace LevelUp.Controllers
             _context = context;
             _configuration = configuration;
         }
-
 
         public IActionResult Index()
         {
@@ -66,10 +65,11 @@ namespace LevelUp.Controllers
             else
             {
                 TempData["FailedLogin"] = true;
-       
+                Log.Error("User creation failed");
                 return Redirect("/users/signup");
             }
         }
+
         [Route("/tutorial")]
         public IActionResult Tutorial()
         {
@@ -79,31 +79,44 @@ namespace LevelUp.Controllers
         [HttpGet("users/login")]
         public IActionResult LogIn(string username)
         {
-            Response.Cookies.Append("name", "");
-            Response.Cookies.Append("activeUser", "");
-            Response.Cookies.Append("userAuth", "");
-            ViewBag.Username = username;
-
+                Response.Cookies.Append("name", "");
+                Response.Cookies.Append("activeUser", "");
+                Response.Cookies.Append("userAuth", "");
+                ViewBag.Username = username;
+ 
             return View();
         }
 
         [HttpPost("users/login")]
         public IActionResult LogIn(User userToLogin)
         {
-            // Fetch the user with the given username from the database
-            var user = _context.Users.FirstOrDefault(u => u.Username == userToLogin.Username);
-
-            // If the user exists and the password is correct
-            if (user != null && VerifyPassword(user, userToLogin))
+            try
             {
-                Response.Cookies.Append("activeUser", user.Id.ToString());
-                Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
-                Response.Cookies.Append("name", user.Name);
-                return Json(new { success = true, redirectUrl = Url.Action("Profile", "Users") });
-            }
+                 // Fetch the user with the given username from the database
+                var user = _context.Users.FirstOrDefault(u => u.Username == userToLogin.Username);
 
-             // If login fails, send a JSON response.
-            return Json(new { success = false, message = "LogIn Failed" });
+                 // If the user exists and the password is correct
+                if (user != null && VerifyPassword(user, userToLogin))
+                {
+                    Log.Information("Existing user found");
+                    Response.Cookies.Append("activeUser", user.Id.ToString());
+                    Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
+                    Response.Cookies.Append("name", user.Name);
+                    
+                    return Json(new { success = true, redirectUrl = Url.Action("Profile", "Users") });
+                }
+
+                     // If login fails, send a JSON response.
+                    return Json(new { success = false, message = "LogIn Failed" });
+            }
+            catch (Exception ex) // You can be more specific with the exception type if needed.
+            {
+                // Log the exception for diagnostic purposes. 
+                // Use a logging framework like Serilog, NLog, etc.
+                Log.Error(ex, "Error occurred during login");
+
+                return Json(new { success = false, message = "An error occurred while processing your request." });
+            }
         }
 
         private bool VerifyPassword(User userStored, User userToLogin)
@@ -111,6 +124,7 @@ namespace LevelUp.Controllers
             var hashedPasswordBase64 = userStored.Encrypt(userToLogin.Password);
             return userStored.Password == hashedPasswordBase64;
         }
+
         private User? GetActiveUser(HttpRequest request)
         {
             var userId = Convert.ToInt32(request.Cookies["activeUser"]);
@@ -131,6 +145,10 @@ namespace LevelUp.Controllers
                     user = null;
                 }
             }
+            else
+            {
+                Log.Error("User came back null.");
+            }
 
             return user;
         }
@@ -139,7 +157,11 @@ namespace LevelUp.Controllers
         public IActionResult Profile()
         {
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
 
             var radarChartData = GetRadarChartData(user);
              
@@ -161,7 +183,12 @@ namespace LevelUp.Controllers
         public IActionResult Streaks()
         {
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
+
             return View(user);
         }
 
@@ -170,7 +197,13 @@ namespace LevelUp.Controllers
         public IActionResult CheckTask(string? type, int? id)
         {
             var user = GetActiveUser(Request);
-            if (user == null) return Redirect("/users/login");
+
+            if (user == null) 
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
+            
             if(type == null)
             {
                 return BadRequest();

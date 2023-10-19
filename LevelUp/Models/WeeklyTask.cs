@@ -1,4 +1,6 @@
 ﻿using LevelUp.DataAccess;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace LevelUp.Models
@@ -6,14 +8,21 @@ namespace LevelUp.Models
     public class WeeklyTask : ITask, IRecuring
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
+
+        [Required(ErrorMessage = "Task Type is required")]
         public string TaskType { get; set; }
+
+        [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
         public string Category { get; set; }
         public int Difficulty { get; set; }
         public int XpReward { get; set; }
         public int AttributeReward { get; set; }
         public bool IsCompleted { get; set; }
+        [ValidateNever]
         public User User { get; set; }
         public DateTime TimeCreated { get; set; } = DateTime.UtcNow;
         public DateTime? TimeCompleted { get; set; } = null;
