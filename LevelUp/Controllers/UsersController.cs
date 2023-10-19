@@ -144,6 +144,10 @@ namespace LevelUp.Controllers
                     user = null;
                 }
             }
+            else
+            {
+                Log.Error("User came back null.");
+            }
 
             return user;
         }
