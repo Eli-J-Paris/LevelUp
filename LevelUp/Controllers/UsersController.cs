@@ -37,37 +37,45 @@ namespace LevelUp.Controllers
         [HttpPost]
         public IActionResult Create(User user)
         {
-            User validateUser;
-            try
+            if (ModelState.IsValid)
             {
-                validateUser = _context.Users.Where(u => u.Username == user.Username).First();
-            }
-            catch (InvalidOperationException)
-            {
-                validateUser = null;
-            }
-            if (validateUser == null)
-            {
-                Response.Cookies.Append("name", user.Name);
-                user.PfpUrl = user.GetAIGeneratedAvatar(_configuration["LEVELUP_APICONNECTIONKEY"]).Result;
-                user.Password = user.Encrypt(user.Password);
-                
-                _context.Users.Add(user);
-                _context.SaveChanges();
+                User validateUser;
+                try
+                {
+                    validateUser = _context.Users.Where(u => u.Username == user.Username).First();
+                }
+                catch (InvalidOperationException)
+                {
+                    validateUser = null;
+                }
+                if (validateUser == null)
+                {
+                    Response.Cookies.Append("name", user.Name);
+                    user.PfpUrl = user.GetAIGeneratedAvatar(_configuration["LEVELUP_APICONNECTIONKEY"]).Result;
+                    user.Password = user.Encrypt(user.Password);
 
-                Log.Information("User successfully created and saved to database.");
+                    _context.Users.Add(user);
+                    _context.SaveChanges();
 
-                Response.Cookies.Append("activeUser", user.Id.ToString());
-                Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
+                    Log.Information("User successfully created and saved to database.");
 
-                return Redirect("/tutorial");
+                    Response.Cookies.Append("activeUser", user.Id.ToString());
+                    Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
+
+                    return Redirect("/tutorial");
+                }
+                else
+                {
+                    TempData["FailedLogin"] = true;
+                    Log.Error("User creation failed");
+                    return Redirect("/users/signup");
+                }
             }
             else
             {
-                TempData["FailedLogin"] = true;
-                Log.Error("User creation failed");
-                return Redirect("/users/signup");
+                return View("Signup", user);
             }
+
         }
 
         [Route("/tutorial")]
@@ -79,11 +87,11 @@ namespace LevelUp.Controllers
         [HttpGet("users/login")]
         public IActionResult LogIn(string username)
         {
-                Response.Cookies.Append("name", "");
-                Response.Cookies.Append("activeUser", "");
-                Response.Cookies.Append("userAuth", "");
-                ViewBag.Username = username;
- 
+            Response.Cookies.Append("name", "");
+            Response.Cookies.Append("activeUser", "");
+            Response.Cookies.Append("userAuth", "");
+            ViewBag.Username = username;
+
             return View();
         }
 
@@ -92,22 +100,22 @@ namespace LevelUp.Controllers
         {
             try
             {
-                 // Fetch the user with the given username from the database
+                // Fetch the user with the given username from the database
                 var user = _context.Users.FirstOrDefault(u => u.Username == userToLogin.Username);
 
-                 // If the user exists and the password is correct
+                // If the user exists and the password is correct
                 if (user != null && VerifyPassword(user, userToLogin))
                 {
                     Log.Information("Existing user found");
                     Response.Cookies.Append("activeUser", user.Id.ToString());
                     Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
                     Response.Cookies.Append("name", user.Name);
-                    
+
                     return Json(new { success = true, redirectUrl = Url.Action("Profile", "Users") });
                 }
 
-                     // If login fails, send a JSON response.
-                    return Json(new { success = false, message = "LogIn Failed" });
+                // If login fails, send a JSON response.
+                return Json(new { success = false, message = "LogIn Failed" });
             }
             catch (Exception ex) // You can be more specific with the exception type if needed.
             {
@@ -130,9 +138,9 @@ namespace LevelUp.Controllers
             var userId = Convert.ToInt32(request.Cookies["activeUser"]);
             var userAuth = request.Cookies["userAuth"];
 
-            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).Include(u =>u.Achievements)
-                .ThenInclude(a =>a.Hygenie5Achievement)
-                        .Include(a=> a.Achievements).ThenInclude(a =>a.HabitBuilding5Achievement)
+            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).Include(u => u.Achievements)
+                .ThenInclude(a => a.Hygenie5Achievement)
+                        .Include(a => a.Achievements).ThenInclude(a => a.HabitBuilding5Achievement)
                                 .Include(a => a.Achievements).ThenInclude(a => a.Mindfulness5Achievement)
                                                 .Include(a => a.Achievements).ThenInclude(a => a.Productivity5Achievement)
                                                                 .Include(a => a.Achievements).ThenInclude(a => a.Wellness5Achievement)
@@ -164,7 +172,7 @@ namespace LevelUp.Controllers
             }
 
             var radarChartData = GetRadarChartData(user);
-             
+
             _context.Users.Update(user);
             _context.SaveChanges();
             var viewModel = new UserProfileView
@@ -197,11 +205,11 @@ namespace LevelUp.Controllers
         public IActionResult CheckTask(string? type, int? id)
         {
             var user = GetActiveUser(Request);
-
             if (user == null) 
             {
                 Log.Error("User returned null");
                 return Redirect("/users/login");
+
             }
             
             if(type == null)
@@ -231,11 +239,11 @@ namespace LevelUp.Controllers
             }
             else if (category == "productivity")
             {
-               user.Productivity += 1;
+                user.Productivity += 1;
             }
             else if (category == "habitbuilding")
             {
-               user.HabitBuilding += 1;
+                user.HabitBuilding += 1;
             }
         }
 
@@ -298,7 +306,7 @@ namespace LevelUp.Controllers
                 "Mindfullness",
                 "HabitBuilding"
             },
-            Values = new List<int>
+                Values = new List<int>
             {
                 user.Hygiene,
                 user.Productivity,
@@ -308,6 +316,7 @@ namespace LevelUp.Controllers
             }
             };
         }
+
 
         public void CheckTaskType(string type, User user, int? id)
         {
@@ -368,5 +377,6 @@ namespace LevelUp.Controllers
             }
 
         }
+
     }
 }

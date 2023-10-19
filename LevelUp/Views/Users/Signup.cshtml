@@ -1,4 +1,5 @@
-﻿@{
+﻿@model User
+@{
     bool? failedLogin = TempData["FailedLogin"] as bool?;
     Layout = null;
 }
@@ -12,19 +13,23 @@
     <form method="post" action="/users/create">
         <div class="form-group">
             <label for="Name">Name:</label>
-            <input type="text" class="form-control" id="Name" name="Name" required />
+            <input asp-for="Name" type="text" class="form-control" id="Name" name="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label for="Username">Username:</label>
-            <input type="text" class="form-control" id="Username" name="Username" required />
+            <input asp-for="Username" type="text" class="form-control" id="Username" name="Username" />
+            <span asp-validation-for="Username" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label for="FavoriteAnimal">Favorite Animal:</label>
-            <input type="text" class="form-control" id="FavoriteAnimal" name="FavoriteAnimal" required />
+            <input asp-for="FavoriteAnimal" type="text" class="form-control" id="FavoriteAnimal" name="FavoriteAnimal" />
+            <span asp-validation-for="FavoriteAnimal" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label for="Password">Password:</label>
-            <input type="password" class="form-control" id="Password" name="Password" required />
+            <input asp-for="Password" type="password" class="form-control" id="Password" name="Password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <br />
         <div class="d-grid gap-3">
