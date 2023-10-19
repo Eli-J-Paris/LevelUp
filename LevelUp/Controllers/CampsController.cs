@@ -2,6 +2,7 @@
 using LevelUp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace LevelUp.Controllers
 {
@@ -215,7 +216,11 @@ namespace LevelUp.Controllers
                     user = null;
                 }
             }
-
+            else
+            {
+                Log.Error("User came back null.");
+            }
+               
             return user;
         }
     }
