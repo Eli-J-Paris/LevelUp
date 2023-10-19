@@ -1,4 +1,3 @@
-
 ﻿using System.Runtime.InteropServices;
 ﻿using LevelUp.DataAccess;
 
@@ -28,6 +27,7 @@ namespace LevelUp.Models
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Favorite Animal is required")]
+        [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters")]
         public string FavoriteAnimal { get; set; }
         public List<DailyTask> DailyTasks { get; set; } = new List<DailyTask>();
         public List<WeeklyTask> WeeklyTasks { get; set; } = new List<WeeklyTask>();
