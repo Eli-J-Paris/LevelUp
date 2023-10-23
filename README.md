@@ -13,19 +13,19 @@
 
 ### Set up
 1. Make a clone of this repo and open it in Visual Studio.
-2. In visual studio naviagate to tools -> NuGet package manager -> Package Manager Console -> run update-database in the package manager console.
-3. In either appsettings.json in the project or in your user sercret folder add:
+2. In either appsettings.json in the project or in your user sercret folder add:
    ```
    {
    "LEVELUP_DBCONNECTIONSTRING": "Server=localhost;Database=LevelUp;Port=5432;Username=YOURPGADMINUSERNAME;Password=YOURPGADMINPASSWORD",
    }
    ```
-4. (optional): In your users secret folder add:
+3. (optional): In your users secret folder add:
    ```
    {
    "LEVELUP_APICONNECTIONKEY": "YOUR OWN UNIQUE DALLE API KEY"
    }
    ```
+4. In visual studio naviagate to tools -> NuGet package manager -> Package Manager Console -> run update-database in the package manager console.
     *If you don't have an API key the program will still run succesfully, but your account wont have AI generated profile pictures.*   
 5. Thats it, you are ready to start Leveling Up!
 
