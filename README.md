@@ -28,7 +28,11 @@ LevelUp is a ASP.Net core web application that allows users to gamify life by co
 5. Thats it, you are ready to start Leveling Up!
 
 ## Context
-Level up is group school project designed, devloped, & tested in 8 days by 
+Level up is group school project designed, devloped, & tested in 8 days by
+| <img src="https://github.com/Eli-J-Paris.png?">    | <img src="https://github.com/Joe10111.png?">|<img src="https://github.com/RafiWick.png?"> |
+|:---:|:--:|:----:|
+| Eli Paris | Joe Centeno  | Rafi Wick|
+|  <a href="https://www.linkedin.com/in/eli-paris-96902a285/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></img></a><a href="https://github.com/Eli-J-Paris"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></img></a>              |   <a href="https://www.linkedin.com/in/braden-smith2/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></img></a><a href="https://github.com/bradenasmith2"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></img></a>            |<a href="https://www.linkedin.com/in/jeremyckimball/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></img></a><a href="https://github.com/jeremy-kimball"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></img></a>|
 - Eli Paris [@Eli-J-Paris](https://github.com/Eli-J-Paris)
 - Joe Centeno [@Joe10111](https://github.com/joe10111)
 - Rafi Wick [@RafiWick](https://github.com/RafiWick)
