@@ -86,7 +86,7 @@ namespace LevelUp.Controllers
             
             // get tasks
             var taskSeed = TaskSeed();
-            ITask task = null;
+            ITask? task = null;
             // find task
             if (type == "daily")
             {
