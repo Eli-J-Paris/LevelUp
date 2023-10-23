@@ -25,8 +25,9 @@
    "LEVELUP_APICONNECTIONKEY": "YOUR OWN UNIQUE DALLE API KEY"
    }
    ```
+   *If you don't have an API key the program will still run succesfully, but your account wont have AI generated profile pictures.* 
 4. In visual studio naviagate to tools -> NuGet package manager -> Package Manager Console -> run update-database in the package manager console.
-    *If you don't have an API key the program will still run succesfully, but your account wont have AI generated profile pictures.*   
+      
 5. Thats it, you are ready to start Leveling Up!
 
 ## Context
