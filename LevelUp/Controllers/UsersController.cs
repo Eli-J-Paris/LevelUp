@@ -39,7 +39,7 @@ namespace LevelUp.Controllers
         {
             if (ModelState.IsValid)
             {
-                User validateUser;
+                User? validateUser;
                 try
                 {
                     validateUser = _context.Users.Where(u => u.Username == user.Username).First();
