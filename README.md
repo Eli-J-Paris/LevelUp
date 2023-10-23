@@ -1,13 +1,20 @@
 **LevelUp: Take your life to the next level!**
 
 **Overview**: LevelUp is an innovative ASP.Net Core web application that melds task management with gamification. Offering a unique approach to accomplishing real-world tasks, promoting community connection, and visualizing personal growth.
+<details><summary>Screen Shots</summary>
+<img width="500" height="250" alt="image" src="https://github.com/Eli-J-Paris/LevelUp/assets/130601227/c139e175-a197-448c-a219-e184646eff51"> <img width="500" height="250" alt="image" src="https://github.com/Eli-J-Paris/LevelUp/assets/130601227/8a0ba21b-ba22-47e3-aa4f-259c9f1e5424">
+</details>
 
-<img width="500" alt="image" src="https://github.com/Eli-J-Paris/LevelUp/assets/130601227/c139e175-a197-448c-a219-e184646eff51"> <img width="500" alt="image" src="https://github.com/Eli-J-Paris/LevelUp/assets/130601227/8a0ba21b-ba22-47e3-aa4f-259c9f1e5424">
+<details><summary>Wire Frames</summary>
+<img width="500" height="250" alt="image" src="https://github.com/Eli-J-Paris/LevelUp/assets/41969516/fa1cc62a-e219-4c94-92ba-a1d07154e868">
+<img width="500" height="250" alt="image" src="https://github.com/Eli-J-Paris/LevelUp/assets/41969516/41d3fc36-9d75-4429-94b5-53a35ccb6115">
+<img width="500" height="250" alt="image" src="https://github.com/Eli-J-Paris/LevelUp/assets/41969516/e34e39d9-e434-41a5-afe7-d35204fbd529">
+</details>
+
 
 ## Getting Started
 
 ### Prerequisites
-
 * [pgAdmin](https://www.pgadmin.org/)
 * [Visual Studio](https://visualstudio.microsoft.com/)
 
