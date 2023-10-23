@@ -11,6 +11,8 @@ using OpenAI_API.Images;
 using OpenAI_API;
 using System.Collections;
 using Serilog;
+using static LevelUp.Helpers.ApiHelper;
+using LevelUp.Helpers;
 
 namespace LevelUp.Controllers
 {
@@ -190,19 +192,7 @@ namespace LevelUp.Controllers
             };
 
             //Try Catch block for api key
-            try
-            {
-                string? apiKey = _configuration["LEVELUP_APICONNECTIONKEY"];
-                if (apiKey == null)
-                {
-                    return NotFound();
-                }
-                user.Reset(_context, apiKey);
-            }
-            catch (Exception ex)
-            {
-                Log.Warning($"UsersController/Profile: Api Key is null - {ex}");
-            }
+            ApiHelper.NullCheckUserApiKey(user, _context, _configuration);
 
             return View(viewModel);
         }

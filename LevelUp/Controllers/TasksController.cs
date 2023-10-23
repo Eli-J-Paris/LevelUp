@@ -1,4 +1,5 @@
 ﻿using LevelUp.DataAccess;
+using LevelUp.Helpers;
 using LevelUp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -32,19 +33,7 @@ namespace LevelUp.Controllers
             }
 
             //Try Catch block for api key
-            try
-            {
-                string? apiKey = _configuration["LEVELUP_APICONNECTIONKEY"];
-                if(apiKey == null)
-                {
-                    return NotFound();
-                }
-                user.Reset(_context, apiKey);
-            }
-            catch (Exception ex)
-            {
-                Log.Warning($"TasksController/TasksPage: Api Key is null - {ex}");
-            }
+            ApiHelper.NullCheckUserApiKey(user, _context, _configuration);
             
             return View(user);
             //check id from cookie
