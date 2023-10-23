@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 
 namespace LevelUp.Controllers
@@ -116,7 +117,13 @@ namespace LevelUp.Controllers
                 if (user.DailyTasks.Select(t => t.Title).Contains(task.Title))
                 {
                     // removes task
-                    user.DailyTasks.Remove(user.DailyTasks.FirstOrDefault(t => t.Title == task.Title));
+                    DailyTask? dailyTask = user.DailyTasks.FirstOrDefault(t => t.Title == task.Title);
+                    if(dailyTask == null)
+                    {
+                        Log.Error("TasksController/CheckSubscribeTaskStatus: DailyTask was null");
+                        return;
+                    }
+                    user.DailyTasks.Remove(dailyTask);
                     _context.Users.Update(user);
                     Log.Information("Daily subscribe Task Added");
                 }
@@ -134,7 +141,13 @@ namespace LevelUp.Controllers
                 if (user.WeeklyTasks.Select(t => t.Title).Contains(task.Title))
                 {
                     // removes task
-                    user.WeeklyTasks.Remove(user.WeeklyTasks.FirstOrDefault(t => t.Title == task.Title));
+                    WeeklyTask? weeklyTask = user.WeeklyTasks.FirstOrDefault(t => t.Title == task.Title);
+                    if (weeklyTask == null)
+                    {
+                        Log.Error("TasksController/CheckSubscribeTaskStatus: WeeklyTask was null");
+                        return;
+                    }
+                    user.WeeklyTasks.Remove(weeklyTask);
                     _context.Users.Update(user);
                     Log.Information("Weekly subscribe Task Added");
                 }
