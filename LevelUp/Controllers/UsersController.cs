@@ -337,6 +337,10 @@ namespace LevelUp.Controllers
             {
                 var task = _context.DailyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
 
+                if (task == null)
+                {
+                    Log.Warning("UsersController/CheckTaskType: Daily task was null!");
+                }
 
                 if (!task.IsCompleted)
                 {
@@ -356,6 +360,11 @@ namespace LevelUp.Controllers
             {
                 var task = _context.WeeklyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
 
+                if (task == null)
+                {
+                    Log.Warning("UsersController/CheckTaskType: Weekly task was null!");
+                }
+
                 if (!task.IsCompleted)
                 {
                     task.Complete();
@@ -374,6 +383,11 @@ namespace LevelUp.Controllers
             else if (type == "todo")
             {
                 var task = _context.ToDoTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
+                
+                if(task == null)
+                {
+                    Log.Warning("UsersController/CheckTaskType: Todo task was null!");
+                }
 
                 if (!task.IsCompleted)
                 {
