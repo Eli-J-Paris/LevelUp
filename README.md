@@ -12,7 +12,7 @@ LevelUp is a ASP.Net core web application that allows users to gamify life by co
 ### Set up
 1. Make a clone of this repo and open it in Visual Studio.
 2. In visual studio naviagate to tools -> NuGet package manager -> Package Manager Console -> run update-database in the package manager console.
-3. In either appsettings.json in the project or in your users sercret folder add:
+3. In either appsettings.json in the project or in your user sercret folder add:
    ```
    {
    "LEVELUP_DBCONNECTIONSTRING": "Server=localhost;Database=LevelUp;Port=5432;Username=YOURPGADMINUSERNAME;Password=YOURPGADMINPASSWORD",
@@ -31,8 +31,8 @@ LevelUp is a ASP.Net core web application that allows users to gamify life by co
 Level up is group school project designed, devloped, & tested in 8 days by
 | <img src="https://github.com/Eli-J-Paris.png?">    | <img src="https://github.com/Joe10111.png?">|<img src="https://github.com/RafiWick.png?"> |
 |:---:|:--:|:----:|
-| Eli Paris | Joe Centeno  | Rafi Wick|
-|  <a href="https://www.linkedin.com/in/eli-paris-96902a285/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></img></a><a href="https://github.com/Eli-J-Paris"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></img></a>              |   <a href="https://www.linkedin.com/in/braden-smith2/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></img></a><a href="https://github.com/bradenasmith2"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></img></a>            |<a href="https://www.linkedin.com/in/jeremyckimball/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></img></a><a href="https://github.com/jeremy-kimball"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></img></a>|
+| Eli Paris | Joe Centeno | Rafi Wick|
+|  <a href="https://www.linkedin.com/in/eli-paris-96902a285/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></img></a><a href="https://github.com/Eli-J-Paris"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></img></a>              |   <a href="https://www.linkedin.com/in/joe-centeno/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></img></a><a href="https://github.com/joe10111"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></img></a>            |<a href="https://www.linkedin.com/in/raphael-wick-285489197/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></img></a><a href="https://github.com/RafiWick"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></img></a>|
 - Eli Paris [@Eli-J-Paris](https://github.com/Eli-J-Paris)
 - Joe Centeno [@Joe10111](https://github.com/joe10111)
 - Rafi Wick [@RafiWick](https://github.com/RafiWick)
