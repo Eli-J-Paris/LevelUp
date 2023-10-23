@@ -37,7 +37,7 @@ Level up is group school project designed, devloped, & tested in 8 days by
 |  <a href="https://www.linkedin.com/in/eli-paris-96902a285/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></img></a><a href="https://github.com/Eli-J-Paris"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></img></a>              |   <a href="https://www.linkedin.com/in/joe-centeno/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></img></a><a href="https://github.com/joe10111"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></img></a>            |<a href="https://www.linkedin.com/in/raphael-wick-285489197/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></img></a><a href="https://github.com/RafiWick"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></img></a>|
 
 **Features**:
-1. **Task Management:
+1. **Task Management:**
     - **Task Tracking**: Users have the capability to maintain an organized list of tasks, ensuring nothing falls through the cracks.
     - **Custom Tasks**: Beyond the preset tasks, LevelUp offers a customization feature, allowing users to create daily, weekly and todo tasks tailored to their unique goals / aspirations.
 2. **Gamified Progression**:
