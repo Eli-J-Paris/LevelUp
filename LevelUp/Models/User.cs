@@ -24,6 +24,8 @@ namespace LevelUp.Models
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
+        [DataType(DataType.Password)]
+        [StrongPassword]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Favorite Animal is required")]
@@ -214,6 +216,11 @@ namespace LevelUp.Models
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains("content_policy_violation"))
+                {
+                    Log.Error($"User entered Inapropriate \"Favorite Animal\": {FavoriteAnimal}, and was rejected by OpenAI");
+                    return "content_policy_violation";
+                }
                 Log.Warning(ex, "OpenAI API not responding");
                 return "https://placehold.co/256x256?text=OpenAI%20Api%20Not%20Responding";
             }

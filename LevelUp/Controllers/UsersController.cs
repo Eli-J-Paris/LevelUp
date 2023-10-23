@@ -13,6 +13,8 @@ using System.Collections;
 using Serilog;
 using static LevelUp.Helpers.ApiHelper;
 using LevelUp.Helpers;
+using System.Text.RegularExpressions;
+
 
 namespace LevelUp.Controllers
 {
@@ -64,6 +66,11 @@ namespace LevelUp.Controllers
                     Response.Cookies.Append("activeUser", user.Id.ToString());
                     Response.Cookies.Append("userAuth", user.Encrypt(user.Username));
 
+                    if(user.PfpUrl == "content_policy_violation")
+                    {
+                        return View("FixAnimal", user);
+                    }
+
                     return Redirect("/tutorial");
                 }
                 else
@@ -79,7 +86,28 @@ namespace LevelUp.Controllers
             }
 
         }
+        [Route("fixanimal")]
+        [HttpPost]
+        public IActionResult FixAnimal(string favAnimal)
+        {
+            var user = GetActiveUser(Request);
+            if (user == null)
+            {
+                Log.Error("User returned null");
+                return Redirect("/users/login");
+            }
+            user.FavoriteAnimal = favAnimal;
+            
+            user.PfpUrl = user.GetAIGeneratedAvatar(_configuration["LEVELUP_APICONNECTIONKEY"]).Result;
 
+            if (user.PfpUrl == "content_policy_violation")
+            {
+                return View("FixAnimal", user);
+            }
+            _context.Users.Update(user);
+            _context.SaveChanges();
+            return Redirect("/tutorial");
+        }
         [Route("/tutorial")]
         public IActionResult Tutorial()
         {

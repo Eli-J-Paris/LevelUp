@@ -32,6 +32,14 @@
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <br />
+
+        <ul id="password-requirements">
+            <li style="color: red;">At least 8 characters</li>
+            <li style="color: red;">At least one uppercase letter</li>
+            <li style="color: red;">At least one digit</li>
+        </ul>
+        <div id="password-message" style="display: none; color: green;">Password meets the criteria!</div>
+
         <div class="d-grid gap-3">
             <button type="submit" class="btn btn-primary d-flex justify-content-center align-middle" fdprocessedid="n78ig">Create Account</button>
         </div>        
@@ -44,3 +52,33 @@
     <a href="/users/login" class=" d-flex justify-content-center ">already have an account?</a>
      
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Reference the password input field and the password requirements list
+        var passwordField = $("#Password");
+        var passwordRequirements = $("#password-requirements li");
+        var passwordMessage = $("#password-message");
+
+        passwordField.on("input", function () {
+            // Check the password against your criteria
+            var password = passwordField.val();
+
+            var isLongEnough = password.length >= 8;
+            var hasUppercase = /[A-Z]/.test(password);
+            var hasDigit = /\d/.test(password);
+
+            // Update the color of each list item and display the message
+            passwordRequirements.eq(0).css("color", isLongEnough ? "green" : "red");
+            passwordRequirements.eq(1).css("color", hasUppercase ? "green" : "red");
+            passwordRequirements.eq(2).css("color", hasDigit ? "green" : "red");
+
+            // Check if all requirements are met
+            if (isLongEnough && hasUppercase && hasDigit) {
+                passwordMessage.show();
+            } else {
+                passwordMessage.hide();
+            }
+        });
+    });
+</script>
