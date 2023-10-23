@@ -284,7 +284,7 @@ namespace LevelUp.Controllers
         [Route("/tasks/{taskId:int}")]
         public IActionResult TaskShowPage(int taskId)
         {
-            ITask task = null;
+            ITask? task = null;
             if (Request.Cookies["tasktype"] == "daily")
             {
                  task = _context.DailyTasks.Find(taskId);
