@@ -24,6 +24,8 @@ namespace LevelUp.Models
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
+        [DataType(DataType.Password)]
+        [StrongPassword]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Favorite Animal is required")]

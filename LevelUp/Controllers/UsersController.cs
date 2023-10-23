@@ -11,6 +11,7 @@ using OpenAI_API.Images;
 using OpenAI_API;
 using System.Collections;
 using Serilog;
+using System.Text.RegularExpressions;
 
 namespace LevelUp.Controllers
 {
