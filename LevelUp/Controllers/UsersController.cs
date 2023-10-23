@@ -340,6 +340,7 @@ namespace LevelUp.Controllers
                 if (task == null)
                 {
                     Log.Warning("UsersController/CheckTaskType: Daily task was null!");
+                    throw new NullReferenceException("UsersController/CheckTaskType: Weekly task was null!");
                 }
 
                 if (!task.IsCompleted)
@@ -363,6 +364,7 @@ namespace LevelUp.Controllers
                 if (task == null)
                 {
                     Log.Warning("UsersController/CheckTaskType: Weekly task was null!");
+                    throw new NullReferenceException("UsersController/CheckTaskType: Weekly task was null!");
                 }
 
                 if (!task.IsCompleted)
@@ -387,6 +389,7 @@ namespace LevelUp.Controllers
                 if(task == null)
                 {
                     Log.Warning("UsersController/CheckTaskType: Todo task was null!");
+                    throw new NullReferenceException("UsersController/CheckTaskType: Todo task was null!");
                 }
 
                 if (!task.IsCompleted)
