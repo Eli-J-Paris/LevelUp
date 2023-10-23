@@ -34,7 +34,12 @@ Level up is group school project designed, devloped, & tested in 8 days by
 - Rafi Wick [@RafiWick](https://github.com/RafiWick)
 
 ## Features
-
+- Ability to keep track of & create custom tasks
+- Ability to "Level up" your account by completing tasks 
+- AI generated profile pictures that change when you level up
+- Dynamic radar graph that changes when you complete weekly tasks
+- Camp system that allows multiple users to stay connected through a message board
+  
 ## Tech Stack
 - C#.net
 - ASP.Net Core
