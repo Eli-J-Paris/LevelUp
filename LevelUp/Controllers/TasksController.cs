@@ -1,11 +1,13 @@
 ﻿using LevelUp.DataAccess;
+using LevelUp.Helpers;
 using LevelUp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
-using Serilog;
+
 namespace LevelUp.Controllers
 {
     public class TasksController : Controller
@@ -21,6 +23,7 @@ namespace LevelUp.Controllers
         [Route("/tasks")]
         public IActionResult TasksPage()
         {
+
             // checks cookies to make sure a user is logged in and gets user
             var user = GetActiveUser(Request);
             if (user == null)
@@ -29,7 +32,9 @@ namespace LevelUp.Controllers
                 return Redirect("/users/login");
             }
 
-            user.Reset(_context, _configuration["LEVELUP_APICONNECTIONKEY"]);
+            //Try Catch block for api key
+            ApiHelper.NullCheckUserApiKey(user, _context, _configuration);
+            
             return View(user);
             //check id from cookie
         }
@@ -101,7 +106,13 @@ namespace LevelUp.Controllers
                 if (user.DailyTasks.Select(t => t.Title).Contains(task.Title))
                 {
                     // removes task
-                    user.DailyTasks.Remove(user.DailyTasks.FirstOrDefault(t => t.Title == task.Title));
+                    DailyTask? dailyTask = user.DailyTasks.FirstOrDefault(t => t.Title == task.Title);
+                    if(dailyTask == null)
+                    {
+                        Log.Error("TasksController/CheckSubscribeTaskStatus: DailyTask was null");
+                        return;
+                    }
+                    user.DailyTasks.Remove(dailyTask);
                     _context.Users.Update(user);
                     Log.Information("Daily subscribe Task Added");
                 }
@@ -119,7 +130,13 @@ namespace LevelUp.Controllers
                 if (user.WeeklyTasks.Select(t => t.Title).Contains(task.Title))
                 {
                     // removes task
-                    user.WeeklyTasks.Remove(user.WeeklyTasks.FirstOrDefault(t => t.Title == task.Title));
+                    WeeklyTask? weeklyTask = user.WeeklyTasks.FirstOrDefault(t => t.Title == task.Title);
+                    if (weeklyTask == null)
+                    {
+                        Log.Error("TasksController/CheckSubscribeTaskStatus: WeeklyTask was null");
+                        return;
+                    }
+                    user.WeeklyTasks.Remove(weeklyTask);
                     _context.Users.Update(user);
                     Log.Information("Weekly subscribe Task Added");
                 }
@@ -242,13 +259,20 @@ namespace LevelUp.Controllers
             var userId = Convert.ToInt32(request.Cookies["activeUser"]);
             var userAuth = request.Cookies["userAuth"];
 
-            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).Include(u => u.Achievements)
-                .ThenInclude(a => a.Hygenie5Achievement)
-                        .Include(a => a.Achievements).ThenInclude(a => a.HabitBuilding5Achievement)
-                                .Include(a => a.Achievements).ThenInclude(a => a.Mindfulness5Achievement)
-                                                .Include(a => a.Achievements).ThenInclude(a => a.Productivity5Achievement)
-                                                                .Include(a => a.Achievements).ThenInclude(a => a.Wellness5Achievement)
-                                                                .FirstOrDefault(u => u.Id == userId);
+            User? user = _context.Users.Include(u => u.DailyTasks)
+                .Include(u => u.WeeklyTasks)
+                .Include(u => u.ToDoTasks)
+                .Include(u => u.Achievements)
+                .ThenInclude(a => a!.Hygenie5Achievement)
+                .Include(a => a.Achievements)
+                .ThenInclude(a => a!.HabitBuilding5Achievement)
+                .Include(a => a.Achievements)
+                .ThenInclude(a => a!.Mindfulness5Achievement)
+                .Include(a => a.Achievements)
+                .ThenInclude(a => a!.Productivity5Achievement)
+                .Include(a => a.Achievements)
+                .ThenInclude(a => a!.Wellness5Achievement)
+                .FirstOrDefault(u => u.Id == userId);
 
             if (user != null)
             {
@@ -269,7 +293,7 @@ namespace LevelUp.Controllers
         [Route("/tasks/{taskId:int}")]
         public IActionResult TaskShowPage(int taskId)
         {
-            ITask task = null;
+            ITask? task = null;
             if (Request.Cookies["tasktype"] == "daily")
             {
                  task = _context.DailyTasks.Find(taskId);
@@ -324,17 +348,30 @@ namespace LevelUp.Controllers
             if (Request.Cookies["tasktype"] == "daily")
             {
                 var dailyTask = _context.DailyTasks.Find(taskId);
+                if(dailyTask == null)
+                {
+                    return NotFound();
+                }                    
                 _context.DailyTasks.Remove(dailyTask);
+
             }
             else if (Request.Cookies["tasktype"] == "weekly")
             {
                 var weeklyTask = _context.WeeklyTasks.Find(taskId);
+                if (weeklyTask == null)
+                {
+                    return NotFound();
+                }
                 _context.WeeklyTasks.Remove(weeklyTask);
 
             }
             else if (Request.Cookies["tasktype"] == "todo")
             {
                 var todoTask = _context.ToDoTasks.Find(taskId);
+                if (todoTask == null)
+                {
+                    return NotFound();
+                }
                 _context.ToDoTasks.Remove(todoTask);
             }
             _context.SaveChanges();

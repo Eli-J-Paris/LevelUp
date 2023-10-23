@@ -11,7 +11,10 @@ using OpenAI_API.Images;
 using OpenAI_API;
 using System.Collections;
 using Serilog;
+using static LevelUp.Helpers.ApiHelper;
+using LevelUp.Helpers;
 using System.Text.RegularExpressions;
+
 
 namespace LevelUp.Controllers
 {
@@ -40,7 +43,7 @@ namespace LevelUp.Controllers
         {
             if (ModelState.IsValid)
             {
-                User validateUser;
+                User? validateUser;
                 try
                 {
                     validateUser = _context.Users.Where(u => u.Username == user.Username).First();
@@ -165,13 +168,20 @@ namespace LevelUp.Controllers
             var userId = Convert.ToInt32(request.Cookies["activeUser"]);
             var userAuth = request.Cookies["userAuth"];
 
-            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).Include(u => u.Achievements)
-                .ThenInclude(a => a.Hygenie5Achievement)
-                        .Include(a => a.Achievements).ThenInclude(a => a.HabitBuilding5Achievement)
-                                .Include(a => a.Achievements).ThenInclude(a => a.Mindfulness5Achievement)
-                                                .Include(a => a.Achievements).ThenInclude(a => a.Productivity5Achievement)
-                                                                .Include(a => a.Achievements).ThenInclude(a => a.Wellness5Achievement)
-                                                                .FirstOrDefault(u => u.Id == userId);
+            User? user = _context.Users.Include(u => u.DailyTasks)
+                .Include(u => u.WeeklyTasks)
+                .Include(u => u.ToDoTasks)
+                .Include(u => u.Achievements)
+                .ThenInclude(a => a!.Hygenie5Achievement)
+                .Include(a => a.Achievements)
+                .ThenInclude(a => a!.HabitBuilding5Achievement)
+                .Include(a => a.Achievements)
+                .ThenInclude(a => a!.Mindfulness5Achievement)
+                .Include(a => a.Achievements)
+                .ThenInclude(a => a!.Productivity5Achievement)
+                .Include(a => a.Achievements)
+                .ThenInclude(a => a!.Wellness5Achievement)
+                .FirstOrDefault(u => u.Id == userId);
 
             if (user != null)
             {
@@ -209,7 +219,8 @@ namespace LevelUp.Controllers
                 RadarChart = radarChartData
             };
 
-            user.Reset(_context, _configuration["LEVELUP_APICONNECTIONKEY"]);
+            //Try Catch block for api key
+            ApiHelper.NullCheckUserApiKey(user, _context, _configuration);
 
             return View(viewModel);
         }
@@ -351,6 +362,11 @@ namespace LevelUp.Controllers
             {
                 var task = _context.DailyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
 
+                if (task == null)
+                {
+                    Log.Warning("UsersController/CheckTaskType: Daily task was null!");
+                    throw new NullReferenceException("UsersController/CheckTaskType: Weekly task was null!");
+                }
 
                 if (!task.IsCompleted)
                 {
@@ -370,6 +386,12 @@ namespace LevelUp.Controllers
             {
                 var task = _context.WeeklyTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
 
+                if (task == null)
+                {
+                    Log.Warning("UsersController/CheckTaskType: Weekly task was null!");
+                    throw new NullReferenceException("UsersController/CheckTaskType: Weekly task was null!");
+                }
+
                 if (!task.IsCompleted)
                 {
                     task.Complete();
@@ -388,6 +410,12 @@ namespace LevelUp.Controllers
             else if (type == "todo")
             {
                 var task = _context.ToDoTasks.Include(t => t.User).FirstOrDefault(t => t.Id == id);
+                
+                if(task == null)
+                {
+                    Log.Warning("UsersController/CheckTaskType: Todo task was null!");
+                    throw new NullReferenceException("UsersController/CheckTaskType: Todo task was null!");
+                }
 
                 if (!task.IsCompleted)
                 {
