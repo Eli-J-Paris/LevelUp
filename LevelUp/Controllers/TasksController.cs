@@ -339,17 +339,30 @@ namespace LevelUp.Controllers
             if (Request.Cookies["tasktype"] == "daily")
             {
                 var dailyTask = _context.DailyTasks.Find(taskId);
+                if(dailyTask == null)
+                {
+                    return NotFound();
+                }                    
                 _context.DailyTasks.Remove(dailyTask);
+
             }
             else if (Request.Cookies["tasktype"] == "weekly")
             {
                 var weeklyTask = _context.WeeklyTasks.Find(taskId);
+                if (weeklyTask == null)
+                {
+                    return NotFound();
+                }
                 _context.WeeklyTasks.Remove(weeklyTask);
 
             }
             else if (Request.Cookies["tasktype"] == "todo")
             {
                 var todoTask = _context.ToDoTasks.Find(taskId);
+                if (todoTask == null)
+                {
+                    return NotFound();
+                }
                 _context.ToDoTasks.Remove(todoTask);
             }
             _context.SaveChanges();
