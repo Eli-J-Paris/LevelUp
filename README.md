@@ -2,6 +2,10 @@
 
 LevelUp is a ASP.Net core web application that allows users to gamify life by completing real world tasks and stay connected to communities, all while keeping track of self care & mental health progress.
 
+<img width="500" alt="image" src="https://github.com/Eli-J-Paris/LevelUp/assets/130601227/c139e175-a197-448c-a219-e184646eff51"> <img width="500" alt="image" src="https://github.com/Eli-J-Paris/LevelUp/assets/130601227/8a0ba21b-ba22-47e3-aa4f-259c9f1e5424">
+
+
+
 ## Getting Started
 
 ### Prerequisites
