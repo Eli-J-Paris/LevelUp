@@ -270,13 +270,20 @@ namespace LevelUp.Controllers
             var userId = Convert.ToInt32(request.Cookies["activeUser"]);
             var userAuth = request.Cookies["userAuth"];
 
-            User? user = _context.Users.Include(u => u.DailyTasks).Include(u => u.WeeklyTasks).Include(u => u.ToDoTasks).Include(u => u.Achievements)
-                .ThenInclude(a => a.Hygenie5Achievement)
-                        .Include(a => a.Achievements).ThenInclude(a => a.HabitBuilding5Achievement)
-                                .Include(a => a.Achievements).ThenInclude(a => a.Mindfulness5Achievement)
-                                                .Include(a => a.Achievements).ThenInclude(a => a.Productivity5Achievement)
-                                                                .Include(a => a.Achievements).ThenInclude(a => a.Wellness5Achievement)
-                                                                .FirstOrDefault(u => u.Id == userId);
+            User? user = _context.Users.Include(u => u.DailyTasks)
+                .Include(u => u.WeeklyTasks)
+                .Include(u => u.ToDoTasks)
+                .Include(u => u.Achievements)
+                .ThenInclude(a => a!.Hygenie5Achievement)
+                .Include(a => a.Achievements)
+                .ThenInclude(a => a!.HabitBuilding5Achievement)
+                .Include(a => a.Achievements)
+                .ThenInclude(a => a!.Mindfulness5Achievement)
+                .Include(a => a.Achievements)
+                .ThenInclude(a => a!.Productivity5Achievement)
+                .Include(a => a.Achievements)
+                .ThenInclude(a => a!.Wellness5Achievement)
+                .FirstOrDefault(u => u.Id == userId);
 
             if (user != null)
             {
