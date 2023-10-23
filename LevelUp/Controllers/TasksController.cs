@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Linq;
 using System.Threading.Tasks;
-using Serilog;
+
 namespace LevelUp.Controllers
 {
     public class TasksController : Controller
@@ -21,6 +21,7 @@ namespace LevelUp.Controllers
         [Route("/tasks")]
         public IActionResult TasksPage()
         {
+
             // checks cookies to make sure a user is logged in and gets user
             var user = GetActiveUser(Request);
             if (user == null)
@@ -29,7 +30,21 @@ namespace LevelUp.Controllers
                 return Redirect("/users/login");
             }
 
-            user.Reset(_context, _configuration["LEVELUP_APICONNECTIONKEY"]);
+            //Try Catch block for api key
+            try
+            {
+                string? apiKey = _configuration["LEVELUP_APICONNECTIONKEY"];
+                if(apiKey == null)
+                {
+                    return NotFound();
+                }
+                user.Reset(_context, apiKey);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"TasksController/TasksPage: Api Key is null - {ex}");
+            }
+            
             return View(user);
             //check id from cookie
         }
