@@ -24,7 +24,7 @@
                     {
                         <input type="checkbox" id="@task.Title" name="@task.Title" onchange="checkTask('daily', @task.Id)">
                     }
-                    <label for="@task.Title"><a href="/tasks/@task.Id" onclick="setcookiedaily()">@task.Title</a></label>
+                    <label for="@task.Title"><a href="/tasks/@task.Id" onclick="setcookiedaily()" class="task-link sixth after">@task.Title</a></label>
                 </li>
 
             }
@@ -44,7 +44,7 @@
                     {
                         <input type="checkbox" id="@task.Title" name="@task.Title" onchange="checkTask('weekly', @task.Id)">
                     }
-                    <label for="@task.Title"><a href="/tasks/@task.Id" onclick="setcookieweekly()">@task.Title</a></label>
+                    <label for="@task.Title"><a href="/tasks/@task.Id" onclick="setcookieweekly()" class="task-link sixth after">@task.Title</a></label>
                 </li>
             }
         </ul>
@@ -63,7 +63,7 @@
                     {
                         <input type="checkbox" id="@task.Title" name="@task.Title" onchange="checkTask('todo', @task.Id)">
                     }
-                    <label for="@task.Title"><a href="/tasks/@task.Id" onclick="setcookietodo()" class="task-link sixth  after">@task.Title</a></label>
+                    <label for="@task.Title"><a href="/tasks/@task.Id" onclick="setcookietodo()" class="task-link sixth after">@task.Title</a></label>
                 </li>
             }
         </ul>
