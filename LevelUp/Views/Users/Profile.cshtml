@@ -36,6 +36,9 @@
                         if(Model.User.Achievements.Hygenie5Achievement.Score < 5)
                         {
                             <p> Complete five Hygenie Tasks @Model.User.Achievements.Hygenie5Achievement.Score/5</p>
+                                <div class="progress" style="width: 57.5%">
+                                    <div class="progress-bar" role="progressbar" style="width: @xpPercentString" aria-valuenow="@Model.User.Achievements.Hygenie5Achievement.Score" aria-valuemin="0" aria-valuemax="5">@Model.User.Achievements.Hygenie5Achievement.Score / 5</div>
+                                </div>
                         }
                         else
                         {
