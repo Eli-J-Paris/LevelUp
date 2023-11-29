@@ -5,6 +5,7 @@
     List<ToDoTask> todos = Model.ToDoTasks as List<ToDoTask>;
 
 }
+
 <h1>Tasks</h1>
 
 <div class="task-lists row">
@@ -62,7 +63,7 @@
                     {
                         <input type="checkbox" id="@task.Title" name="@task.Title" onchange="checkTask('todo', @task.Id)">
                     }
-                    <label for="@task.Title"><a href="/tasks/@task.Id" onclick="setcookietodo()">@task.Title</a></label>
+                    <label for="@task.Title"><a href="/tasks/@task.Id" onclick="setcookietodo()" class="task-link sixth  after">@task.Title</a></label>
                 </li>
             }
         </ul>
@@ -95,3 +96,56 @@
         //const data = await response.json();
     }
 </script>
+
+<style>
+    .wrapper {
+        margin: 3em 0;
+    }
+
+
+
+    .task-link, .task-link:visited, .task-link:hover, .task-link:active {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        position: relative;
+        transition: 0.5s color ease;
+        text-decoration: none;
+        color: black;
+        font-size: 2.5em;
+    }
+
+        .task-link:hover {
+            color: #66A36B;
+        }
+
+        .task-link.before:before, .task-link.after:after {
+            content: "";
+            transition: 0.5s all ease;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            position: absolute;
+        }
+
+        .task-link.after:after {
+            bottom: -0.25em;
+        }
+
+        .task-link.before:before, .task-link.after:after {
+            height: 5px;
+            height: 0.35rem;
+            width: 0;
+            background: #66A36B;
+        }
+
+
+        .task-link.third:after, .task-link.sixth:before, .task-link.sixth:after {
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+        }
+
+        .task-link.before:hover:before, .task-link.after:hover:after {
+            width: 100%;
+        }
+
+</style>
